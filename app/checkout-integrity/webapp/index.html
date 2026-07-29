@@ -4,6 +4,73 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Checkout Integrity Radar</title>
+<style>
+  html, body { height: 100%; margin: 0; }
+  #ui5-fallback {
+    display: none; font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    max-width: 760px; margin: 8vh auto; padding: 0 24px; color: #0b0b0b; line-height: 1.55;
+  }
+  #ui5-fallback h1 { font-size: 20px; margin: 0 0 6px; }
+  #ui5-fallback .sub { color: #52514e; font-size: 14px; margin: 0 0 22px; }
+  #ui5-fallback .box {
+    border: 1px solid rgba(11,11,11,.12); border-left: 3px solid #eda100;
+    border-radius: 8px; padding: 16px 18px; background: #fcfcfb; font-size: 14px;
+  }
+  #ui5-fallback code {
+    font-family: ui-monospace, Consolas, monospace; font-size: 12.5px;
+    background: #f2f5f8; padding: 1px 6px; border-radius: 4px;
+  }
+  #ui5-fallback .actions { margin-top: 20px; display: flex; gap: 10px; flex-wrap: wrap; }
+  #ui5-fallback a.btn {
+    display: inline-block; text-decoration: none; font-size: 14px; font-weight: 600;
+    padding: 9px 15px; border-radius: 7px; border: 1px solid #2a78d6; color: #fff; background: #2a78d6;
+  }
+  #ui5-fallback a.btn.ghost { background: transparent; color: #2a78d6; }
+  @media (prefers-color-scheme: dark) {
+    body { background: #0d0d0d; }
+    #ui5-fallback { color: #fff; }
+    #ui5-fallback .sub { color: #c3c2b7; }
+    #ui5-fallback .box { background: #1a1a19; border-color: rgba(255,255,255,.12); }
+    #ui5-fallback code { background: #232322; }
+  }
+</style>
+<script>
+  // Two ways this can fail: the request errors outright, or it silently never
+  // finishes. Cover both, and only report once.
+  //
+  // The bootstrap script sits in <head>, so onerror can fire long before the
+  // body is parsed. Record the reason first and paint it once the DOM exists,
+  // otherwise the handler runs against an element that is not there yet and the
+  // page stays blank - which is exactly the failure this is meant to replace.
+  var ui5Reason = null;
+
+  function ui5ShowFallback() {
+    var el = document.getElementById('ui5-fallback');
+    if (!el) return;
+    el.style.display = 'block';
+    var why = document.getElementById('ui5-reason');
+    if (why && ui5Reason) why.textContent = ui5Reason;
+    var app = document.getElementById('ui5-app');
+    if (app) app.style.display = 'none';
+  }
+
+  function ui5Unavailable(reason) {
+    if (ui5Reason) return;
+    ui5Reason = reason;
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', ui5ShowFallback);
+    } else {
+      ui5ShowFallback();
+    }
+  }
+
+  // Backstop for the case where the request neither succeeds nor errors.
+  setTimeout(function () {
+    if (!window.sap || !window.sap.ui) {
+      ui5Unavailable('The SAPUI5 runtime did not load within 10 seconds.');
+    }
+  }, 10000);
+</script>
 <script
   id="sap-ui-bootstrap"
   src="https://ui5.sap.com/1.120.27/resources/sap-ui-core.js"
@@ -12,11 +79,39 @@
   data-sap-ui-compat-version="edge"
   data-sap-ui-resource-roots='{"smart.retail.checkoutintegrity": "./"}'
   data-sap-ui-oninit="module:sap/ui/core/ComponentSupport"
-  data-sap-ui-frame-options="trusted">
+  data-sap-ui-frame-options="trusted"
+  onerror="ui5Unavailable('The SAPUI5 runtime could not be downloaded from ui5.sap.com.')">
 </script>
 </head>
 <body class="sapUiBody">
-  <div data-sap-ui-component data-name="smart.retail.checkoutintegrity" data-id="container" data-settings='{"id":"smart.retail.checkoutintegrity"}'
-       style="height:100%"></div>
+
+<div id="ui5-app" data-sap-ui-component data-name="smart.retail.checkoutintegrity" data-id="container"
+     data-settings='{"id":"smart.retail.checkoutintegrity"}' style="height:100%"></div>
+
+<div id="ui5-fallback">
+  <h1>Checkout Integrity Radar could not start</h1>
+  <p class="sub" id="ui5-reason">The SAPUI5 runtime could not be loaded.</p>
+  <div class="box">
+    <p style="margin:0 0 10px">
+      This is an SAP Fiori elements application. It builds its UI from the OData annotations at
+      runtime, which means it needs the SAPUI5 runtime from <code>ui5.sap.com</code>. That host is
+      not reachable from this machine.
+    </p>
+    <p style="margin:0 0 10px">
+      It cannot be bundled into the project: Fiori elements ships as
+      <code>sap.fe.templates</code> in the closed SAPUI5 distribution, and unlike
+      <code>sap.ui.core</code> or <code>sap.m</code> it has no OpenUI5 package on npm.
+    </p>
+    <p style="margin:0">
+      The Scenario Workbench shows the same data, from the same services, with no external
+      dependency. Nothing is lost by using it here.
+    </p>
+  </div>
+  <div class="actions">
+    <a class="btn" href="/scenarios/index.html?view=checkout-integrity">Open in the Scenario Workbench</a>
+    <a class="btn ghost" href="/index.html">Back to the launchpad</a>
+  </div>
+</div>
+
 </body>
 </html>

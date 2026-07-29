@@ -5,7 +5,9 @@
     "type": "application",
     "title": "Checkout Integrity Radar",
     "description": "RFID misreads, absent tags, stock variance and price errors on the autonomous checkout terminals",
-    "applicationVersion": { "version": "1.0.0" },
+    "applicationVersion": {
+      "version": "1.0.0"
+    },
     "dataSources": {
       "mainService": {
         "uri": "/ai/",
@@ -22,14 +24,22 @@
           "action": "display",
           "title": "Checkout Integrity Radar",
           "subTitle": "Autonomous loss prevention",
-          "signature": { "parameters": {}, "additionalParameters": "allowed" }
+          "signature": {
+            "parameters": {},
+            "additionalParameters": "allowed"
+          }
         }
       }
-    }
+    },
+    "i18n": "i18n/i18n.properties"
   },
   "sap.ui": {
     "technology": "UI5",
-    "deviceTypes": { "desktop": true, "tablet": true, "phone": true }
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
   },
   "sap.ui5": {
     "dependencies": {
@@ -37,10 +47,17 @@
       "libs": {
         "sap.fe.templates": {},
         "sap.m": {},
+        "sap.f": {},
         "sap.ui.core": {}
       }
     },
     "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "smart.retail.checkoutintegrity.i18n.i18n"
+        }
+      },
       "": {
         "dataSource": "mainService",
         "preload": true,
@@ -76,7 +93,11 @@
               "variantManagement": "Page",
               "initialLoad": true,
               "navigation": {
-                "ShrinkAlerts": { "detail": { "route": "ShrinkAlertsDetail" } }
+                "ShrinkAlerts": {
+                  "detail": {
+                    "route": "ShrinkAlertsDetail"
+                  }
+                }
               },
               "views": {
                 "paths": [
@@ -104,9 +125,21 @@
             }
           }
         }
+      },
+      "config": {
+        "routerClass": "sap.f.routing.Router",
+        "viewType": "XML",
+        "controlAggregation": "beginColumnPages",
+        "controlId": "appRootView",
+        "transition": "slide",
+        "async": true
       }
     },
-    "contentDensities": { "compact": true, "cozy": true }
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    },
+    "flexEnabled": true
   },
   "sap.fiori": {
     "registrationIds": [],

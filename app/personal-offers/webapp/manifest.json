@@ -30,7 +30,8 @@
           }
         }
       }
-    }
+    },
+    "i18n": "i18n/i18n.properties"
   },
   "sap.ui": {
     "technology": "UI5",
@@ -46,10 +47,17 @@
       "libs": {
         "sap.fe.templates": {},
         "sap.m": {},
+        "sap.f": {},
         "sap.ui.core": {}
       }
     },
     "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "smart.retail.personaloffers.i18n.i18n"
+        }
+      },
       "": {
         "dataSource": "mainService",
         "preload": true,
@@ -105,12 +113,21 @@
             }
           }
         }
+      },
+      "config": {
+        "routerClass": "sap.f.routing.Router",
+        "viewType": "XML",
+        "controlAggregation": "beginColumnPages",
+        "controlId": "appRootView",
+        "transition": "slide",
+        "async": true
       }
     },
     "contentDensities": {
       "compact": true,
       "cozy": true
-    }
+    },
+    "flexEnabled": true
   },
   "sap.fiori": {
     "registrationIds": [],
