@@ -1,0 +1,89 @@
+{
+  "name": "smartstore-retail-ai",
+  "version": "1.0.0",
+  "description": "SAP CAP application amalgamating SAP Customer Checkout POS data with a synthesized store network, six retail AI scenarios and SAP Fiori dashboards on SAP HANA Cloud.",
+  "private": true,
+  "license": "UNLICENSED",
+  "engines": {
+    "node": ">=20"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://local_proxy@127.0.0.1:41729/git/divyanshmaurya/retailapp1"
+  },
+  "dependencies": {
+    "@cap-js/sqlite": "^2.4.0",
+    "@sap/cds": "^9.9.3",
+    "express": "^4.22.2"
+  },
+  "devDependencies": {
+    "@sap/cds-dk": "^9.9.3"
+  },
+  "scripts": {
+    "start": "cds-serve",
+    "watch": "cds watch",
+    "build": "cds build --production",
+    "deploy:local": "cds deploy --to sqlite:db/smartstore.db",
+    "deploy:hana": "cds deploy --to hana:smartstore-db --store-credentials",
+    "etl": "python3 tools/etl_sap_export.py --source data/source --out data/canonical",
+    "synthesize": "python3 tools/synthesize_dataset.py --canonical data/canonical --out db/data",
+    "build:ai": "node tools/generate_ai_outputs.js --data db/data",
+    "pipeline": "npm run etl && npm run synthesize && npm run build:ai",
+    "test": "node --test test/**/*.test.js"
+  },
+  "cds": {
+    "requires": {
+      "db": {
+        "kind": "sqlite",
+        "credentials": {
+          "url": "db/smartstore.db"
+        },
+        "[production]": {
+          "kind": "hana",
+          "impl": "@cap-js/hana",
+          "deploy-format": "hdbtable"
+        }
+      },
+      "auth": {
+        "kind": "mocked",
+        "[production]": {
+          "kind": "xsuaa"
+        },
+        "users": {
+          "manager": {
+            "password": "manager",
+            "roles": [
+              "StoreManager",
+              "Viewer"
+            ]
+          },
+          "analyst": {
+            "password": "analyst",
+            "roles": [
+              "Analyst",
+              "Viewer"
+            ]
+          },
+          "viewer": {
+            "password": "viewer",
+            "roles": [
+              "Viewer"
+            ]
+          }
+        }
+      }
+    },
+    "fiori": {
+      "preview": {
+        "ui5": {
+          "version": "1.120.27"
+        }
+      }
+    },
+    "log": {
+      "levels": {
+        "cds": "warn"
+      }
+    }
+  }
+}

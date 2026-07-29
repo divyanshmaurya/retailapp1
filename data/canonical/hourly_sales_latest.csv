@@ -1,0 +1,8 @@
+articleName,quantity,netRevenue,vatAmount,dueAmount,hourStart,date,hour,dayOfWeek
+Starbucks Caramel Macchiato,1.0,2.76,0.19,2.95,2026-07-03 08:00:00,2026-07-03,8,4
+LARQ Twist Bottle Seaside Mint 740ml,1.0,41.12,2.88,44.0,2026-07-03 08:00:00,2026-07-03,8,4
+Protein Bar Caramell Toffee,1.0,0.93,0.07,1.0,2026-07-03 09:00:00,2026-07-03,9,4
+HOMEMADE BUN Veggie Laugenecke Tom Moz,1.0,2.34,0.16,2.5,2026-07-03 09:00:00,2026-07-03,9,4
+"Leergut 0,25 EUR",1.0,0.21,0.04,0.25,2026-07-03 09:00:00,2026-07-03,9,4
+Hochwald Eis Macchiato,1.0,1.31,0.09,1.4,2026-07-03 09:00:00,2026-07-03,9,4
+Laugenbrezel mit Butter,1.0,1.68,0.12,1.8,2026-07-03 10:00:00,2026-07-03,10,4

@@ -1,0 +1,8 @@
+id,paymentMethod,posSystemId,itemCount,amount
+MOB1,Card payment,MOB1,56.0,239.9
+SM01,Card payment American Express,SM01,23.0,67.0
+SM01,Card payment 10,SM01,146.0,567.3
+SM01,Card payment VISA,SM01,446.0,1951.53
+PF02,Card payment 20,PF02,1664.0,6781.21
+SM01,Card payment 20,SM01,2.0,-14.66
+SM01,Card payment Master Card,SM01,215.0,996.58

@@ -1,0 +1,328 @@
+articleId,articleGroup,articleName,quantitySold,netRevenue
+AR90004,Pfand,"Leergut 0,25 EUR",920.0,193.01
+AR90003,Pfand,"Leergut 0,15 EUR",384.0,49.31
+AR90002,Pfand,"Leergut 0,08 EUR",207.0,14.05
+AR90013,Energydrinks,"Red Bull 0,25",227.0,205.35
+AR90015,Energydrinks,Red Bull Zero,88.0,91.9
+AR90014,Energydrinks,"Red Bull Sugar Free 0,25",78.0,92.04
+AR90012,Energydrinks,Red Bull Green Edition,78.0,80.87
+AR90011,Energydrinks,Red Bull White Edition,41.0,41.3
+AR90055,Energydrinks,Red Bull Summer Edition,39.0,40.28
+AR90054,Energydrinks,Red Bull Sea Blue Edition,30.0,26.69
+AR90010,Energydrinks,"Monster Energy 0,5l",18.0,33.3
+AR90016,Energydrinks,Red Bull Blue Edition,17.0,17.07
+AR00395,Protein Riegel,Koro Protein Bar Schoko Brownie,108.0,252.5
+AR00394,Protein Riegel,Koro Protein Bar Pistachio,106.0,287.24
+AR00010,Protein Riegel,Protein Bar Chocolate,76.0,70.83
+AR00009,Protein Riegel,Protein Bar Caramell Toffee,73.0,68.08
+AR00011,Protein Riegel,Protein Bar Vanilla Stracci,54.0,50.33
+AR00396,Protein Riegel,Koro Protein Bar Peanut Chocolate,28.0,57.67
+AR00041,Protein Riegel,Barebells Soft Protein Coco Choco 55g,15.0,46.24
+AR00397,Protein Riegel,Koro Protein Bar Butter Cups,14.0,32.75
+AR00154,Protein Riegel,Snickers Protein Riegel,12.0,35.89
+AR00040,Protein Riegel,Barebells Caramel Choco 55g,9.0,27.76
+AR00212,Protein Riegel,Mars Protein 50g,4.0,11.96
+AR00136,Impulseis,La Magnum Almond,92.0,231.97
+AR00084,Impulseis,La Nogger Choc,54.0,100.98
+AR00138,Impulseis,La Cornetto Haselnuss,40.0,74.8
+AR00137,Impulseis,La Magnum Classic,40.0,100.86
+AR00024,Impulseis,Snickers Ice Cream Eisrie,39.0,91.24
+AR00065,Impulseis,BLACK FOREST ICE CREAM Schokolade 100ml,35.0,81.8
+AR00068,Impulseis,BF ICE CREAM Himbeere Fichte 100ml Bio V,22.0,51.42
+AR00187,Impulseis,Twix Ice Cream Eisriegel,21.0,49.12
+AR00064,Impulseis,BLACK FOREST ICE CREAM Vanille 100ml Bio,17.0,39.78
+AR00060,Impulseis,Hofeis Knusperkeks 130ml,17.0,39.74
+AR00058,Impulseis,Hofeis Mango 130ml,17.0,39.74
+AR00057,Impulseis,HofEis Erdbeere Sorbet 130ml,17.0,39.72
+AR00056,Impulseis,HofEis Joghurt Heidelbeere 130ml,16.0,37.4
+AR00025,Impulseis,Mars Ice Cream Eisriegel,14.0,32.72
+AR00059,Impulseis,HofEis Omas Apfelkuchen 130ml,10.0,23.38
+AR00055,Impulseis,HofEis Stracciatella 130ml,10.0,23.39
+AR00069,Impulseis,BF ICE CREAM Weiße Schokolade & Waldbeer,4.0,9.36
+AR00066,Impulseis,BLACK FOREST ICE CREAM Schwarzw. Kirsch,4.0,9.35
+AR00067,Impulseis,BF ICE CREAM Haselnuss 100ml Bio Vegan,3.0,7.01
+AR00001,Süsse Riegel,Kinder Bueno 43g Ferrero,43.0,40.04
+AR00210,Süsse Riegel,Snickers Riegel  2 Pack,33.0,36.97
+AR00213,Süsse Riegel,Twix Xtra 75g,32.0,35.87
+AR00209,Süsse Riegel,Kinderriegel,31.0,14.54
+AR00319,Süsse Riegel,GIANT Flapjack Raspberry,30.0,33.61
+AR00322,Süsse Riegel,GIANT Yoghurt Flapjack Banana,27.0,30.24
+AR00208,Süsse Riegel,Kinder Country,27.0,12.65
+AR00321,Süsse Riegel,GIANT Flapjack Pecanut,20.0,22.4
+AR00003,Süsse Riegel,KitKat,20.0,18.61
+AR00004,Süsse Riegel,Duplo,19.0,8.9
+AR00320,Süsse Riegel,GIANT Flapjack Hazelnut,18.0,20.16
+AR00002,Süsse Riegel,Knoppers,16.0,7.5
+AR00207,Süsse Riegel,Hanuta 2er 44g,13.0,12.1
+AR00211,Süsse Riegel,Mars Riegel Mars 2 Pack 70g,12.0,13.45
+AR00318,Süsse Riegel,GIANT Flapjack Blueberry,9.0,10.09
+AR00214,Süsse Riegel,Kitkat Chunky 40g Nestlé,6.0,5.58
+AR00241,Homemade Buns,HOMEMADE BUN HAM,68.0,159.05
+AR00240,Homemade Buns,HOMEMADE BUN Cheese,62.0,110.36
+AR00244,Homemade Buns,HOMEMADE BUN Veggie Laugenecke Tom Moz,51.0,119.26
+AR00243,Homemade Buns,HOMEMADE BUN VEGAN,49.0,114.6
+AR00242,Homemade Buns,HOMEMADE BUN Salami,33.0,77.17
+AR90039,ColaMix Getränke,"Coca Cola Zero 0,4L Glas Mehrweg",168.0,211.68
+AR90037,ColaMix Getränke,"Mezzo Mix 0,4L Glas Mehrweg",37.0,46.62
+AR90038,ColaMix Getränke,"Coca Cola 0,4L Glas Mehrweg",31.0,39.06
+AR00419,ColaMix Getränke,LARQ Twist Bottle Seaside Mint 740ml,2.0,82.24
+AR90018,Wasser aromatisiert,DPG Vitamin Well Reload,116.0,190.16
+AR90019,Wasser aromatisiert,DPG Vitamin Well Hydrate,63.0,103.32
+AR90020,Wasser aromatisiert,DPG Vitamin Well Prepare,33.0,54.12
+AR90034,Bier,Welde Slow,88.0,125.76
+AR90036,Bier,Welde Alkoholfrei,69.0,98.65
+AR90042,Bier,Welde Weizen,19.0,30.32
+AR90035,Bier,Welde Naturradler,17.0,24.3
+AR90053,Bier,"Moretti Beer 0,33L",14.0,23.52
+AR00080,Snacks,Beef Jerky Original,81.0,158.66
+AR00081,Snacks,Beef Jerky Sweet & Hot,41.0,76.92
+AR00054,Snacks,M&M Peanut,30.0,27.92
+AR00129,Snacks,BiFi Roll,9.0,11.79
+AR00101,Snacks,Brezeln,9.0,16.01
+AR00223,Snacks,Saltletts Sticks 75g,7.0,4.55
+AR00090,Snacks,BiFi Carazza,6.0,7.27
+AR00432,Snacks,ichoc Choco Cookie,2.0,6.54
+AR00117,Snacks,BiFi Veggie Roll XXL,2.0,3.92
+AR00453,Snacks,Bifi Roll XXL,1.0,1.96
+AR00030,Snacks,ichoc Jackfruit Coconut vegan 80g,1.0,3.27
+AR00029,Snacks,ichoc Salty Pretzel vegan 80g,1.0,3.27
+IKA018,Snacks,FAZER - Milk chocolate tablet,0.0,0.0
+IKA011,Snacks,KAFFEREP - Oat biscuits,0.0,0.0
+AR00188,Herzhafte Backwaren,Laugenbrezel mit Butter,84.0,141.16
+AR00193,Herzhafte Backwaren,XL Laugenbrezel 130g FG,35.0,45.85
+AR00194,Herzhafte Backwaren,Laugenbrezel mit Pfeffer,21.0,35.28
+AR00008,Herzhafte Backwaren,Schinken Käse Croissant Snack,6.0,10.08
+AR00023,Herzhafte Backwaren,Currywurst Snack,4.0,6.72
+AR00191,Herzhafte Backwaren,Mexicana Stange,3.0,5.04
+AR00402,Schokolade,Bio poppy & vanilla fairness 45g,22.0,24.65
+AR00404,Schokolade,"Bio creamy cocos fairness 37,5g",19.0,21.29
+AR00400,Schokolade,Bio cookies & choc fairness 45g,19.0,21.3
+AR00407,Schokolade,Soft Protein Riegel Salted Peanut Carame,17.0,50.84
+AR00399,Schokolade,Gepa Schokolade Noir Edelbitter 100g,11.0,28.26
+AR00405,Schokolade,"Bio hazel nougat fairness 37,5g",9.0,9.09
+AR00403,Schokolade,"Bio double milk fairness 37,5g",9.0,9.09
+AR00401,Schokolade,Bio honey almond fairness 45g,8.0,8.96
+AR00219,Schokolade,Ritter Sport Edel Vollmilch 100g,7.0,12.46
+AR00169,Schokolade,Fe Yogurette,7.0,16.37
+AR00406,Schokolade,Riegel Vegan Peanut Caramel 55g Barebell,6.0,16.14
+AR00398,Schokolade,Gepa Schokolade Vollmilch 100g Bio Voll,6.0,13.18
+AR00218,Schokolade,Ritter Sport Nougat 100g,2.0,3.56
+AR00070,Schokolade,Milka Alpenmilch,2.0,4.3
+AR00302,Schokolade,HIP Oat Milk Chocolate Cookies,1.0,3.69
+AR00301,Schokolade,HIP Oat Milk Chocolate Salty Pretzels,1.0,3.69
+AR00031,Süße Backwaren,Filly Nut Donut,35.0,49.02
+AR00013,Süße Backwaren,Berliner Brezel 70g FB,31.0,52.08
+AR00189,Süße Backwaren,Gefüllter Triple Chocolate Muffin,27.0,55.6
+AR00190,Süße Backwaren,Brown Donut,23.0,32.2
+AR00203,Süße Backwaren,Nussschnecke,14.0,32.74
+AR00204,Süße Backwaren,Croissant Schnecke,10.0,16.81
+AR00289,Kaltgetränke,Shot Himbeere Ingwer 60ml,62.0,114.64
+AR00294,Kaltgetränke,Shot Ginger Apple 60ml,29.0,53.64
+AR00292,Kaltgetränke,Shot Beetroot 60ml,12.0,22.2
+AR00293,Kaltgetränke,Shot Cucumber Ginger 60ml,11.0,20.35
+AR00291,Kaltgetränke,Shot Kurkuma Orange 60ml,6.0,11.09
+AR00290,Kaltgetränke,Carrot and sea buckthorn shot 60ml,3.0,5.54
+AR00389,Kaltgetränke,Apfelsaft BIB 3l,1.0,5.14
+AR00026,Chips,Chili & Lime Chili & Lima24 Beutel á 4,25.0,28.0
+AR00027,Chips,Black Truffle Trufa Negra 24 Beutel á,14.0,15.7
+AR00111,Chips,Paprika Chips,13.0,30.41
+AR00178,Chips,Pringles Original,10.0,13.1
+AR00387,Chips,Apfelchips,8.0,22.41
+AR00367,Chips,"Snack Nüsse, geröstet & gesalzen",8.0,28.02
+AR00114,Chips,Pringles Sweet Paprika,7.0,9.16
+AR00366,Chips,"Snack Nüsse, BBQ",5.0,17.52
+AR00176,Chips,Pringles Hot & Spicy,5.0,6.55
+AR00365,Chips,Snack Nüsse Honig & Salz,4.0,14.0
+AR00364,Chips,Snack Nüsse Chilli,4.0,14.0
+AR00177,Chips,Pringles SourCream & Onion,4.0,5.24
+AR00438,Chips,Takis Blue Heat,3.0,6.59
+AR90008,Milchmischgetränke,"Hochwald Eiskaffee 0,25l Dose",21.0,27.49
+AR00286,Milchmischgetränke,"Yayla Ayran Tetra 0,25L",19.0,19.19
+AR00285,Milchmischgetränke,Starbucks Cappuccino,16.0,44.12
+AR90021,Milchmischgetränke,YFood Trink Vanilla,13.0,59.53
+AR00283,Milchmischgetränke,Starbucks Caramel Macchiato,13.0,35.87
+AR00282,Milchmischgetränke,Starbucks Caffé Latte,10.0,27.59
+AR90006,Milchmischgetränke,Hochwald Eis Macchiato,8.0,10.48
+AR90007,Milchmischgetränke,"Hochwald Eisschoko 0,25l Dose",4.0,5.24
+AR90009,Kaltgetränke,"Powerade Mountain Blast 0,5l PEW",43.0,57.65
+AR90027,Kaltgetränke,Teinacher Mango Maracuja,30.0,40.27
+AR90029,Kaltgetränke,Teinacher Johannisbeer Holunder,17.0,22.79
+AR90051,Kaltgetränke,Untou Bio Matcha Zitrone,6.0,8.04
+AR90050,Kaltgetränke,Untou Bio Matcha Lime,6.0,8.05
+IKA005,Kaltgetränke,"LÅNGLUR - Fruit  smoothie, yellow/added",1.0,0.83
+AR90028,Kaltgetränke,Teinacher Rhabarber Mirabelle,1.0,1.34
+IKA003,Kaltgetränke,DRYCK BLÅBÄR - Blueberry syrup,0.0,0.0
+AR00005,Süssgebäck,Manner Neapolitaner Schnitten 75g,31.0,28.89
+AR00071,Süssgebäck,Oreo Classic,21.0,56.9
+AR00006,Süssgebäck,Griesson Schoko Mountain Cookies 125g,17.0,28.62
+AR00109,Süssgebäck,M Cooky Spritzgebäck,12.0,22.45
+AR00096,Süssgebäck,Leibniz Schokokeks VM,6.0,22.15
+AR00108,Süssgebäck,M Cooky Gloria Gebäckmisc,4.0,11.21
+AR00152,Süssgebäck,Leibniz Butterkeks,3.0,11.08
+AR00160,Sandwiches,GO FRESH Tuna Sandwich,20.0,70.99
+AR00159,Sandwiches,GO FRESH Sandw Pute Ei,17.0,60.37
+AR00163,Sandwiches,GO FRESH Sandw Käse,14.0,49.72
+AR00166,Sandwiches,GO FRESH Sandw SweetChili,12.0,42.61
+AR00161,Sandwiches,GO FRESH Sanw Schink Goud,11.0,39.06
+AR00162,Sandwiches,GO FRESH Sandw Salam Edam,5.0,17.75
+AR00245,Frühstück,HOMEMADE Breakfastcup 285g,77.0,223.26
+AR00220,Weingummi,Haribo Goldbären 100g,32.0,29.8
+AR00221,Weingummi,Haribo Color Rado 100g,22.0,20.52
+AR00222,Weingummi,Haribo Tropifrutti 100g. 30St.,12.0,11.18
+AR00215,Weingummi,Red Band Briket Sup. Sauer 200St. Dose,9.0,58.05
+AR00216,Weingummi,Red Band Schnuller Cola 100St. Dose,1.0,6.45
+AR00039,Kaugummi,Airwaves Menth & Eucalypt,48.0,44.75
+AR00454,Kaugummi,Airwaves Menth & Eucalypt Box,17.0,46.06
+AR00276,Smoothie,Smothie Froosh Pineapple 250ml,32.0,64.61
+AR00275,Smoothie,Smothie Froosh Mango 250ml,15.0,30.26
+AR00288,Smoothie,Smothie Froosh  Strawberry 250ml,7.0,14.13
+AR00274,Smoothie,Smothie Froosh Blueberry 250ml,5.0,10.09
+AR90031,Wasser,Teinacher classic,28.0,28.28
+AR90033,Wasser,Teinacher still 0.7,22.0,22.22
+AR90025,Wasser,Teinacher Mineralwasser Naturell 0.33,6.0,6.06
+AR00157,Wraps,GO FRESH Wrap Chicken Chi,20.0,71.0
+AR00158,Wraps,GO FRESH Wrap Tomat Mozza,15.0,53.26
+AR00164,Wraps,GO FRESH Wrap Linse Falaf,12.0,42.62
+AR00165,Wraps,GO FRESH Wrap Thunfisch,6.0,21.3
+AR90040,Eistee,FUZE T PFIRSICH,20.0,28.6
+AR90041,Eistee,FUZE T ZITRONE,9.0,12.87
+AR90023,Eistee,Teinacher Heidelbeer Eistee,7.0,9.4
+AR00121,Chips,Cashews gerös,17.0,35.02
+AR00122,Chips,Pistazien ger,9.0,21.05
+AR00120,Chips,Studentenfutt,7.0,13.09
+AR00113,Chips,Erdnussflips,1.0,1.78
+AR00333,Kaltgetränke,BIO Hafer Drink Moccaccino 12 x 235ml Oa,15.0,28.35
+AR00332,Kaltgetränke,BIO Hafer Drink Cappuccino Oatly,11.0,20.8
+AR00281,Kaltgetränke,Erbsenprotein Milchersatz Barista 1l Vly,4.0,10.92
+AR00284,Kaltgetränke,Alpro Haferdrink Barista Glutenfrei,1.0,1.97
+AR00094,Freizeitartikel,Disposable cutlery set,15.0,3.75
+AR00087,Freizeitartikel,Parking disc,4.0,5.04
+AR00417,Freizeitartikel,LARQ TWIST BOTTLE  Obsidian Black 740ml,3.0,123.36
+AR00390,Freizeitartikel,LARQ TWIST BOTTLE Granite White 740ml,2.0,82.25
+SM0017,Freizeitartikel,Milk Chocolate Style Raisins,1.0,1.67
+AR00105,Freizeitartikel,Anzündwolle,1.0,3.31
+AR00086,Freizeitartikel,Disposable barbecue,1.0,2.08
+AR00076,Freizeitartikel,Grill Kohle,1.0,3.24
+AR00062,Freizeitartikel,Flash barbecue lighter,1.0,1.12
+SM0018,Freizeitartikel,TOPVALU Joynuts Caramel Coffee,0.0,0.0
+SM0016,Freizeitartikel,Natural Happiness Nut & Fruit Mix,0.0,0.0
+SM0015,Freizeitartikel,Becky's DUO Cakes,0.0,0.0
+AR00448,Feinkost,Aramark Seasoning Mix,10.0,36.37
+AR00327,Feinkost,Mahi Sauce Carolina Reaper & Pineapple,4.0,14.76
+AR00312,Feinkost,Bellezini Focaccine Rosemary,3.0,7.02
+AR00325,Feinkost,Mahi Sauce Chipotle Smoked Jalapeno,2.0,7.39
+AR00324,Feinkost,Mahi Marinade Peri Peri Mango & Lime,2.0,6.17
+AR00317,Feinkost,Bellezini Bruschettine Tomato & Oregano,2.0,4.68
+AR00314,Feinkost,Bellezini Focaccine Basil 12 x 150 g,2.0,4.68
+AR00436,Feinkost,Steiner´s Low Carb Pancakes,1.0,4.07
+AR00323,Feinkost,Mahi Marinade Peri Peri Hot,1.0,3.08
+AR00140,Feinkost,Bautz ner Senf mittelsch,1.0,2.71
+AR00053,Feinkost,Tomatenmark 200g Tube,1.0,3.18
+AR00151,Körperpflege,Rexona Deo Men Cobalt Dry,7.0,22.96
+AR00144,Körperpflege,Toothpaste Blenda Med,6.0,9.6
+AR00106,Körperpflege,Rexona Deo Cotton Dry,5.0,16.4
+AR00146,Körperpflege,Duschdas Shower For Men,3.0,9.96
+AR00082,Körperpflege,Nivea Creme,3.0,7.32
+SM0014,Körperpflege,Sunny Bites Banana Chips,1.0,0.83
+AR00231,Körperpflege,Deostick Sweet Summer,1.0,3.32
+AR00228,Körperpflege,Zahnbürste Bambus,1.0,5.8
+AR00156,Körperpflege,Duschdas Dusche Sport 225ml Flasche Alte,1.0,3.32
+AR90030,Kaltgetränke,Teinacher Apfelschorle,19.0,25.49
+AR00386,Kaltgetränke,"Mostbuben  Stille Apfelsaftschorle 0,5",6.0,10.09
+AR00145,Drogerieartikel,OralB Classic Car 35 Mit,7.0,6.45
+AR00107,Drogerieartikel,Gilette Disposable razor,4.0,12.44
+AR00063,Drogerieartikel,Tempo Klassik Taschentücher,4.0,10.75
+AR00110,Drogerieartikel,Hansaplast Sensitive,2.0,5.88
+AR00227,Drogerieartikel,Haarbürste Bambus,1.0,10.0
+AR00133,Drogerieartikel,Zewa UltraSoft Toilettenp,1.0,2.94
+AR00095,Fertiggerichte,Nissin Cup Noodles Chicke,12.0,29.17
+AR00104,Fertiggerichte,Nissin Cup Veggie Miso,2.0,4.86
+AR00442,Fertiggerichte,Lacroix Tomato Cream Soup,1.0,2.33
+AR00359,Fertiggerichte,Geschnetzeltes vom D. Angus Rind im Glas,1.0,7.38
+AR00349,Fertiggerichte,Currywurst im Glas 390g,1.0,6.17
+AR00019,Fertiggerichte,Graci Laboratories Funtional Meal Cousco,1.0,1.68
+AR00018,Fertiggerichte,Graci Laboratories Functional Meal Buckw,1.0,1.68
+AR00416,Kaffee,Coffee Cup Big1,9.0,15.13
+AR00415,Kaffee,Coffee Cup Small,9.0,11.34
+AR00022,Cerealien,Graci Müsli High Power,5.0,18.23
+AR00021,Cerealien,Graci Müsli light,4.0,14.56
+AR00020,Cerealien,Graci Müsli High Beautiful,2.0,7.29
+AR00306,Cerealien,Graci Lab. Functional Muesli 50 Gluten,1.0,4.39
+AR00304,Cerealien,Graci Laboratories Muesli Fruits Big Tu,1.0,5.28
+AR00303,Cerealien,Graci Laboratories Muesli NutsBig Tube,1.0,5.28
+AR00098,Cerealien,Kölln Hafer Porridge Frucht 375g,1.0,5.38
+AR00278,Schaumwein,Gaudenz Cuvée Rot Weingut Knipser,6.0,60.0
+AR00277,Schaumwein,Mionetto Treviso Prosecco Frizzante,4.0,26.56
+AR00279,Schaumwein,Bone dry Spätburgunder Rosé,3.0,29.99
+AR00280,Schaumwein,Grauburgunder | Weingut Oliver Zeter,2.0,20.0
+AR00185,Milch,Bio H Milch 1l Nature,14.0,29.41
+AR00434,Teigwaren & Reis,Steiner´s High Protein Spätzle,4.0,14.54
+AR00433,Teigwaren & Reis,Steiner´s High Protein Fussili,3.0,10.91
+AR00141,Teigwaren & Reis,Barilla Fusilli,3.0,7.01
+AR00426,Teigwaren & Reis,Barilla Spaghetti,2.0,4.68
+AR00017,Teigwaren & Reis,Wheat Germ & Tomato Cuori 250g,2.0,7.28
+AR00115,Bonbons,Mentos Gum Pure Frost,7.0,22.91
+AR00088,Bonbons,Wick Blau ohne Zucker,3.0,6.18
+AR00089,Bonbons,Wick Zitrone ohne Zucker,2.0,4.12
+AR00378,Aufstrich,Mein Glück aus Mandeln,5.0,19.87
+AR00376,Aufstrich,Mein Glück Milch Kakao,2.0,7.95
+AR00393,Aufstrich,Aufstrich Wie Leberwurst,1.0,2.57
+AR00392,Aufstrich,Proteinaufstrich Paprika Pfeffer,1.0,2.56
+AR00377,Aufstrich,Mein Glück aus Haselnüssen,1.0,3.97
+AR00038,Aufstrich,Nutella Glas 450g Glas,1.0,4.63
+AR00441,SB Wurstwaren,HANDL Veggie Almjäger,6.0,15.66
+AR00153,SB Wurstwaren,Herta Finesse Schinken 100g,2.0,6.54
+AR00384,SB Wurstwaren,HANDL Almwurzerl,1.0,3.69
+AR00142,SB Wurstwaren,Wies Gefl Mortadella     100g,1.0,1.68
+AR00135,Salate,GO FRESH Pastasalad Chicken,5.0,16.34
+AR00134,Salate,GO FRESH Pastasalat Lyoner Erbse,3.0,9.81
+AR00132,Salate,GO FRESH Salatmix Italia,1.0,6.45
+AR00131,Salate,GO FRESH Saladbowl Caesar,1.0,6.45
+AR00420,Konserven,Gewürzgurken Durach,2.0,4.86
+AR00341,Konserven,Hausmacher Leberwurst 200g Dose,2.0,7.28
+AR00360,Konserven,Dosenturm Unsere Besten,1.0,13.93
+AR00356,Konserven,Wiener im Glas 390g,1.0,5.14
+AR00346,Konserven,Rindslyoner 200g Dose,1.0,3.64
+AR00345,Konserven,Jagdwurst 200g Dose,1.0,3.64
+AR00344,Konserven,Schinkenwurst 200g Dose,1.0,3.64
+AR00074,Tiefkühlkost,Mikrowe Pommes extra dünn,5.0,9.35
+AR00147,Tiefkühlkost,Butcher Lasagne Yeah,2.0,9.16
+AR00149,Tiefkühlkost,Butcher Chick Curry Ki 400g,1.0,5.24
+AR00375,Heissgetränke,Stick Lembke Tee Minze Lavendel & Verben,2.0,9.25
+AR00331,Heissgetränke,The Yeah Blend Green Matcha Latte Powder,2.0,32.8
+AR00373,Heissgetränke,Stick Lembke Tee Minze Limette Hibiskus,1.0,4.63
+AR00371,Heissgetränke,Stick Lembke Tee Minze Ingwer orange,1.0,4.63
+AR00330,Heissgetränke,The Yeah Blend Pistatcha Latte Powder,1.0,18.22
+AR00383,Brot,Dr. Kargs Tomate Mozzarella  Knäcke,3.0,9.12
+AR00382,Brot,Dr.  Kargs Protein Knäcke,1.0,3.03
+AR00197,Brot,Knäckebrot Urtyp 250g Burger,1.0,1.68
+AR00381,Fischprodukte,La Monegaque Sardinen mit Zitrone,3.0,10.52
+AR00380,Fischprodukte,La Monegaque Sardinen mit Chili,1.0,3.5
+AR00047,Essig,"Theo Birnen Balsamico Essig 0,5l",2.0,16.64
+AR00050,Essig,"Theo Weisskirsch Balsamico 0,5l",1.0,12.07
+AR00049,Essig,"Theo Pflaumen Balsamico 0,5l",1.0,8.32
+AR00171,Pizza  Baguette,Dr Oetker Ofenfrische Peperoni Salami,2.0,7.38
+AR00172,Pizza  Baguette,Dr. Oetker Ofenfrische 4 Käse,1.0,3.7
+AR00119,Pizza  Baguette,Oet Baguette Salami,1.0,3.27
+AR00270,Reinigungsmittel,Household sponge Zellulose,2.0,4.21
+AR00143,Reinigungsmittel,Fairy Original Spülmittel,1.0,2.76
+AR00230,Getränkebehälter,Thermobecher 480ml Bambus & Edelstahl,2.0,28.58
+AR00229,Getränkebehälter,Thermobecher 360ml Bambus & Edelstahl,1.0,12.61
+AR00198,Desinfektion,Tempo fresh to go Protect,3.0,5.04
+AR00128,Damenhygiene,Always Ultra,3.0,11.22
+AR00126,Süßigkeiten,M Candy Schokoerdnüsse,3.0,5.34
+AR00015,Butter,Markenbutter Alu,3.0,9.25
+AR00118,Eier,mB Eier frisch ML,3.0,8.27
+AR00034,Gewürze,ARAMARK Grobes Meersalz 90g Mühle,2.0,3.74
+AR00035,Gewürze,ARAMARK BIO Pfeffer schwarz 40g Mühle,1.0,2.34
+AR00236,Lunchboxen,Lunchbox 800ml Edelstahl,2.0,26.9
+AR00033,Frisch Wurstwaren,Salami  Regio Di Parma 80gr,2.0,6.45
+AR00097,Konserven Gemüse,Erbsen Möhren Dose Glas,1.0,4.02
+AR00061,Konserven Gemüse,Mais Dose Glas,1.0,2.34
+AR00271,Kaffeebohnen,Kaffee SAP Kaffee 1000gr.,1.0,25.24
+AR00201,Kaffeebohnen,Aramark Espresso Firenze 1kg,1.0,25.24
+AR00456,AR133002,Heitlinger Pinot Bois,2.0,19.33
+AR00186,Scheibenkäse,Gouda i. Scheiben frisch 100gr,1.0,2.34
+AR00043,Öl,BIO Olivenöl nativ extra 500ml,1.0,8.31
+AR00196,Mehl & Zucker,Weizenmehl Typ 405 1kg,1.0,1.5
+AR00175,Eiswürfel,Icefrocks Premium Eiswürf,1.0,2.34

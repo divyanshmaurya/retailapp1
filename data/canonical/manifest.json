@@ -1,0 +1,139 @@
+{
+  "workbooks": [
+    "CompleteSalesReport_Latest.xlsx",
+    "CompleteSalesReport_Period.xlsx"
+  ],
+  "primary": "CompleteSalesReport_Period.xlsx",
+  "reportMeta": {
+    "created_at": "Jul 3, 2026, 11:20:20 AM GMT+02:00 (8ms)",
+    "created_by": "smart01 (1000)",
+    "period_from": "Jan 1, 2026, 1:00:00 AM",
+    "period_to": "Jul 3, 2026, 11:59:59 PM GMT+02:00",
+    "pos_systems": "MOB1, PF02, SM01"
+  },
+  "cashingUp": {
+    "Currency": "EUR",
+    "Total due amount": "10588.86",
+    "Number of sales receipts": "2550.0",
+    "Total net revenue": "9563.36",
+    "Number of guests": "0.0",
+    "Total VAT": "1025.5"
+  },
+  "tables": {
+    "articles": {
+      "rows": 327,
+      "columns": [
+        "articleId",
+        "articleName",
+        "quantitySold",
+        "grossSalesBeforeDiscount",
+        "grossDiscount",
+        "grossSales",
+        "netRevenueBeforeDiscount",
+        "netDiscount",
+        "netRevenue",
+        "vatAmount",
+        "dueAmount",
+        "unitPriceGross",
+        "vatRatePct"
+      ]
+    },
+    "article_groups": {
+      "rows": 327,
+      "columns": [
+        "articleId",
+        "articleGroup",
+        "articleName",
+        "quantitySold",
+        "netRevenue"
+      ]
+    },
+    "hourly_sales": {
+      "rows": 4926,
+      "columns": [
+        "articleName",
+        "quantity",
+        "netRevenue",
+        "vatAmount",
+        "dueAmount",
+        "hourStart",
+        "date",
+        "hour",
+        "dayOfWeek"
+      ]
+    },
+    "cancellations": {
+      "rows": 412,
+      "columns": [
+        "articleId",
+        "posGroupCashier",
+        "articleName",
+        "cancellationCount",
+        "cancelledQuantity",
+        "cancelledAmount",
+        "cashier"
+      ]
+    },
+    "returns": {
+      "rows": 6,
+      "columns": [
+        "articleId",
+        "POS group/Cashier",
+        "articleName",
+        "returnCount",
+        "returnedQuantity",
+        "returnedAmount",
+        "reason",
+        "Total due amount"
+      ]
+    },
+    "pos_systems": {
+      "rows": 3,
+      "columns": [
+        "posSystemId",
+        "posSystemName",
+        "receiptCount",
+        "grossSales",
+        "netRevenue",
+        "vatAmount",
+        "Total due amount"
+      ]
+    },
+    "payment_methods": {
+      "rows": 7,
+      "columns": [
+        "id",
+        "paymentMethod",
+        "posSystemId",
+        "itemCount",
+        "amount"
+      ]
+    },
+    "discounts": {
+      "rows": 4,
+      "columns": [
+        "discountId",
+        "discountType",
+        "quantity",
+        "discountPct",
+        "grossDiscount",
+        "netDiscount",
+        "grossSales"
+      ]
+    },
+    "taxes": {
+      "rows": 3,
+      "columns": [
+        "region",
+        "taxRateType",
+        "taxRatePct",
+        "taxableAmount",
+        "taxAmount"
+      ]
+    },
+    "hourly_sales_latest": {
+      "rows": 7,
+      "source": "CompleteSalesReport_Latest.xlsx"
+    }
+  }
+}

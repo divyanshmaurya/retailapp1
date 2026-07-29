@@ -1,0 +1,5 @@
+discountId,discountType,quantity,discountPct,grossDiscount,netDiscount,grossSales
+-,No reason / Price changed,1054.0,13.99,305.73,261.28,1879.66
+1000,General,95.0,40.38,65.21,54.5,96.29
+-1,No discount,5306.0,0.0,0.0,0.0,8616.64
+1300,Promotion,-3.0,9.9,-0.41,-0.34,-3.73

@@ -1,0 +1,29 @@
+node_modules/
+gen/
+dist/
+
+# Local SQLite database - rebuilt with `npm run deploy:local`
+*.db
+*.db-journal
+*.sqlite
+
+# CAP / MTA build output
+*.mtar
+.cds-build-cache/
+mta_archives/
+
+# Environment and credentials - never commit these
+.env
+default-env.json
+.cdsrc-private.json
+
+# Editor and OS noise
+.DS_Store
+.vscode/
+.idea/
+*.swp
+
+# Python
+__pycache__/
+*.pyc
+.venv/
