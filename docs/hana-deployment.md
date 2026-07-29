@@ -4,6 +4,27 @@ The project runs on SQLite locally and on SAP HANA Cloud in production. Nothing 
 the services or the engines changes between the two — only the `db` binding in `package.json`,
 which switches to `hana` under the `[production]` profile.
 
+## This has been done
+
+The database is deployed. The record, so the steps below can be read as something that worked
+rather than something that should:
+
+| | |
+|---|---|
+| Instance | `s-mart-hanadb`, SAP HANA Database 2026.2.10, Cloud Foundry runtime |
+| Infrastructure | AWS, US East — 80 GB memory, 240 GB storage, 5 vCPUs, 1 node |
+| Container | HDI shared, service instance `smartstore-db` |
+| Result | 131 files deployed, 0 undeployed, **0 warnings**, 5.9 s |
+| Data | 25 tables, **120,324 rows**, every count matching its seed CSV |
+
+The CDS model compiled to HANA unchanged — no construct needed rewriting and the aggregate views
+deployed without a warning. Reads, both aggregate view families and a full read-compute-write
+`recalculate` were exercised against the deployed container.
+
+**Run this from SAP Business Application Studio**, not your own machine, unless you have opened the
+instance allowlist. HANA Cloud refuses external connections by default; BAS runs inside BTP where
+that restriction does not apply. This is the most common thing to trip over.
+
 ## Prerequisites
 
 - An SAP BTP subaccount with **Cloud Foundry** enabled and an **SAP HANA Cloud** instance running
