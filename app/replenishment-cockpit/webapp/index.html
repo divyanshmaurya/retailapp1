@@ -73,7 +73,7 @@
 </script>
 <script
   id="sap-ui-bootstrap"
-  src="https://ui5.sap.com/1.120.27/resources/sap-ui-core.js"
+  src="https://ui5.sap.com/resources/sap-ui-core.js"
   data-sap-ui-theme="sap_horizon"
   data-sap-ui-async="true"
   data-sap-ui-compat-version="edge"
@@ -101,6 +101,11 @@
       It cannot be bundled into the project: Fiori elements ships as
       <code>sap.fe.templates</code> in the closed SAPUI5 distribution, and unlike
       <code>sap.ui.core</code> or <code>sap.m</code> it has no OpenUI5 package on npm.
+    </p>
+    <p style="margin:0 0 10px">
+      If the host <em>is</em> reachable, check that the bootstrap URL returns 200 rather than 404 -
+      a pinned SAPUI5 patch version disappears from the CDN once SAP retires it:<br>
+      <code>curl -I https://ui5.sap.com/resources/sap-ui-core.js</code>
     </p>
     <p style="margin:0">
       The Scenario Workbench shows the same data, from the same services, with no external
