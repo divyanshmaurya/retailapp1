@@ -55,7 +55,11 @@
       "i18n": {
         "type": "sap.ui.model.resource.ResourceModel",
         "settings": {
-          "bundleName": "smart.retail.checkoutintegrity.i18n.i18n"
+          "bundleName": "smart.retail.checkoutintegrity.i18n.i18n",
+          "supportedLocales": [
+            ""
+          ],
+          "fallbackLocale": ""
         }
       },
       "": {
@@ -125,14 +129,6 @@
             }
           }
         }
-      },
-      "config": {
-        "routerClass": "sap.f.routing.Router",
-        "viewType": "XML",
-        "controlAggregation": "beginColumnPages",
-        "controlId": "appRootView",
-        "transition": "slide",
-        "async": true
       }
     },
     "contentDensities": {
