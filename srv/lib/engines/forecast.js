@@ -388,7 +388,7 @@ function backtest(hourlySales, holdoutDays = 14, options = {}) {
  * @returns {Array} DemandForecasts rows
  */
 function generateForecasts(hourlySales, {
-  horizonHours = 48, maxArticlesPerStore = 60, asOf = null,
+  horizonHours = 48, maxArticlesPerStore = 60, asOf = null, generatedAt = null,
 } = {}) {
   if (!hourlySales.length) return [];
 
@@ -409,7 +409,11 @@ function generateForecasts(hourlySales, {
   // refitted on the training window only, so the score is not self-graded.
   const profiles = learnProfiles(history);
   const accuracy = backtest(history, 14);
-  const generatedAt = new Date().toISOString().replace(/\.\d{3}Z$/, 'Z');
+  // Provenance. Defaults to now, which is what the recalculate action wants.
+  // The seed generator passes a stamp derived from the data instead, so that
+  // rebuilding the committed dataset is byte-identical and a diff means the
+  // numbers changed rather than that the clock moved.
+  const stampedAt = generatedAt || new Date().toISOString().replace(/\.\d{3}Z$/, 'Z');
 
   // Forecast forward from the last hour actually observed, not from midnight of
   // the last date - otherwise a short horizon lands entirely in the small hours
@@ -484,7 +488,7 @@ function generateForecasts(hourlySales, {
           mape: mape === undefined ? null : mape,
           wape: wape === undefined ? null : wape,
           model: articleProfile.model || MODEL_NAME,
-          generatedAt,
+          generatedAt: stampedAt,
         });
       }
     }

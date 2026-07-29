@@ -17,7 +17,9 @@
     "express": "^4.22.2"
   },
   "devDependencies": {
-    "@sap/cds-dk": "^9.9.3"
+    "@cap-js/cds-test": "^1.0.1",
+    "@sap/cds-dk": "^9.9.3",
+    "playwright": "^1.62.0"
   },
   "scripts": {
     "start": "cds-serve",
@@ -30,7 +32,8 @@
     "synthesize": "python3 tools/synthesize_dataset.py --canonical data/canonical --out db/data",
     "build:ai": "node tools/generate_ai_outputs.js --data db/data",
     "pipeline": "npm run etl && npm run synthesize && npm run build:ai",
-    "test": "node --test test/**/*.test.js"
+    "test": "node --test test/**/*.test.js",
+    "test:ui": "node test/smoke-ui.mjs"
   },
   "cds": {
     "requires": {

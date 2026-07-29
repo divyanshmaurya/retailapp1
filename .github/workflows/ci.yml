@@ -1,0 +1,113 @@
+name: CI
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+  workflow_dispatch:
+
+# A newer push to the same branch makes the running job irrelevant.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Tests (Node ${{ matrix.node }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # The floor declared in package.json engines, and current.
+        node: ['20', '22']
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+
+      - run: npm ci
+
+      # Compiling first turns a broken model into a clear failure here rather
+      # than into two dozen confusing test errors further down.
+      - name: Compile the CDS model
+        run: npx cds compile srv --to sql > /dev/null
+
+      - name: Deploy the seed data to SQLite
+        run: npm run deploy:local
+
+      # Engine unit tests and the OData integration tests. The integration
+      # tests boot CAP in-process, so nothing needs to be started here.
+      - name: Test
+        run: npm test
+
+  pipeline:
+    name: Data pipeline reproduces
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - run: npm ci
+
+      - name: Install the ETL's Python dependencies
+        run: pip install pandas openpyxl
+
+      # The generated CSVs are committed, so re-running the pipeline and
+      # finding a diff means the committed data no longer matches the code
+      # that claims to produce it. The engines are deterministic and the
+      # synthesizer is seeded, so this is a real signal rather than noise.
+      - name: Re-run the pipeline
+        run: npm run pipeline
+
+      - name: Check the committed data still matches
+        run: |
+          if ! git diff --quiet -- db/data data/canonical; then
+            echo "::error::Regenerating the dataset produced a different result."
+            echo "Run 'npm run pipeline' and commit the changes."
+            git diff --stat -- db/data data/canonical
+            git diff -- db/data data/canonical | head -200
+            exit 1
+          fi
+          echo "Pipeline output matches the committed data."
+
+  browser:
+    name: UI smoke test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - run: npm ci
+      - run: npm run deploy:local
+
+      # The local Playwright, not a floating one, so the browser it downloads
+      # is the one this version expects.
+      - name: Install Playwright's browser
+        run: npx playwright install --with-deps chromium
+
+      # Every UI regression this project hit was invisible to the service
+      # tests: a blank Fiori page, a chart that never drew, a table that threw
+      # on an empty result. Loading each page and failing on a console error is
+      # what catches that class of defect.
+      - name: Start the server
+        run: |
+          npm start &
+          npx --yes wait-on http://localhost:4004/index.html --timeout 90000
+
+      - name: Load every page and fail on console errors
+        run: node test/smoke-ui.mjs

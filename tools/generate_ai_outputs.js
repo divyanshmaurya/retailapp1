@@ -67,7 +67,16 @@ function main() {
 
   console.log('Running scenario engines...');
 
-  const forecasts = generateForecasts(hourlySales, { horizonHours: 48, maxArticlesPerStore: 45 });
+  // Stamp the seed data from the data itself rather than from the clock. These
+  // CSVs are committed, so a wall-clock stamp rewrites every forecast row on
+  // every run and buries any real change in 1,962 lines of timestamp churn -
+  // which also makes "does this still reproduce?" impossible to answer in CI.
+  const lastObserved = hourlySales.map((row) => row.businessDate).sort().pop();
+  const generatedAt = `${lastObserved}T00:00:00Z`;
+
+  const forecasts = generateForecasts(hourlySales, {
+    horizonHours: 48, maxArticlesPerStore: 45, generatedAt,
+  });
   const shrinkAlerts = detectShrink({ cancellations, hourlySales, articles, posSystems, inventory });
   const replenishmentTasks = planReplenishment({
     inventory, hourlySales, articles, suppliers, stores, forecasts,
