@@ -113,14 +113,24 @@ function main() {
   console.log(`\n${DIM}${changed.length} file(s) changed${RESET}`);
 
   const needsInstall = changed.some((file) => file === 'package-lock.json' || file === 'package.json');
-  const needsDeploy = changed.some((file) => file.startsWith('db/'));
+
+  // A redeploy is needed for more than just the data model. CAP generates a
+  // database view for every entity a *service* exposes, so adding a projection
+  // in srv/*.cds creates a table the running database does not have yet, and
+  // queries against it fail with "no such table". Any CDS change counts.
+  const needsDeploy = changed.some((file) =>
+    file.startsWith('db/') || (file.startsWith('srv/') && file.endsWith('.cds')));
+
   const touchesUi = changed.some((file) => file.startsWith('app/'));
+  const touchesServer = changed.some((file) =>
+    file.startsWith('srv/') || file.startsWith('tools/'));
 
   if (checkOnly) {
     console.log(`\n${YELLOW}--check: nothing was changed.${RESET}`);
     console.log(`  npm ci needed:            ${needsInstall ? 'yes' : 'no'}`);
     console.log(`  deploy:local needed:      ${needsDeploy ? 'yes' : 'no'}`);
     console.log(`  UI files changed:         ${touchesUi ? 'yes (hard-refresh the browser)' : 'no'}`);
+    console.log(`  server restart needed:    ${touchesServer ? 'yes' : 'no'}`);
     return;
   }
 
@@ -136,7 +146,7 @@ function main() {
   }
 
   if (needsDeploy) {
-    console.log(`\n${DIM}Data model or seed data changed - rebuilding the local database.${RESET}`);
+    console.log(`\n${DIM}A CDS model or the seed data changed - rebuilding the local database.${RESET}`);
     if (!run('npm', ['run', 'deploy:local'])) process.exit(1);
   }
 
@@ -146,6 +156,9 @@ function main() {
   }
   if (touchesUi) {
     console.log(`${YELLOW}UI files changed - hard-refresh the browser (Ctrl+Shift+R) to clear the cache.${RESET}`);
+  }
+  if (needsDeploy || touchesServer) {
+    console.log(`${YELLOW}Restart the server so it picks this up (Ctrl+C, then npm start).${RESET}`);
   }
   console.log(`${DIM}If the server is running under "npm run watch" it has already reloaded.${RESET}`);
 }
