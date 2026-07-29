@@ -72,8 +72,12 @@ function main() {
   console.log(`${DIM}Branch: ${branch}${RESET}`);
   const before = git('rev-parse', 'HEAD');
 
-  console.log(`${CYAN}> git fetch origin ${branch}${RESET}`);
-  if (!run('git', ['fetch', 'origin', branch])) process.exit(1);
+  // An explicit refspec so the remote-tracking ref is definitely updated - the
+  // ahead/behind comparison below reads origin/<branch>, and a bare
+  // `git fetch origin <branch>` is only guaranteed to move FETCH_HEAD.
+  // `run` already echoes the command it is about to execute.
+  const refspec = `+refs/heads/${branch}:refs/remotes/origin/${branch}`;
+  if (!run('git', ['fetch', 'origin', refspec])) process.exit(1);
 
   let remote;
   try {
