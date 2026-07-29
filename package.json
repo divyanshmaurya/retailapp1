@@ -22,6 +22,7 @@
   "scripts": {
     "start": "cds-serve",
     "watch": "cds watch",
+    "sync": "node tools/sync.js",
     "build": "cds build --production",
     "deploy:local": "cds deploy --to sqlite:db/smartstore.db",
     "deploy:hana": "cds deploy --to hana:smartstore-db --store-credentials",
