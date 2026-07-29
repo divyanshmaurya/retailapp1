@@ -239,3 +239,70 @@ entity ModelMetrics : recordKey {
   metricValue  : Decimal(13,4);
   unit         : String(20);
 }
+
+// ---------------------------------------------------------------------------
+// Audit trail
+// ---------------------------------------------------------------------------
+
+/**
+ * Every state change on an alert, task or recommendation.
+ *
+ * This exists because the first version recorded the operator's note by
+ * overwriting `recommendedAction` on the record itself, which destroyed the
+ * engine's advice the moment somebody acknowledged it - the one field you most
+ * want to keep. Notes belong in their own history, alongside who made the
+ * change and when, which is also what an auditor would ask for.
+ */
+entity ActivityLog : recordKey {
+  /** Entity the change was made on, e.g. 'ShrinkAlerts'. */
+  targetEntity : String(40);
+  /** Key of the changed row. */
+  targetId     : String(40);
+  store        : Association to Stores;
+  scenario     : String(30);
+  action       : String(24);
+  fromState    : AlertState;
+  toState      : AlertState;
+  note         : String(400);
+  changedBy    : String(60);
+  changedAt    : Timestamp;
+  /** Quantity or discount actually confirmed, where the action carried one. */
+  actedValue   : Decimal(13,3);
+}
+
+// ---------------------------------------------------------------------------
+// Outcome tracking
+// ---------------------------------------------------------------------------
+
+type OutcomeVerdict : String(16) enum { PENDING; CONFIRMED; MISSED; INCONCLUSIVE };
+
+/**
+ * Did acting on a recommendation actually work?
+ *
+ * Every engine produces advice and, until now, nothing checked whether taking
+ * it changed anything. This closes the loop: when a recommendation is acted on
+ * the expected effect is recorded, and once enough time has passed the observed
+ * effect is measured against it. That is what turns a dashboard into something
+ * that can be held to account - and what lets a model be judged on outcomes
+ * rather than on its own confidence.
+ */
+entity ScenarioOutcomes : recordKey, managed {
+  scenario      : String(30);
+  targetEntity  : String(40);
+  targetId      : String(40);
+  store         : Association to Stores;
+  article       : Association to Articles;
+  actedOn       : Date;
+  /** Business date the effect is measured on. */
+  measuredOn    : Date;
+  /** What the engine said would happen, in the scenario's own unit. */
+  expectedValue : Decimal(13,3);
+  /** What actually happened over the same window. */
+  observedValue : Decimal(13,3);
+  unit          : String(20);
+  verdict       : OutcomeVerdict default 'PENDING';
+  /** Signed euro value of the difference; positive means better than expected. */
+  valueDelta    : Decimal(13,2);
+  currency      : Currency;
+  narrative     : String(400);
+}

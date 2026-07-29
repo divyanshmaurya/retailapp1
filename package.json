@@ -55,6 +55,7 @@
             "password": "manager",
             "roles": [
               "StoreManager",
+              "Analyst",
               "Viewer"
             ]
           },

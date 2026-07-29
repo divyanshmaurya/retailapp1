@@ -18,6 +18,7 @@
  */
 
 const { sum, mean, stdev, ewma, groupBy, round, clamp } = require('../stats');
+const { isIntermittent, selectModel } = require('./croston');
 
 const MODEL_NAME = 'SeasonalProfile+EWMA';
 
@@ -26,10 +27,12 @@ const MIN_OBSERVATIONS = 12;
 
 /**
  * @param {Array} hourlySales rows of {store_ID, article_ID, businessDate, hourOfDay, dayOfWeek, quantity}
- * @param {Object} options
- * @returns {{profiles: Map, horizonStart: string}}
+ * @param {Object} [options]
+ * @param {boolean} [options.intermittentModels] offer Croston/SBA to sparse series
+ * @param {boolean} [options.reconcile] scale article levels back onto the store total
+ * @returns {Map} storeId -> {storeHourShare, dayFactor, articles}
  */
-function learnProfiles(hourlySales) {
+function learnProfiles(hourlySales, { intermittentModels = true, reconcile = true } = {}) {
   const byStore = groupBy(hourlySales, (row) => row.store_ID);
   const profiles = new Map();
 
@@ -67,6 +70,10 @@ function learnProfiles(hourlySales) {
     const byArticle = groupBy(storeRows, (row) => row.article_ID);
     const articleProfiles = new Map();
 
+    // Daily totals of the articles that end up with a profile, used below to
+    // reconcile the sum of the parts back onto the whole.
+    const coveredDaily = new Map();
+
     for (const [articleId, rows] of byArticle) {
       if (rows.length < MIN_OBSERVATIONS) continue;
 
@@ -100,16 +107,139 @@ function learnProfiles(hourlySales) {
       });
       const spread = stdev(residuals);
 
+      // At SKU-hour grain most of these series are intermittent - long runs of
+      // zeros broken by a sale of one or two units - and smoothing a series
+      // that is mostly zeros drags the level down and smears it across every
+      // hour. Where that is the case, offer Croston as an alternative and let a
+      // holdout decide which of the two actually forecasts better. The seasonal
+      // model wins ties because it carries the hour and weekday shape, which
+      // Croston has no notion of.
+      let dailyRate = level;
+      let model = MODEL_NAME;
+      if (intermittentModels && isIntermittent(series)) {
+        const chosen = selectModel(series, level, Math.min(14, Math.floor(series.length * 0.25)));
+        if (chosen.winner !== 'seasonal') {
+          dailyRate = chosen.rate;
+          model = chosen.winner;
+        }
+      }
+
       articleProfiles.set(articleId, {
-        level, hourShare, spread,
+        level: dailyRate, hourShare, spread, model,
         observations: rows.length,
         lastDate: activeDates[activeDates.length - 1],
       });
+      for (const [date, quantity] of dailyTotals) {
+        coveredDaily.set(date, (coveredDaily.get(date) || 0) + quantity);
+      }
+    }
+
+    // Reconcile bottom-up to the store total.
+    //
+    // Croston deliberately forecasts low on a sparse series - that is where its
+    // gain at SKU-hour comes from - but summing several hundred deliberately low
+    // article forecasts gives a store total that is low by the same margin, and
+    // store-day is the grain replenishment and staffing are actually decided at.
+    // So we rescale the article levels by a single factor that puts their sum
+    // back on the store's own smoothed daily volume, which is measured on a
+    // dense series and needs no intermittent handling.
+    //
+    // The relative split between articles - Croston's actual contribution - is
+    // untouched. For a store where every article kept the seasonal model the
+    // factor is ~1 and this is a no-op, because EWMA is linear.
+    if (reconcile && articleProfiles.size) {
+      const coveredSeries = calendar.map((date) => coveredDaily.get(date) || 0);
+      const anchor = ewma(coveredSeries, 0.25);
+      const bottomUp = sum([...articleProfiles.values()].map((profile) => profile.level));
+      if (anchor > 0 && bottomUp > 0) {
+        // Bound the correction: a factor far from 1 means the two estimates
+        // disagree about more than intermittency, and scaling hard on that would
+        // be fitting noise rather than removing a known bias.
+        const factor = clamp(anchor / bottomUp, 0.5, 2);
+        for (const profile of articleProfiles.values()) {
+          profile.level *= factor;
+          profile.reconciliation = round(factor, 4);
+        }
+      }
     }
 
     profiles.set(storeId, { storeHourShare, dayFactor, articles: articleProfiles });
   }
   return profiles;
+}
+
+/**
+ * Seasonal-naive benchmark: predict what this store/article sold in the same
+ * hour of the same weekday one week ago.
+ *
+ * Every accuracy number needs something to be better than, and at SKU-hour
+ * grain the obvious candidate - a WAPE near zero - is unreachable and the
+ * reachable one is perverse. WAPE on an intermittent series is minimised by
+ * forecasting nothing at all: predict zero everywhere and the total absolute
+ * error equals the total actual volume, giving exactly 100%. Any honest
+ * forecast that puts demand into hours where none arrives scores worse than
+ * that, so "improving" SKU-hour WAPE by shrinking the forecast toward zero is
+ * chasing a degenerate optimum, not gaining skill - and it buys the number with
+ * a systematic under-forecast that empties shelves.
+ *
+ * Comparing against last week instead makes the figure mean something: it is a
+ * forecast a human could produce with no model at all, it carries the same
+ * hour-of-day and day-of-week shape the real model claims to exploit, and it
+ * cannot be gamed by shrinkage.
+ *
+ * @returns {{wape: number, storeDayWape: number}}
+ */
+function seasonalNaive(hourlySales, evaluationDates) {
+  const observed = new Map();
+  const keys = new Set();
+  for (const row of hourlySales) {
+    const key = `${row.store_ID}|${row.article_ID}`;
+    keys.add(key);
+    observed.set(`${key}|${row.businessDate}|${row.hourOfDay}`, Number(row.quantity) || 0);
+  }
+
+  const lagged = (businessDate) => {
+    const date = new Date(`${businessDate}T00:00:00Z`);
+    date.setUTCDate(date.getUTCDate() - 7);
+    return date.toISOString().slice(0, 10);
+  };
+
+  let totalError = 0;
+  let totalActual = 0;
+  const storeDay = new Map();
+
+  for (const key of keys) {
+    const storeId = key.slice(0, key.indexOf('|'));
+    for (const businessDate of evaluationDates) {
+      const lastWeek = lagged(businessDate);
+      for (let hour = 0; hour < 24; hour += 1) {
+        const actual = observed.get(`${key}|${businessDate}|${hour}`) || 0;
+        const predicted = observed.get(`${key}|${lastWeek}|${hour}`) || 0;
+        // Both zero contributes nothing to either total, at either grain.
+        if (actual === 0 && predicted === 0) continue;
+        totalError += Math.abs(actual - predicted);
+        totalActual += actual;
+
+        const storeDayKey = `${storeId}|${businessDate}`;
+        const bucket = storeDay.get(storeDayKey) || { actual: 0, predicted: 0 };
+        bucket.actual += actual;
+        bucket.predicted += predicted;
+        storeDay.set(storeDayKey, bucket);
+      }
+    }
+  }
+
+  let storeDayError = 0;
+  let storeDayTotal = 0;
+  for (const bucket of storeDay.values()) {
+    storeDayError += Math.abs(bucket.actual - bucket.predicted);
+    storeDayTotal += bucket.actual;
+  }
+
+  return {
+    wape: totalActual > 0 ? round((totalError / totalActual) * 100, 2) : 0,
+    storeDayWape: storeDayTotal > 0 ? round((storeDayError / storeDayTotal) * 100, 2) : 0,
+  };
 }
 
 /**
@@ -122,18 +252,29 @@ function learnProfiles(hourlySales) {
  * the standard measure for intermittent retail demand and does not blow up on
  * small denominators. Per-article MAPE is still returned for reference.
  *
- * @returns {{mape: Map, wape: Map, overallWape: number}}
+ * The profiles are refitted here on the training window alone. Scoring profiles
+ * that were fitted on the whole series - the holdout included - measures how
+ * well the model memorised the answer, not how well it forecasts, and flatters
+ * every number it produces.
+ *
+ * @param {Array} hourlySales
+ * @param {number} [holdoutDays]
+ * @param {Object} [options] passed through to learnProfiles
+ * @returns {{mape: Map, wape: Map, overallWape: number, storeDayWape: number, bias: number}}
  */
-function backtest(hourlySales, profiles, holdoutDays = 14) {
+function backtest(hourlySales, holdoutDays = 14, options = {}) {
   const dates = [...new Set(hourlySales.map((row) => row.businessDate))].sort();
   const cutoff = dates[Math.max(0, dates.length - holdoutDays)];
   const holdout = hourlySales.filter((row) => row.businessDate >= cutoff);
+  const training = hourlySales.filter((row) => row.businessDate < cutoff);
+  const profiles = learnProfiles(training.length ? training : hourlySales, options);
 
   const absoluteErrors = new Map();
   const actualVolume = new Map();
   const percentErrors = new Map();
   let totalError = 0;
   let totalActual = 0;
+  let totalPredicted = 0;
 
   // Aggregated to store-day as well. Errors on individual SKU-hours partly
   // cancel out once summed, and store-day is the grain replenishment and
@@ -179,6 +320,7 @@ function backtest(hourlySales, profiles, holdoutDays = 14) {
           actualVolume.set(key, (actualVolume.get(key) || 0) + actual);
           totalError += error;
           totalActual += actual;
+          totalPredicted += predicted;
 
           // MAPE is undefined against a zero actual, so it stays on the
           // non-zero hours only; WAPE above covers the full grid.
@@ -205,44 +347,90 @@ function backtest(hourlySales, profiles, holdoutDays = 14) {
     storeDayTotal += actual;
   }
 
+  const naive = seasonalNaive(hourlySales, evaluationDates);
+
   return {
     mape,
     wape,
     overallWape: totalActual > 0 ? round((totalError / totalActual) * 100, 2) : 0,
     storeDayWape: storeDayTotal > 0 ? round((storeDayError / storeDayTotal) * 100, 2) : 0,
+    // Signed, unlike WAPE. Two models can share a WAPE while one runs the
+    // shelves empty and the other fills the bins, and only this tells them
+    // apart: positive is over-forecast, negative is under-forecast.
+    bias: totalActual > 0 ? round((totalPredicted / totalActual - 1) * 100, 2) : 0,
+    naiveWape: naive.wape,
+    naiveStoreDayWape: naive.storeDayWape,
+    // Skill against the naive benchmark: positive means the model earns its
+    // keep, zero or negative means last week's numbers would have done as well.
+    skill: naive.wape > 0
+      ? round((1 - (totalActual > 0 ? totalError / totalActual : 0) / (naive.wape / 100)) * 100, 2)
+      : 0,
+    storeDaySkill: naive.storeDayWape > 0
+      ? round((1 - (storeDayTotal > 0 ? storeDayError / storeDayTotal : 0) / (naive.storeDayWape / 100)) * 100, 2)
+      : 0,
   };
 }
 
 /**
  * Produce forecasts for the next `horizonHours` after the last observed hour.
  *
+ * Passing `asOf` rolls the clock back: history after that timestamp is withheld
+ * and the forecast runs forward from it. That makes the forecast horizon land on
+ * hours that have already happened, so `backfillActuals` can score it against
+ * what really sold. Without it, on a fixed dataset every forecast sits in the
+ * future and live accuracy can never be measured at all.
+ *
+ * @param {Array} hourlySales
+ * @param {Object} [options]
+ * @param {number} [options.horizonHours]
+ * @param {number} [options.maxArticlesPerStore]
+ * @param {string|Date} [options.asOf] withhold everything after this instant
  * @returns {Array} DemandForecasts rows
  */
-function generateForecasts(hourlySales, { horizonHours = 48, maxArticlesPerStore = 60 } = {}) {
+function generateForecasts(hourlySales, {
+  horizonHours = 48, maxArticlesPerStore = 60, asOf = null,
+} = {}) {
   if (!hourlySales.length) return [];
 
-  const profiles = learnProfiles(hourlySales);
-  const accuracy = backtest(hourlySales, profiles);
+  const stampOf = (row) => (row.hourStart
+    ? new Date(row.hourStart)
+    : new Date(`${row.businessDate}T${String(row.hourOfDay).padStart(2, '0')}:00:00Z`));
+
+  // Cut the history down to what was knowable at `asOf`. Forecasting from a past
+  // origin while still fitting on the whole series would be a model grading its
+  // own homework, and the live WAPE that came out of it would be meaningless.
+  const cutoff = asOf ? new Date(asOf) : null;
+  const history = cutoff && !Number.isNaN(cutoff.getTime())
+    ? hourlySales.filter((row) => stampOf(row) <= cutoff)
+    : hourlySales;
+  if (!history.length) return [];
+
+  // Forward forecasts use everything known; accuracy is measured by a model
+  // refitted on the training window only, so the score is not self-graded.
+  const profiles = learnProfiles(history);
+  const accuracy = backtest(history, 14);
   const generatedAt = new Date().toISOString().replace(/\.\d{3}Z$/, 'Z');
 
   // Forecast forward from the last hour actually observed, not from midnight of
   // the last date - otherwise a short horizon lands entirely in the small hours
   // and returns nothing useful.
-  let origin = null;
-  for (const row of hourlySales) {
-    const stamp = row.hourStart
-      ? new Date(row.hourStart)
-      : new Date(`${row.businessDate}T${String(row.hourOfDay).padStart(2, '0')}:00:00Z`);
-    if (!Number.isNaN(stamp.getTime()) && (!origin || stamp > origin)) origin = stamp;
+  let origin = cutoff && !Number.isNaN(cutoff.getTime()) ? cutoff : null;
+  if (!origin) {
+    for (const row of history) {
+      const stamp = stampOf(row);
+      if (!Number.isNaN(stamp.getTime()) && (!origin || stamp > origin)) origin = stamp;
+    }
   }
   if (!origin) {
-    const lastDate = hourlySales.map((row) => row.businessDate).sort().pop();
+    const lastDate = history.map((row) => row.businessDate).sort().pop();
     origin = new Date(`${lastDate}T00:00:00Z`);
   }
 
   // Rank articles by recent volume so the table stays useful rather than huge.
+  // Ranked on the withheld history too - which lines matter is itself something
+  // only knowable as of the cutoff.
   const volume = new Map();
-  for (const row of hourlySales) {
+  for (const row of history) {
     const key = `${row.store_ID}|${row.article_ID}`;
     volume.set(key, (volume.get(key) || 0) + (Number(row.quantity) || 0));
   }
@@ -286,19 +474,27 @@ function generateForecasts(hourlySales, { horizonHours = 48, maxArticlesPerStore
           predictedQty: round(predicted, 3),
           lowerBound: round(Math.max(0, predicted - interval), 3),
           upperBound: round(predicted + interval, 3),
-          actualQty: '',
-          mape: mape === undefined ? '' : mape,
-          wape: wape === undefined ? '' : wape,
-          model: MODEL_NAME,
+          // Null, not an empty string. These rows are written both to CSV and,
+          // by the recalculate action, straight into the database; the CSV
+          // writer renders null as an empty field either way, but an empty
+          // string inserted at runtime is stored as text and then satisfies
+          // `actualQty is not null`, which would report every unmeasured
+          // forecast as a confirmed zero sale.
+          actualQty: null,
+          mape: mape === undefined ? null : mape,
+          wape: wape === undefined ? null : wape,
+          model: articleProfile.model || MODEL_NAME,
           generatedAt,
         });
       }
     }
   }
-  // The overall WAPE belongs to the run, not to any one row; expose it on the
+  // Run-level accuracy belongs to the run, not to any one row; expose it on the
   // array so the caller can record it as a model metric.
-  Object.defineProperty(rows, 'overallWape', { value: accuracy.overallWape, enumerable: false });
-  Object.defineProperty(rows, 'storeDayWape', { value: accuracy.storeDayWape, enumerable: false });
+  for (const measure of ['overallWape', 'storeDayWape', 'bias', 'skill',
+    'storeDaySkill', 'naiveWape', 'naiveStoreDayWape']) {
+    Object.defineProperty(rows, measure, { value: accuracy[measure], enumerable: false });
+  }
   return rows;
 }
 

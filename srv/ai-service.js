@@ -32,6 +32,7 @@ module.exports = class AIService extends cds.ApplicationService {
     const {
       DemandForecasts, ShrinkAlerts, ReplenishmentTasks, MarkdownRecommendations,
       BasketAffinities, NextBestOffers, ColdChainAlerts, AIInsights, ModelMetrics,
+      ActivityLog, ScenarioOutcomes,
     } = cds.entities('smart.retail');
 
     const {
@@ -77,13 +78,16 @@ module.exports = class AIService extends cds.ApplicationService {
     // recalculate
     // -----------------------------------------------------------------------
     this.on('recalculate', async (request) => {
-      const { scenario, store_ID: storeId } = request.data;
+      const { scenario, store_ID: storeId, asOf } = request.data;
       const wanted = scenario ? [scenario.toUpperCase()] : SCENARIOS;
 
       const unknown = wanted.filter((name) => !SCENARIOS.includes(name));
       if (unknown.length) {
         return request.reject(400,
           `Unknown scenario ${unknown.join(', ')}. Expected one of ${SCENARIOS.join(', ')}.`);
+      }
+      if (asOf && Number.isNaN(new Date(asOf).getTime())) {
+        return request.reject(400, `asOf is not a valid timestamp: ${asOf}`);
       }
 
       const base = await loadBase(storeId);
@@ -111,11 +115,18 @@ module.exports = class AIService extends cds.ApplicationService {
       };
 
       await run('DEMAND_FORECAST', async () => {
-        const rows = generateForecasts(base.hourlySales, { horizonHours: 48, maxArticlesPerStore: 45 });
+        const rows = generateForecasts(base.hourlySales, {
+          horizonHours: 48, maxArticlesPerStore: 45, asOf,
+        });
         produced.forecasts = rows;
         return {
           rows, entity: DemandForecasts,
-          summary: `${rows.length} hourly forecasts, store-day WAPE ${rows.storeDayWape ?? 'n/a'}%.`,
+          // Store-day is the grain replenishment is decided at, and the skill
+          // figure says whether the model beat simply reusing last week - which
+          // a bare WAPE at this grain does not.
+          summary: `${rows.length} hourly forecasts, store-day WAPE ${rows.storeDayWape ?? 'n/a'}%`
+            + ` (${rows.storeDaySkill ?? 'n/a'}% better than seasonal-naive),`
+            + ` bias ${rows.bias ?? 'n/a'}%.`,
         };
       });
 
@@ -199,6 +210,278 @@ module.exports = class AIService extends cds.ApplicationService {
       }
 
       return results;
+    });
+
+    // -----------------------------------------------------------------------
+    // backfillActuals - match elapsed forecasts against what actually sold
+    // -----------------------------------------------------------------------
+    this.on('backfillActuals', async () => {
+      const forecasts = await db.run(SELECT.from(DemandForecasts));
+      if (!forecasts.length) return { matched: 0, wape: 0, summary: 'No forecasts to match.' };
+
+      const sales = await db.run(SELECT.from(HourlySales));
+      // Index actual sales at the forecast's own grain so a missing slot can be
+      // scored as a true zero rather than skipped - an hour the model predicted
+      // demand into and none arrived is exactly the error worth counting.
+      const actualBy = new Map();
+      for (const row of sales) {
+        actualBy.set(`${row.store_ID}|${row.article_ID}|${row.businessDate}|${row.hourOfDay}`,
+          Number(row.quantity) || 0);
+      }
+
+      // The last hour each store actually traded, not just the last date. A
+      // forecast for 18:00 on the final day has not elapsed merely because that
+      // date has been reached, and scoring it would record a confident zero for
+      // an hour that has not happened yet. Stores close at different times, so
+      // this is tracked per store rather than globally.
+      const lastObservedHour = new Map();
+      for (const row of sales) {
+        const stamp = `${row.businessDate}T${String(row.hourOfDay).padStart(2, '0')}`;
+        const current = lastObservedHour.get(row.store_ID);
+        if (!current || stamp > current) lastObservedHour.set(row.store_ID, stamp);
+      }
+      const lastObserved = sales.map((row) => row.businessDate).sort().pop();
+
+      let matched = 0;
+      let totalError = 0;
+      let totalActual = 0;
+      let totalPredicted = 0;
+
+      for (const forecast of forecasts) {
+        // Only score hours that have actually elapsed for that store.
+        if (!forecast.businessDate) continue;
+        const horizon = lastObservedHour.get(forecast.store_ID);
+        const stamp = `${forecast.businessDate}T${String(forecast.hourOfDay).padStart(2, '0')}`;
+        if (!horizon || stamp > horizon) continue;
+        const key = `${forecast.store_ID}|${forecast.article_ID}|${forecast.businessDate}|${forecast.hourOfDay}`;
+        const actual = actualBy.get(key) ?? 0;
+        const predicted = Number(forecast.predictedQty) || 0;
+
+        await db.run(UPDATE(DemandForecasts)
+          .set({ actualQty: actual })
+          .where({ ID: forecast.ID }));
+
+        matched += 1;
+        totalError += Math.abs(actual - predicted);
+        totalActual += actual;
+        totalPredicted += predicted;
+      }
+
+      // WAPE divides by observed volume. If nothing sold in the matched hours
+      // the ratio is undefined, and reporting it as 0% would claim perfect
+      // accuracy for a window with nothing to be accurate about. Say so instead.
+      const measurable = totalActual > 0;
+      const wape = measurable ? round((totalError / totalActual) * 100, 2) : null;
+      const bias = measurable ? round((totalPredicted / totalActual - 1) * 100, 2) : null;
+
+      if (matched && measurable) {
+        // Record these alongside the other scorecard rows so accuracy can be
+        // tracked as it drifts, not only measured at backtest time.
+        //
+        // The bias goes with the WAPE deliberately. At SKU-hour grain a WAPE on
+        // its own cannot be read: the all-zero forecast scores 100% there, so a
+        // lower number can just as easily mean the model stopped predicting
+        // demand as that it got better. The signed bias is what distinguishes
+        // the two, and it is the one that tells a planner whether the shelves
+        // are about to run empty or overfill.
+        const stamp = Date.now().toString(36);
+        await db.run(DELETE.from(ModelMetrics).where({
+          scenario: 'DEMAND_FORECAST',
+          metricName: { in: ['WAPE (live)', 'Bias (live)'] },
+        }));
+        await db.run(INSERT.into(ModelMetrics).entries(
+          {
+            ID: `MM-live-wape-${stamp}`,
+            scenario: 'DEMAND_FORECAST',
+            businessDate: lastObserved,
+            metricName: 'WAPE (live)',
+            metricValue: wape,
+            unit: '%',
+          },
+          {
+            ID: `MM-live-bias-${stamp}`,
+            scenario: 'DEMAND_FORECAST',
+            businessDate: lastObserved,
+            metricName: 'Bias (live)',
+            metricValue: bias,
+            unit: '%',
+          },
+        ));
+      }
+
+      const summary = !matched
+        ? 'No forecasts have elapsed yet - forecasts run forward from the last observed hour. '
+          + 'Replay the forecast with recalculate(asOf: ...) to score it against known sales.'
+        : measurable
+          ? `Matched ${matched} elapsed forecasts against actual sales. Live WAPE ${wape}% at `
+            + `SKU-hour grain, bias ${bias}%. Read the two together - WAPE alone falls when the `
+            + 'model simply predicts less.'
+          : `Matched ${matched} elapsed forecasts, but nothing sold in those hours, so WAPE is not `
+            + `defined. Absolute error over the window was ${round(totalError, 2)} units.`;
+
+      return { matched, wape, bias, summary };
+    });
+
+    // -----------------------------------------------------------------------
+    // evaluateOutcomes - did acting on the recommendation actually work?
+    // -----------------------------------------------------------------------
+    this.on('evaluateOutcomes', async (request) => {
+      const { asOf } = request.data;
+      if (asOf && Number.isNaN(new Date(asOf).getTime())) {
+        return request.reject(400, `asOf is not a valid date: ${asOf}`);
+      }
+      // Replaying measures the outcome as if the recommendation had been acted
+      // on at this date instead, so the days that follow it are days the loaded
+      // sales data actually covers. It changes nothing in the record of who did
+      // what and when - `actedOn` is left as it was.
+      const replayFrom = asOf ? new Date(asOf).toISOString().slice(0, 10) : null;
+
+      const pending = await db.run(SELECT.from(ScenarioOutcomes).where({ verdict: 'PENDING' }));
+      if (!pending.length) {
+        return { evaluated: 0, confirmed: 0, missed: 0, inconclusive: 0, summary: 'Nothing pending.' };
+      }
+
+      const sales = await db.run(SELECT.from(HourlySales));
+      const lastObserved = sales.map((row) => row.businessDate).sort().pop();
+
+      // The money each replenishment task was placed to protect. It is kept on
+      // the task rather than on the outcome because the outcome's expected and
+      // observed values are both in units - mixing a euro figure into that pair
+      // would make the two incomparable.
+      const replenishmentValue = new Map(
+        (await db.run(SELECT.from(ReplenishmentTasks).columns('ID', 'lostSalesValue')))
+          .map((task) => [task.ID, task.lostSalesValue]),
+      );
+
+      // Units sold per store/article on or after a given date, which is the
+      // observation both scenarios are measured against.
+      const soldSince = (storeId, articleId, since) => sales
+        .filter((row) => row.store_ID === storeId && row.article_ID === articleId
+          && row.businessDate >= since)
+        .reduce((total, row) => total + (Number(row.quantity) || 0), 0);
+
+      let confirmed = 0;
+      let missed = 0;
+      let inconclusive = 0;
+      let notYetMeasurable = 0;
+
+      for (const outcome of pending) {
+        let observed = null;
+        let verdict = 'INCONCLUSIVE';
+        let narrative = '';
+        let delta = 0;
+
+        // Where the measurement window starts. Normally the day the manager
+        // acted; under a replay, the date being replayed to.
+        const windowStart = replayFrom || outcome.actedOn;
+
+        // An action taken after the last day of sales data has no evidence for
+        // or against it yet. Saying MISSED there would be a claim the data
+        // cannot support - it would mark every recommendation acted on today as
+        // a failure purely because tomorrow has not been loaded.
+        if (!windowStart || windowStart > lastObserved) {
+          notYetMeasurable += 1;
+          // Stays PENDING on purpose. INCONCLUSIVE means the measurement ran and
+          // could not decide; this is the measurement not having been possible
+          // yet, and writing a verdict here would freeze the row so that loading
+          // the next day of sales could never settle it.
+          await db.run(UPDATE(ScenarioOutcomes).set({
+            narrative: `Acted on ${outcome.actedOn}, but sales data ends ${lastObserved}, so the `
+              + 'observation window has not elapsed. Still pending. Re-run with asOf set to a date '
+              + 'inside the loaded history to replay this against sales that are already known.',
+          }).where({ ID: outcome.ID }));
+          continue;
+        }
+
+        if (outcome.scenario === 'WASTE_MARKDOWN') {
+          // The markdown promised to clear units that would otherwise be
+          // written off. Did they move?
+          observed = soldSince(outcome.store_ID, outcome.article_ID, windowStart);
+          const expected = Number(outcome.expectedValue) || 0;
+          if (expected <= 0) {
+            verdict = 'INCONCLUSIVE';
+            narrative = 'No waste was projected, so there is nothing to confirm.';
+          } else if (observed >= expected) {
+            verdict = 'CONFIRMED';
+            delta = observed - expected;
+            narrative = `${round(observed, 1)} units sold after the markdown against `
+              + `${round(expected, 1)} projected as waste - the stock cleared.`;
+          } else {
+            verdict = 'MISSED';
+            delta = observed - expected;
+            narrative = `${round(observed, 1)} units sold against ${round(expected, 1)} projected as `
+              + `waste, so roughly ${round(expected - observed, 1)} units were still lost.`;
+          }
+        } else if (outcome.scenario === 'REPLENISHMENT') {
+          // The order predicted that `expected` units of demand would arrive
+          // over the lead time. Selling at least that much means the demand was
+          // real and the shelf served it. Selling nothing means the order was
+          // not what the shelf needed. Selling some of it says neither: the
+          // stock moved, but not enough to claim the projected loss was avoided,
+          // so the value protected is prorated rather than granted in full.
+          observed = soldSince(outcome.store_ID, outcome.article_ID, windowStart);
+          const expected = Number(outcome.expectedValue) || 0;
+          const atRisk = Number(replenishmentValue.get(outcome.targetId)) || 0;
+
+          if (expected <= 0) {
+            verdict = 'INCONCLUSIVE';
+            narrative = 'The order covered no forecast demand, so there is nothing to confirm.';
+          } else if (observed >= expected) {
+            verdict = 'CONFIRMED';
+            delta = atRisk;
+            narrative = `${round(observed, 1)} units sold against ${round(expected, 1)} ordered to `
+              + `cover demand - the shelf served it and EUR ${round(atRisk, 2)} of sales was protected.`;
+          } else if (observed <= 0) {
+            verdict = 'MISSED';
+            delta = -atRisk;
+            narrative = `Nothing sold in the ${round(expected, 1)} units the order covered, so the `
+              + 'demand it was placed against did not arrive.';
+          } else {
+            verdict = 'INCONCLUSIVE';
+            delta = round(atRisk * (observed / expected), 2);
+            narrative = `${round(observed, 1)} of the ${round(expected, 1)} units ordered sold. `
+              + 'The stock moved but did not meet the forecast, so only part of the projected loss '
+              + `can be said to have been avoided - about EUR ${round(delta, 2)}.`;
+          }
+        }
+
+        if (verdict === 'CONFIRMED') confirmed += 1;
+        else if (verdict === 'MISSED') missed += 1;
+        else inconclusive += 1;
+
+        // Say so on the record when the verdict came from a replay rather than
+        // from the window that actually followed the action, so a confirmed
+        // outcome can never be read as more evidence than it is.
+        if (replayFrom) {
+          narrative = `[replayed from ${replayFrom}] ${narrative}`;
+        }
+
+        await db.run(UPDATE(ScenarioOutcomes).set({
+          measuredOn: lastObserved,
+          observedValue: observed,
+          verdict,
+          valueDelta: round(delta, 2),
+          narrative: narrative.slice(0, 400),
+        }).where({ ID: outcome.ID }));
+      }
+
+      // `evaluated` counts what was actually measured, not what was looked at.
+      // Rows whose window has not elapsed are still pending and are reported
+      // separately, so the totals never imply evidence that does not exist.
+      const evaluated = confirmed + missed + inconclusive;
+      return {
+        evaluated,
+        confirmed,
+        missed,
+        inconclusive,
+        stillPending: notYetMeasurable,
+        summary: `Evaluated ${evaluated} outcomes: ${confirmed} confirmed, ${missed} missed, `
+          + `${inconclusive} inconclusive.`
+          + (notYetMeasurable
+            ? ` ${notYetMeasurable} left pending - acted on after the last day of loaded sales, `
+              + 'so there is nothing yet to measure them against.'
+            : ''),
+      };
     });
 
     // -----------------------------------------------------------------------
@@ -303,7 +586,67 @@ module.exports = class AIService extends cds.ApplicationService {
     // -----------------------------------------------------------------------
     // Queue actions - state transitions on alerts and tasks
     // -----------------------------------------------------------------------
-    const transition = (entity, nextState, noteField) => async (request) => {
+
+    /** Who is acting, for the audit trail. */
+    const actor = (request) => request.user?.id || 'anonymous';
+
+    /**
+     * Record a state change. The operator's note goes here rather than onto the
+     * record: an earlier version wrote it over `recommendedAction`, which threw
+     * away the engine's advice the moment anyone acknowledged an alert.
+     */
+    const logActivity = async (request, entity, row, action, fromState, toState, note, actedValue) => {
+      await db.run(INSERT.into(ActivityLog).entries({
+        ID: `AL-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`,
+        targetEntity: entity,
+        targetId: row.ID,
+        store_ID: row.store_ID ?? null,
+        scenario: row.scenario ?? SCENARIO_OF[entity] ?? null,
+        action,
+        fromState: fromState ?? null,
+        toState: toState ?? null,
+        note: note ? String(note).slice(0, 400) : null,
+        changedBy: actor(request),
+        changedAt: new Date().toISOString(),
+        actedValue: actedValue ?? null,
+      }));
+    };
+
+    /**
+     * Open an outcome for measurement. Acting on a recommendation makes a
+     * prediction; this is what later gets checked against what happened.
+     */
+    const openOutcome = async (row, scenario, entity, expected, unit, narrative) => {
+      const today = new Date().toISOString().slice(0, 10);
+      await db.run(INSERT.into(ScenarioOutcomes).entries({
+        ID: `SO-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`,
+        scenario,
+        targetEntity: entity,
+        targetId: row.ID,
+        store_ID: row.store_ID ?? null,
+        article_ID: row.article_ID ?? null,
+        actedOn: today,
+        measuredOn: null,
+        expectedValue: expected,
+        observedValue: null,
+        unit,
+        verdict: 'PENDING',
+        valueDelta: null,
+        currency_code: 'EUR',
+        narrative: narrative.slice(0, 400),
+      }));
+    };
+
+    const SCENARIO_OF = {
+      ShrinkAlerts: 'CHECKOUT_INTEGRITY',
+      ReplenishmentTasks: 'REPLENISHMENT',
+      MarkdownRecommendations: 'WASTE_MARKDOWN',
+      NextBestOffers: 'PERSONALISATION',
+      ColdChainAlerts: 'COLD_CHAIN',
+      AIInsights: 'INSIGHT_FEED',
+    };
+
+    const transition = (entity, entityName, nextState, noteField, actionId) => async (request) => {
       const key = request.params[request.params.length - 1];
       const id = typeof key === 'object' ? key.ID : key;
       const [row] = await db.run(SELECT.from(entity).where({ ID: id }));
@@ -312,62 +655,75 @@ module.exports = class AIService extends cds.ApplicationService {
         return request.reject(409, `Record ${id} is already ${nextState}.`);
       }
 
-      const patch = { state: nextState };
-      const note = request.data[noteField];
-      // Keep the operator's note where the entity has somewhere to put it.
-      if (note && 'recommendedAction' in row) {
-        patch.recommendedAction = `${nextState}: ${note}`.slice(0, 240);
-      }
-      await db.run(UPDATE(entity).set(patch).where({ ID: id }));
-      return { ...row, ...patch };
+      await db.run(UPDATE(entity).set({ state: nextState }).where({ ID: id }));
+      await logActivity(request, entityName, row, actionId, row.state, nextState,
+        request.data[noteField]);
+      return { ...row, state: nextState };
     };
 
-    this.on('acknowledge', 'ShrinkAlerts', transition(ShrinkAlerts, 'ACKNOWLEDGED', 'note'));
-    this.on('resolveAlert', 'ShrinkAlerts', transition(ShrinkAlerts, 'RESOLVED', 'resolution'));
-    this.on('dismiss', 'ShrinkAlerts', transition(ShrinkAlerts, 'DISMISSED', 'reason'));
+    const bind = (actionId, entityName, entity, nextState, noteField) =>
+      this.on(actionId, entityName, transition(entity, entityName, nextState, noteField, actionId));
 
-    this.on('dismiss', 'ReplenishmentTasks', transition(ReplenishmentTasks, 'DISMISSED', 'reason'));
+    bind('acknowledge', 'ShrinkAlerts', ShrinkAlerts, 'ACKNOWLEDGED', 'note');
+    bind('resolveAlert', 'ShrinkAlerts', ShrinkAlerts, 'RESOLVED', 'resolution');
+    bind('dismiss', 'ShrinkAlerts', ShrinkAlerts, 'DISMISSED', 'reason');
+    bind('dismiss', 'ReplenishmentTasks', ReplenishmentTasks, 'DISMISSED', 'reason');
+    bind('dismiss', 'MarkdownRecommendations', MarkdownRecommendations, 'DISMISSED', 'reason');
+    bind('activate', 'NextBestOffers', NextBestOffers, 'ACKNOWLEDGED', 'note');
+    bind('dismiss', 'NextBestOffers', NextBestOffers, 'DISMISSED', 'reason');
+    bind('acknowledge', 'ColdChainAlerts', ColdChainAlerts, 'ACKNOWLEDGED', 'note');
+    bind('resolveAlert', 'ColdChainAlerts', ColdChainAlerts, 'RESOLVED', 'resolution');
+    bind('acknowledge', 'AIInsights', AIInsights, 'ACKNOWLEDGED', 'note');
+    bind('dismiss', 'AIInsights', AIInsights, 'DISMISSED', 'reason');
+
     this.on('releaseOrder', 'ReplenishmentTasks', async (request) => {
       const key = request.params[request.params.length - 1];
       const id = typeof key === 'object' ? key.ID : key;
       const [task] = await db.run(SELECT.from(ReplenishmentTasks).where({ ID: id }));
       if (!task) return request.reject(404, `No such task: ${id}.`);
+      if (task.state !== 'OPEN') return request.reject(409, `Task ${id} is already ${task.state}.`);
 
       const quantity = request.data.quantity ?? task.recommendedQty;
       if (Number(quantity) <= 0) {
         return request.reject(400, 'Order quantity must be greater than zero.');
       }
-      await db.run(UPDATE(ReplenishmentTasks)
-        .set({ state: 'RESOLVED', recommendedQty: quantity })
-        .where({ ID: id }));
-      return { ...task, state: 'RESOLVED', recommendedQty: quantity };
+      // The recommendation is history now, so record what was actually ordered
+      // in the audit trail rather than overwriting the proposal.
+      await db.run(UPDATE(ReplenishmentTasks).set({ state: 'RESOLVED' }).where({ ID: id }));
+      await logActivity(request, 'ReplenishmentTasks', task, 'releaseOrder',
+        task.state, 'RESOLVED', `Ordered ${quantity} units`, quantity);
+      // Measured in units, not euros. The order predicts that this much demand
+      // will arrive and be served; units sold is the observation that answers
+      // it. The money the order was meant to protect is carried separately as
+      // the outcome's value, so the expected and observed figures stay on the
+      // same scale and can honestly be compared.
+      await openOutcome(task, 'REPLENISHMENT', 'ReplenishmentTasks',
+        Number(task.recommendedQty) || 0, 'units',
+        `Ordered ${quantity} units against a recommended ${task.recommendedQty}. `
+        + `Expected to avoid EUR ${task.lostSalesValue} of lost sales.`);
+      return { ...task, state: 'RESOLVED' };
     });
 
-    this.on('dismiss', 'MarkdownRecommendations', transition(MarkdownRecommendations, 'DISMISSED', 'reason'));
     this.on('applyMarkdown', 'MarkdownRecommendations', async (request) => {
       const key = request.params[request.params.length - 1];
       const id = typeof key === 'object' ? key.ID : key;
       const [row] = await db.run(SELECT.from(MarkdownRecommendations).where({ ID: id }));
       if (!row) return request.reject(404, `No such recommendation: ${id}.`);
+      if (row.state !== 'OPEN') return request.reject(409, `Recommendation ${id} is already ${row.state}.`);
 
       const discount = request.data.discountPct ?? row.recommendedDiscountPct;
       if (Number(discount) <= 0 || Number(discount) > 90) {
         return request.reject(400, 'Markdown must be between 0 and 90 percent.');
       }
-      await db.run(UPDATE(MarkdownRecommendations)
-        .set({ state: 'RESOLVED', recommendedDiscountPct: discount })
-        .where({ ID: id }));
-      return { ...row, state: 'RESOLVED', recommendedDiscountPct: discount };
+      await db.run(UPDATE(MarkdownRecommendations).set({ state: 'RESOLVED' }).where({ ID: id }));
+      await logActivity(request, 'MarkdownRecommendations', row, 'applyMarkdown',
+        row.state, 'RESOLVED', `Applied ${discount}% markdown`, discount);
+      await openOutcome(row, 'WASTE_MARKDOWN', 'MarkdownRecommendations',
+        Number(row.projectedWaste) || 0, 'units',
+        `Applied ${discount}% against a recommended ${row.recommendedDiscountPct}%. `
+        + `Expected to clear ${row.projectedWaste} units that would otherwise be written off.`);
+      return { ...row, state: 'RESOLVED' };
     });
-
-    this.on('activate', 'NextBestOffers', transition(NextBestOffers, 'ACKNOWLEDGED', 'note'));
-    this.on('dismiss', 'NextBestOffers', transition(NextBestOffers, 'DISMISSED', 'reason'));
-
-    this.on('acknowledge', 'ColdChainAlerts', transition(ColdChainAlerts, 'ACKNOWLEDGED', 'note'));
-    this.on('resolveAlert', 'ColdChainAlerts', transition(ColdChainAlerts, 'RESOLVED', 'resolution'));
-
-    this.on('acknowledge', 'AIInsights', transition(AIInsights, 'ACKNOWLEDGED', 'note'));
-    this.on('dismiss', 'AIInsights', transition(AIInsights, 'DISMISSED', 'reason'));
 
     await super.init();
   }

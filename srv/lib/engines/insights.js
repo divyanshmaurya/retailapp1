@@ -210,6 +210,21 @@ function buildModelMetrics({ forecasts = [], shrinkAlerts = [], replenishmentTas
       add('DEMAND_FORECAST', 'WAPE (store-day)', forecasts.storeDayWape, '%');
     }
 
+    // A WAPE on its own is unreadable at SKU-hour grain, where forecasting
+    // nothing at all scores 100% and every honest forecast scores worse. These
+    // three make it interpretable: what a no-model baseline achieves, how much
+    // the model beats it by, and whether the error leans to over- or
+    // under-forecasting. Skill, not WAPE, is the number to watch.
+    if (forecasts.naiveWape !== undefined) {
+      add('DEMAND_FORECAST', 'Naive WAPE (SKU-hour)', forecasts.naiveWape, '%');
+      add('DEMAND_FORECAST', 'Naive WAPE (store-day)', forecasts.naiveStoreDayWape, '%');
+    }
+    if (forecasts.skill !== undefined) {
+      add('DEMAND_FORECAST', 'Skill vs naive (SKU-hour)', forecasts.skill, '%');
+      add('DEMAND_FORECAST', 'Skill vs naive (store-day)', forecasts.storeDaySkill, '%');
+    }
+    if (forecasts.bias !== undefined) add('DEMAND_FORECAST', 'Forecast bias', forecasts.bias, '%');
+
     const withMape = forecasts.filter((row) => row.mape !== '' && row.mape !== undefined && row.mape !== null);
     if (withMape.length) {
       add('DEMAND_FORECAST', 'MAPE',

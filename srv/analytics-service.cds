@@ -9,7 +9,7 @@ using { smart.retail as db } from '../db/schema';
  * UI annotations live in `srv/annotations/`.
  */
 @path: '/analytics'
-service AnalyticsService @(requires: 'authenticated-user') {
+service AnalyticsService @(requires: 'Viewer') {
 
   @readonly entity Stores        as projection on db.Stores;
   @readonly entity PosSystems    as projection on db.PosSystems;

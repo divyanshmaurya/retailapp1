@@ -11,6 +11,7 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 
 const { generateForecasts, learnProfiles, backtest } = require('../srv/lib/engines/forecast');
+const { fitCroston, isIntermittent, selectModel } = require('../srv/lib/engines/croston');
 const { detectShrink } = require('../srv/lib/engines/shrink');
 const { planReplenishment } = require('../srv/lib/engines/replenishment');
 const { recommendMarkdowns, upliftFactor } = require('../srv/lib/engines/markdown');
@@ -68,6 +69,18 @@ function makeHourlySales({ days = 30, hours = [12, 13], perHour = 2, article = '
     }
   }
   return rows;
+}
+
+/**
+ * Keep every `nth` trading day, dropping the rest, to make an intermittent
+ * series. Selecting on the position of the date rather than on its digits keeps
+ * the gap exactly `nth` days regardless of where the fixture starts or how month
+ * boundaries fall - the holdout is then guaranteed to contain some demand.
+ */
+function sparsify(rows, nth = 3) {
+  const dates = [...new Set(rows.map((row) => row.businessDate))].sort();
+  const kept = new Set(dates.filter((_, index) => index % nth === 0));
+  return rows.filter((row) => kept.has(row.businessDate));
 }
 
 // ---------------------------------------------------------------------------
@@ -139,11 +152,63 @@ test('forecast: predictions concentrate in the hours the article actually sells'
 
 test('forecast: a perfectly regular series backtests to near-zero error', () => {
   const sales = makeHourlySales({ days: 40, hours: [12], perHour: 3 });
-  const profiles = learnProfiles(sales);
-  const accuracy = backtest(sales, profiles, 10);
+  const accuracy = backtest(sales, 10);
 
   assert.ok(accuracy.storeDayWape < 15,
     `a constant series should be easy to forecast, got WAPE ${accuracy.storeDayWape}%`);
+});
+
+test('forecast: the backtest refits on training data and never sees the holdout', () => {
+  // Flat for the training window, then demand triples for the last 10 days. A
+  // model that had peeked would track the jump; one fitted on training alone
+  // must under-forecast it, and the signed bias has to show that.
+  const flat = makeHourlySales({ days: 40, hours: [12], perHour: 3 });
+  const dates = [...new Set(flat.map((row) => row.businessDate))].sort();
+  const jump = dates[dates.length - 10];
+  const spiked = flat.map((row) => (row.businessDate >= jump
+    ? { ...row, quantity: row.quantity * 3 }
+    : row));
+
+  const accuracy = backtest(spiked, 10);
+  assert.ok(accuracy.bias < -30,
+    `a model blind to the holdout must under-forecast a tripling, got bias ${accuracy.bias}%`);
+});
+
+test('forecast: skill is measured against a seasonal-naive benchmark', () => {
+  const sales = makeHourlySales({ days: 40, hours: [12], perHour: 3 });
+  const accuracy = backtest(sales, 10);
+
+  // On a constant series last week is a perfect forecast, so the benchmark is
+  // unbeatable and the model can only draw with it.
+  assert.equal(accuracy.naiveStoreDayWape, 0);
+  assert.ok(accuracy.storeDaySkill <= 0,
+    `nothing beats a perfect benchmark, got skill ${accuracy.storeDaySkill}%`);
+});
+
+test('forecast: reconciliation is a no-op when no article uses Croston', () => {
+  const sales = makeHourlySales({ days: 40, hours: [12, 13], perHour: 2 });
+  const plain = backtest(sales, 10, { intermittentModels: false, reconcile: false });
+  const reconciled = backtest(sales, 10, { intermittentModels: false, reconcile: true });
+
+  // EWMA is linear, so the sum of the article levels already equals the store
+  // level and the correction factor is 1. If this drifts, the anchor and the
+  // per-article levels have stopped being measured on the same footing.
+  assert.equal(plain.storeDayWape, reconciled.storeDayWape);
+  assert.equal(plain.bias, reconciled.bias);
+});
+
+test('forecast: reconciliation removes the aggregate bias Croston introduces', () => {
+  // Intermittent: one sale every third day, so Croston is offered the series.
+  // 120 days thinned to every third leaves 40 trading days: enough that the
+  // training window still clears the minimum observation count once the
+  // holdout is taken off the end.
+  const sparse = sparsify(makeHourlySales({ days: 120, hours: [12], perHour: 3 }));
+
+  const raw = backtest(sparse, 14, { intermittentModels: true, reconcile: false });
+  const reconciled = backtest(sparse, 14, { intermittentModels: true, reconcile: true });
+
+  assert.ok(Math.abs(reconciled.bias) <= Math.abs(raw.bias) + 1e-9,
+    `reconciliation should not worsen bias: ${raw.bias}% -> ${reconciled.bias}%`);
 });
 
 test('forecast: prediction interval brackets the prediction', () => {
@@ -157,6 +222,141 @@ test('forecast: prediction interval brackets the prediction', () => {
 
 test('forecast: no history yields no forecasts rather than throwing', () => {
   assert.deepEqual(generateForecasts([]), []);
+});
+
+test('forecast: asOf replays from a past origin and withholds later history', () => {
+  const sales = makeHourlySales({ days: 40, hours: [12], perHour: 3 });
+  const dates = [...new Set(sales.map((row) => row.businessDate))].sort();
+  const asOf = `${dates[dates.length - 6]}T12:00:00Z`;
+
+  const replayed = generateForecasts(sales, { horizonHours: 48, asOf });
+  assert.ok(replayed.length > 0, 'expected a replayed forecast');
+
+  // Every forecast has to land after the cutoff, and inside the horizon.
+  for (const row of replayed) {
+    assert.ok(row.forecastFor > asOf, `${row.forecastFor} is not after ${asOf}`);
+  }
+  // And it has to reach into days the model was not shown, which is the whole
+  // point: those hours have already happened, so they can be scored.
+  assert.ok(replayed.some((row) => row.businessDate > asOf.slice(0, 10)),
+    'the horizon should extend past the cutoff date into observed history');
+});
+
+test('forecast: asOf changes the forecast, proving later history was withheld', () => {
+  // Flat, then a tripling in the last five days. A forecast cut off before the
+  // jump cannot know about it; one cut off after must.
+  const flat = makeHourlySales({ days: 40, hours: [12], perHour: 3 });
+  const dates = [...new Set(flat.map((row) => row.businessDate))].sort();
+  const jump = dates[dates.length - 5];
+  const sales = flat.map((row) => (row.businessDate >= jump
+    ? { ...row, quantity: row.quantity * 3 }
+    : row));
+
+  const total = (rows) => rows.reduce((sum, row) => sum + Number(row.predictedQty), 0);
+  const before = generateForecasts(sales, { horizonHours: 24, asOf: `${dates[dates.length - 6]}T12:00:00Z` });
+  const after = generateForecasts(sales, { horizonHours: 24, asOf: `${dates[dates.length - 1]}T12:00:00Z` });
+
+  assert.ok(total(after) > total(before) * 1.2,
+    `a forecast made after the jump should be higher: ${total(before)} vs ${total(after)}`);
+});
+
+// ---------------------------------------------------------------------------
+// Croston / SBA
+// ---------------------------------------------------------------------------
+
+test('croston: recovers the rate of a regular intermittent series', () => {
+  // 6 units every 4th period; the true rate is 1.5 per period.
+  const series = Array.from({ length: 40 }, (_, i) => (i % 4 === 0 ? 6 : 0));
+  const fit = fitCroston(series, { sba: false });
+
+  assert.equal(fit.method, 'Croston');
+  assert.ok(Math.abs(fit.size - 6) < 0.01, `size ${fit.size}`);
+  assert.ok(Math.abs(fit.interval - 4) < 0.01, `interval ${fit.interval}`);
+  assert.ok(Math.abs(fit.rate - 1.5) < 0.01, `rate ${fit.rate}`);
+});
+
+test('croston: the SBA correction shrinks the rate by exactly 1 - alpha/2', () => {
+  const series = Array.from({ length: 40 }, (_, i) => (i % 4 === 0 ? 6 : 0));
+  const plain = fitCroston(series, { sba: false });
+  const corrected = fitCroston(series, { sba: true });
+
+  assert.equal(corrected.method, 'SBA');
+  assert.ok(Math.abs(corrected.rate - plain.rate * (1 - corrected.alpha / 2)) < 1e-9);
+});
+
+test('croston: refuses to fit a series with fewer than two demands', () => {
+  assert.equal(fitCroston([0, 0, 0, 0, 0]), null);
+  assert.equal(fitCroston([0, 0, 5, 0, 0]), null);
+});
+
+test('croston: a dense series is not treated as intermittent', () => {
+  assert.equal(isIntermittent(Array.from({ length: 40 }, () => 3)), false);
+  // Noisy but rarely zero - ordinary smoothing territory, not Croston's.
+  assert.equal(isIntermittent(Array.from({ length: 40 }, (_, i) => (i % 10 === 0 ? 0 : 4))), false);
+  assert.equal(isIntermittent(Array.from({ length: 40 }, (_, i) => (i % 4 === 0 ? 6 : 0))), true);
+});
+
+test('croston: a short series is left alone, since neither model can be judged', () => {
+  assert.equal(isIntermittent([0, 3, 0, 0, 3, 0]), false);
+});
+
+test('croston: model selection breaks ties in favour of the seasonal model', () => {
+  const series = Array.from({ length: 40 }, (_, i) => (i % 4 === 0 ? 6 : 0));
+  // Hand the seasonal model the exact rate Croston finds on the same training
+  // split the selector uses, so the two score identically on the holdout. The
+  // seasonal model should keep its place, because it also carries the hour and
+  // weekday shape that Croston has no notion of.
+  const tied = fitCroston(series.slice(0, series.length - 10)).rate;
+  const chosen = selectModel(series, tied, 10);
+
+  assert.ok(Math.abs(chosen.croston - chosen.seasonal) < 1e-9,
+    `expected a tie, got croston ${chosen.croston} vs seasonal ${chosen.seasonal}`);
+  assert.equal(chosen.winner, 'seasonal');
+  assert.equal(chosen.rate, tied);
+});
+
+test('croston: model selection keeps the seasonal rate when it scores better', () => {
+  const series = Array.from({ length: 40 }, (_, i) => (i % 4 === 0 ? 6 : 0));
+  // 1.2 beats the ~1.39 Croston settles on over this holdout, so the selector
+  // has to leave the seasonal model in place.
+  const chosen = selectModel(series, 1.2, 10);
+
+  assert.ok(chosen.seasonal < chosen.croston,
+    `expected the seasonal rate to score better, got ${chosen.seasonal} vs ${chosen.croston}`);
+  assert.equal(chosen.winner, 'seasonal');
+  assert.equal(chosen.rate, 1.2);
+});
+
+test('croston: model selection switches when the seasonal rate is far off', () => {
+  const series = Array.from({ length: 40 }, (_, i) => (i % 4 === 0 ? 6 : 0));
+  const chosen = selectModel(series, 5, 10);
+
+  assert.ok(chosen.croston < chosen.seasonal);
+  assert.equal(chosen.winner, 'SBA');
+  assert.ok(chosen.rate < 5, `expected Croston's rate, got ${chosen.rate}`);
+});
+
+test('forecast: WAPE at SKU-hour is minimised by forecasting nothing', () => {
+  // This is why the pipeline reports skill against a benchmark and not WAPE on
+  // its own. It is a property of the measure, not of any model: on intermittent
+  // demand the all-zero forecast scores exactly 100%, because its total absolute
+  // error is the total actual volume. An unbiased forecast scores worse than
+  // that, and shrinking it toward zero improves the number all the way down. So
+  // a falling SKU-hour WAPE is not evidence of a better forecast - it is just as
+  // likely to be evidence of one that has quietly stopped predicting demand.
+  const actual = Array.from({ length: 200 }, (_, i) => (i % 4 === 0 ? 6 : 0));
+  const trueRate = 1.5; // 6 units every 4 periods, so this forecast is unbiased
+  const volume = actual.reduce((total, value) => total + value, 0);
+  const wapeAtShrink = (shrink) =>
+    (actual.reduce((total, value) => total + Math.abs(value - trueRate * shrink), 0)
+      / volume) * 100;
+
+  assert.ok(Math.abs(wapeAtShrink(0) - 100) < 1e-9,
+    `the all-zero forecast must score exactly 100%, got ${wapeAtShrink(0)}`);
+  assert.ok(wapeAtShrink(1) > wapeAtShrink(0),
+    'an unbiased forecast scores worse than predicting nothing');
+  assert.ok(wapeAtShrink(0.5) < wapeAtShrink(1),
+    'halving the forecast improves WAPE, which is the pathology');
 });
 
 // ---------------------------------------------------------------------------
