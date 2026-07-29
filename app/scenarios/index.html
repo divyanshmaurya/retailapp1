@@ -30,6 +30,12 @@
 .grid-stats { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); margin-bottom: 18px; }
 .panel { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-lg); box-shadow: var(--shadow-sm); overflow: hidden; }
 .panel .table-wrap { max-height: 66vh; overflow-y: auto; border-radius: 0; }
+.pager {
+  display: flex; align-items: center; justify-content: center; gap: 14px;
+  padding: 12px 16px; border-top: 1px solid var(--line); background: var(--surface-sunk);
+}
+.pager-label { font-size: 12.5px; color: var(--ink-2); font-variant-numeric: tabular-nums; }
+.pager .btn[disabled] { opacity: .45; cursor: not-allowed; }
 @media (max-width: 720px) { .tabs { top: auto; position: static; } }
 </style>
 </head>
@@ -96,9 +102,9 @@ const VIEWS = {
     expand: 'store($select=name),article($select=name),posSystem($select=name,kind)',
     sort: 'anomalyScore desc', state: true,
     kpis: [
-      { label: 'Alerts', accent: 'var(--series-1)', calc: (r) => Shell.num(r.length) },
-      { label: 'Value at risk', accent: 'var(--critical)', calc: (r) => Shell.euro(r.reduce((s, x) => s + Number(x.valueAtRisk || 0), 0)) },
-      { label: 'Critical or high', accent: 'var(--serious)', calc: (r) => Shell.num(r.filter((x) => x.severity === 'CRITICAL' || x.severity === 'HIGH').length) },
+      { label: 'Alerts', accent: 'var(--series-1)', agg: { count: true } },
+      { label: 'Value at risk', accent: 'var(--critical)', agg: { sum: 'valueAtRisk' }, fmt: 'euro' },
+      { label: 'Critical or high', accent: 'var(--serious)', agg: { countWhere: "severity eq 'CRITICAL' or severity eq 'HIGH'" } },
     ],
     columns: [
       { key: 'severity', label: 'Severity', fmt: 'pill' },
@@ -130,9 +136,9 @@ const VIEWS = {
     expand: 'store($select=name),article($select=name),supplier($select=name,leadTimeDays,reliability)',
     sort: 'lostSalesValue desc', state: true,
     kpis: [
-      { label: 'Open tasks', accent: 'var(--series-2)', calc: (r) => Shell.num(r.length) },
-      { label: 'Lost sales exposure', accent: 'var(--critical)', calc: (r) => Shell.euro(r.reduce((s, x) => s + Number(x.lostSalesValue || 0), 0)) },
-      { label: 'Units to order', accent: 'var(--series-3)', calc: (r) => Shell.num(r.reduce((s, x) => s + Number(x.recommendedQty || 0), 0)) },
+      { label: 'Open tasks', accent: 'var(--series-2)', agg: { count: true } },
+      { label: 'Lost sales exposure', accent: 'var(--critical)', agg: { sum: 'lostSalesValue' }, fmt: 'euro' },
+      { label: 'Units to order', accent: 'var(--series-3)', agg: { sum: 'recommendedQty' } },
     ],
     columns: [
       { key: 'urgency', label: 'Urgency', fmt: 'pill' },
@@ -163,9 +169,9 @@ const VIEWS = {
     expand: 'store($select=name),article($select=name)',
     sort: 'marginImpact desc', state: true,
     kpis: [
-      { label: 'Recommendations', accent: 'var(--series-3)', calc: (r) => Shell.num(r.length) },
-      { label: 'Margin protected', accent: 'var(--ok)', calc: (r) => Shell.euro(r.reduce((s, x) => s + Number(x.marginImpact || 0), 0)) },
-      { label: 'Units at risk', accent: 'var(--warn)', calc: (r) => Shell.num(r.reduce((s, x) => s + Number(x.projectedWaste || 0), 0), 1) },
+      { label: 'Recommendations', accent: 'var(--series-3)', agg: { count: true } },
+      { label: 'Margin protected', accent: 'var(--ok)', agg: { sum: 'marginImpact' }, fmt: 'euro' },
+      { label: 'Units at risk', accent: 'var(--warn)', agg: { sum: 'projectedWaste' }, fmt: 'num1' },
     ],
     columns: [
       { key: 'article.name', label: 'Article', fmt: 'text', strong: true },
@@ -196,9 +202,9 @@ const VIEWS = {
     expand: 'store($select=name),article($select=name)',
     sort: 'forecastFor asc', state: false,
     kpis: [
-      { label: 'Forecast rows', accent: 'var(--series-4)', calc: (r) => Shell.num(r.length) },
-      { label: 'Predicted units', accent: 'var(--series-1)', calc: (r) => Shell.num(r.reduce((s, x) => s + Number(x.predictedQty || 0), 0), 1) },
-      { label: 'Articles covered', accent: 'var(--series-3)', calc: (r) => Shell.num(new Set(r.map((x) => x.article_ID)).size) },
+      { label: 'Forecast rows', accent: 'var(--series-4)', agg: { count: true } },
+      { label: 'Predicted units', accent: 'var(--series-1)', agg: { sum: 'predictedQty' }, fmt: 'num1' },
+      { label: 'Articles covered', accent: 'var(--series-3)', agg: { distinct: 'article_ID' } },
     ],
     columns: [
       { key: 'forecastFor', label: 'Hour', fmt: 'datetime' },
@@ -222,9 +228,9 @@ const VIEWS = {
     expand: 'store($select=name),antecedent($select=name),consequent($select=name)',
     sort: 'lift desc', state: false,
     kpis: [
-      { label: 'Rules', accent: 'var(--series-5)', calc: (r) => Shell.num(r.length) },
-      { label: 'Cross-zone', accent: 'var(--series-2)', calc: (r) => Shell.num(r.filter((x) => x.isCrossZone === true).length) },
-      { label: 'Best lift', accent: 'var(--series-1)', calc: (r) => Shell.num(Math.max(0, ...r.map((x) => Number(x.lift || 0))), 2) },
+      { label: 'Rules', accent: 'var(--series-5)', agg: { count: true } },
+      { label: 'Cross-zone', accent: 'var(--series-2)', agg: { countWhere: 'isCrossZone eq true' } },
+      { label: 'Best lift', accent: 'var(--series-1)', agg: { max: 'lift' }, fmt: 'num2' },
     ],
     columns: [
       { key: 'antecedent.name', label: 'If basket has', fmt: 'text', strong: true },
@@ -249,9 +255,9 @@ const VIEWS = {
     expand: 'store($select=name),article($select=name),customer($select=displayName,loyaltyTier,segment)',
     sort: 'propensity desc', state: true,
     kpis: [
-      { label: 'Offers', accent: 'var(--series-6)', calc: (r) => Shell.num(r.length) },
-      { label: 'Expected revenue', accent: 'var(--ok)', calc: (r) => Shell.euro(r.reduce((s, x) => s + Number(x.expectedRevenue || 0), 0)) },
-      { label: 'Customers', accent: 'var(--series-1)', calc: (r) => Shell.num(new Set(r.map((x) => x.customer_ID)).size) },
+      { label: 'Offers', accent: 'var(--series-6)', agg: { count: true } },
+      { label: 'Expected revenue', accent: 'var(--ok)', agg: { sum: 'expectedRevenue' }, fmt: 'euro' },
+      { label: 'Customers', accent: 'var(--series-1)', agg: { distinct: 'customer_ID' } },
     ],
     columns: [
       { key: 'customer.displayName', label: 'Customer', fmt: 'text', strong: true },
@@ -280,9 +286,9 @@ const VIEWS = {
         + 'fires on a run of them, scored by depth, duration and the stock exposed.',
     expand: 'store($select=name)', sort: 'stockAtRisk desc', state: true,
     kpis: [
-      { label: 'Alerts', accent: 'var(--series-1)', calc: (r) => Shell.num(r.length) },
-      { label: 'Stock exposed', accent: 'var(--critical)', calc: (r) => Shell.euro(r.reduce((s, x) => s + Number(x.stockAtRisk || 0), 0)) },
-      { label: 'Assets affected', accent: 'var(--warn)', calc: (r) => Shell.num(new Set(r.map((x) => x.assetId)).size) },
+      { label: 'Alerts', accent: 'var(--series-1)', agg: { count: true } },
+      { label: 'Stock exposed', accent: 'var(--critical)', agg: { sum: 'stockAtRisk' }, fmt: 'euro' },
+      { label: 'Assets affected', accent: 'var(--warn)', agg: { distinct: 'assetId' } },
     ],
     columns: [
       { key: 'severity', label: 'Severity', fmt: 'pill' },
@@ -310,9 +316,9 @@ const VIEWS = {
         + 'own recommendation. Confidence is shown rather than implied.',
     expand: 'store($select=name)', sort: 'impactValue desc', state: true,
     kpis: [
-      { label: 'Insights', accent: 'var(--series-1)', calc: (r) => Shell.num(r.length) },
-      { label: 'Value at stake', accent: 'var(--critical)', calc: (r) => Shell.euro(r.reduce((s, x) => s + Number(x.impactValue || 0), 0)) },
-      { label: 'Scenarios', accent: 'var(--series-3)', calc: (r) => Shell.num(new Set(r.map((x) => x.scenario)).size) },
+      { label: 'Insights', accent: 'var(--series-1)', agg: { count: true } },
+      { label: 'Value at stake', accent: 'var(--critical)', agg: { sum: 'impactValue' }, fmt: 'euro' },
+      { label: 'Scenarios', accent: 'var(--series-3)', agg: { distinct: 'scenario' } },
     ],
     columns: [
       { key: 'severity', label: 'Severity', fmt: 'pill' },
@@ -333,9 +339,21 @@ const VIEWS = {
   },
 };
 
+/**
+ * Rows per request.
+ *
+ * Filtering, ordering and searching all run on the service rather than in the
+ * browser. The previous version pulled a flat $top=500 and did the work here,
+ * which quietly lied twice over: collections larger than 500 rows were cut off
+ * with no indication, and sorting a truncated page presented the top of the
+ * page as the top of the data.
+ */
+const PAGE_SIZE = 100;
+
 const state = {
   view: null, rows: [], stores: [], store: '', status: 'OPEN',
   search: '', sortKey: null, sortDir: 'asc', counts: {},
+  page: 0, total: null, loading: false, searchTimer: null,
 };
 
 const pick = (row, key) => key.split('.').reduce((o, k) => (o == null ? undefined : o[k]), row);
@@ -377,22 +395,64 @@ async function loadStores() {
   select.value = state.store;
 }
 
+/**
+ * Which columns a free-text search should look in.
+ *
+ * Only string columns: `contains()` is not defined over numbers or dates in
+ * OData, and asking for it returns a 400 rather than simply matching nothing.
+ */
+const SEARCHABLE = new Set(['text', 'wrap', 'title', 'pill']);
+
+function searchFilter(view, term) {
+  // Lower-cased on both sides. Half these columns hold enum-style values in
+  // upper case (GOLD, TAG_ABSENT) and the other half hold prose, so a
+  // case-sensitive match would find whichever the user did not type.
+  const needle = Shell.odata(term.trim().toLowerCase());
+  if (!needle) return null;
+  const clauses = view.columns
+    .filter((c) => SEARCHABLE.has(c.fmt))
+    // OData navigates with a slash; the table addresses the same field with a
+    // dot because that is how it arrives in the expanded JSON.
+    .map((c) => `contains(tolower(${c.key.replace(/\./g, '/')}),'${needle}')`);
+  return clauses.length ? `(${clauses.join(' or ')})` : null;
+}
+
+/** The $orderby for the current sort, falling back to the view's own default. */
+function orderBy(view) {
+  if (!state.sortKey) return view.sort;
+  return `${state.sortKey.replace(/\./g, '/')} ${state.sortDir}`;
+}
+
 async function loadRows() {
   const view = VIEWS[state.view];
   const host = document.getElementById('tableHost');
+  state.loading = true;
   host.innerHTML = `<div style="padding:16px">${Array.from({ length: 8 }, () =>
     '<div class="skeleton skeleton-row"></div>').join('')}</div>`;
 
   const filters = [];
   if (state.store) filters.push(`store_ID eq '${Shell.odata(state.store)}'`);
   if (view.state && state.status) filters.push(`state eq '${Shell.odata(state.status)}'`);
+  const search = searchFilter(view, state.search);
+  if (search) filters.push(search);
 
-  const query = ['$top=500', `$expand=${view.expand}`, `$orderby=${view.sort}`,
-    filters.length ? `$filter=${filters.join(' and ')}` : null].filter(Boolean).join('&');
+  const query = [
+    `$top=${PAGE_SIZE}`,
+    `$skip=${state.page * PAGE_SIZE}`,
+    // Ask for the total so the footer can say how many rows there are, not just
+    // how many came back in this page.
+    '$count=true',
+    `$expand=${view.expand}`,
+    `$orderby=${orderBy(view)}`,
+    filters.length ? `$filter=${filters.join(' and ')}` : null,
+  ].filter(Boolean).join('&');
 
   try {
-    state.rows = await Shell.fetchJson(`${AI}/${view.entity}?${query}`);
-    state.counts[state.view] = state.rows.length;
+    const { rows, total } = await Shell.fetchPage(`${AI}/${view.entity}?${query}`);
+    state.rows = rows;
+    state.total = total;
+    // The tab badge should count the whole collection, not the page.
+    state.counts[state.view] = total ?? rows.length;
     renderTabs();
     renderKpis();
     renderTable();
@@ -403,31 +463,26 @@ async function loadRows() {
       + `<code>${Shell.esc(error.message)}</code>`
       + (error.status === 401 ? '<div style="margin-top:6px">Sign in as manager / manager and reload.</div>' : '')
       + '</div>';
+  } finally {
+    state.loading = false;
   }
+}
+
+/** Move to a page and reload. Bounds are enforced against the known total. */
+function goToPage(page) {
+  const last = state.total === null ? state.page : Math.max(0, Math.ceil(state.total / PAGE_SIZE) - 1);
+  const next = Math.min(Math.max(0, page), last);
+  if (next === state.page) return;
+  state.page = next;
+  closeDrawer();
+  loadRows();
 }
 
 // --- render ----------------------------------------------------------------
 
-function visibleRows() {
-  const term = state.search.trim().toLowerCase();
-  let rows = state.rows;
-  if (term) {
-    const keys = VIEWS[state.view].columns.map((c) => c.key);
-    rows = rows.filter((row) => keys.some((k) => String(pick(row, k) ?? '').toLowerCase().includes(term)));
-  }
-  if (state.sortKey) {
-    const dir = state.sortDir === 'asc' ? 1 : -1;
-    rows = [...rows].sort((a, b) => {
-      const av = pick(a, state.sortKey);
-      const bv = pick(b, state.sortKey);
-      const an = Number(av);
-      const bn = Number(bv);
-      if (Number.isFinite(an) && Number.isFinite(bn) && av !== '' && bv !== '') return (an - bn) * dir;
-      return String(av ?? '').localeCompare(String(bv ?? '')) * dir;
-    });
-  }
-  return rows;
-}
+// Searching and sorting are both done by the service now - see loadRows. Doing
+// them here would only ever have reordered the page in view, which reads as if
+// it reordered the data.
 
 function renderTabs() {
   document.getElementById('tabs').innerHTML = Object.entries(VIEWS).map(([key, view]) => {
@@ -440,20 +495,109 @@ function renderTabs() {
   });
 }
 
-function renderKpis() {
-  document.getElementById('kpis').innerHTML = VIEWS[state.view].kpis.map((k) => `
+const KPI_FMT = {
+  euro: (v) => Shell.euro(v),
+  num1: (v) => Shell.num(v, 1),
+  num2: (v) => Shell.num(v, 2),
+};
+
+/** The filter the KPIs are measured over: everything except paging. */
+function baseFilter(view) {
+  const filters = [];
+  if (state.store) filters.push(`store_ID eq '${Shell.odata(state.store)}'`);
+  if (view.state && state.status) filters.push(`state eq '${Shell.odata(state.status)}'`);
+  const search = searchFilter(view, state.search);
+  if (search) filters.push(search);
+  return filters;
+}
+
+/**
+ * Compute the KPI tiles on the service, over the whole filtered collection.
+ *
+ * These used to be reduced over whatever rows the browser happened to be
+ * holding. Now that the table only holds one page that would understate every
+ * total, but it was never right: a "value at risk" summed over the first 500 of
+ * 842 alerts is a wrong number presented as a total, and nothing on screen said
+ * so. OData $apply pushes the aggregation down to the database, so the tile
+ * reports the collection rather than the page.
+ */
+async function renderKpis() {
+  const view = VIEWS[state.view];
+  const host = document.getElementById('kpis');
+  const filters = baseFilter(view);
+  const prefix = filters.length ? `filter(${filters.join(' and ')})/` : '';
+
+  host.innerHTML = view.kpis.map((k) => `
     <div class="stat" style="--accent:${k.accent}">
       <div class="stat-label">${Shell.esc(k.label)}</div>
-      <div class="stat-value">${k.calc(state.rows)}</div>
+      <div class="stat-value"><span class="skeleton" style="display:inline-block;width:74px;height:1em"></span></div>
     </div>`).join('');
+
+  // Sums, maxima and the plain count share one aggregate request; the others
+  // each need their own shape of query.
+  const scalar = view.kpis
+    .map((k, i) => ({ k, i }))
+    .filter(({ k }) => k.agg.sum || k.agg.max || k.agg.count);
+
+  const values = new Array(view.kpis.length).fill(null);
+
+  const requests = [];
+  if (scalar.length) {
+    const terms = scalar.map(({ k, i }) => (k.agg.count
+      ? `$count as k${i}`
+      : `${k.agg.sum || k.agg.max} with ${k.agg.sum ? 'sum' : 'max'} as k${i}`));
+    requests.push(Shell.fetchJson(`${AI}/${view.entity}?$apply=${prefix}aggregate(${terms.join(',')})`)
+      .then((rows) => {
+        const row = Array.isArray(rows) ? rows[0] : rows;
+        for (const { i } of scalar) values[i] = row ? row[`k${i}`] : null;
+      }));
+  }
+
+  view.kpis.forEach((k, i) => {
+    if (k.agg.distinct) {
+      // groupby returns one row per distinct value, so its length is the count.
+      requests.push(Shell.fetchJson(`${AI}/${view.entity}?$apply=${prefix}groupby((${k.agg.distinct}))`)
+        .then((rows) => { values[i] = (rows || []).length; }));
+    } else if (k.agg.countWhere) {
+      const combined = [...filters, `(${k.agg.countWhere})`].join(' and ');
+      requests.push(Shell.fetchJson(`${AI}/${view.entity}?$apply=filter(${combined})/aggregate($count as n)`)
+        .then((rows) => {
+          const row = Array.isArray(rows) ? rows[0] : rows;
+          values[i] = row ? row.n : null;
+        }));
+    }
+  });
+
+  // One failing tile must not blank the row, so each is settled on its own and
+  // an unavailable figure is shown as such rather than as zero.
+  await Promise.allSettled(requests);
+  if (state.view !== view.entity && VIEWS[state.view] !== view) return; // view changed mid-flight
+
+  host.innerHTML = view.kpis.map((k, i) => {
+    // An aggregate over an empty set comes back null. When the filter genuinely
+    // matched nothing that is a zero, not an unknown - only show a dash when
+    // the figure could not be obtained.
+    const value = values[i] === null && state.total === 0 ? 0 : values[i];
+    const text = value === null || value === undefined
+      ? '—'
+      : (KPI_FMT[k.fmt] || Shell.num)(value);
+    return `<div class="stat" style="--accent:${k.accent}">
+      <div class="stat-label">${Shell.esc(k.label)}</div>
+      <div class="stat-value">${text}</div>
+    </div>`;
+  }).join('');
 }
 
 function renderTable() {
   const view = VIEWS[state.view];
-  const rows = visibleRows();
+  const rows = state.rows;
   const host = document.getElementById('tableHost');
-  document.getElementById('rowCount').textContent =
-    `${Shell.num(rows.length)} of ${Shell.num(state.rows.length)} row${state.rows.length === 1 ? '' : 's'}`;
+
+  const from = state.page * PAGE_SIZE + 1;
+  const to = state.page * PAGE_SIZE + rows.length;
+  document.getElementById('rowCount').textContent = state.total === null
+    ? `${Shell.num(rows.length)} row${rows.length === 1 ? '' : 's'}`
+    : `${Shell.num(state.total ? from : 0)}–${Shell.num(to)} of ${Shell.num(state.total)} row${state.total === 1 ? '' : 's'}`;
 
   if (!rows.length) {
     host.innerHTML = `<div class="state"><strong>Nothing matches the current filters.</strong>`
@@ -473,19 +617,40 @@ function renderTable() {
   }).join('')}</tr>`).join('');
 
   host.innerHTML = `<div class="table-wrap"><table class="data rows-clickable">`
-    + `<thead><tr>${head}</tr></thead><tbody>${body}</tbody></table></div>`;
+    + `<thead><tr>${head}</tr></thead><tbody>${body}</tbody></table></div>`
+    + renderPager();
 
   host.querySelectorAll('th.sortable').forEach((th) => {
     th.addEventListener('click', () => {
       const key = th.dataset.key;
       if (state.sortKey === key) state.sortDir = state.sortDir === 'asc' ? 'desc' : 'asc';
       else { state.sortKey = key; state.sortDir = 'asc'; }
-      renderTable();
+      // Re-sorting is a new query: the row that belongs at the top may well be
+      // on a page that is not loaded.
+      state.page = 0;
+      loadRows();
     });
+  });
+  host.querySelectorAll('[data-page]').forEach((button) => {
+    button.addEventListener('click', () => goToPage(Number(button.dataset.page)));
   });
   host.querySelectorAll('tbody tr').forEach((tr) => {
     tr.addEventListener('click', () => openDrawer(rows[Number(tr.dataset.index)], tr));
   });
+}
+
+/** Page controls. Rendered only when there is more than one page to move to. */
+function renderPager() {
+  if (state.total === null) return '';
+  const pages = Math.ceil(state.total / PAGE_SIZE);
+  if (pages <= 1) return '';
+  const first = state.page === 0;
+  const last = state.page >= pages - 1;
+  return `<div class="pager">
+    <button class="btn" data-page="${state.page - 1}"${first ? ' disabled' : ''}>Previous</button>
+    <span class="pager-label">Page ${Shell.num(state.page + 1)} of ${Shell.num(pages)}</span>
+    <button class="btn" data-page="${state.page + 1}"${last ? ' disabled' : ''}>Next</button>
+  </div>`;
 }
 
 const LABELS = {
@@ -583,6 +748,8 @@ function switchView(key) {
   state.view = VIEWS[key] ? key : Object.keys(VIEWS)[0];
   state.sortKey = null;
   state.search = '';
+  state.page = 0;
+  state.total = null;
   document.getElementById('search').value = '';
   closeDrawer();
 
@@ -597,9 +764,21 @@ function switchView(key) {
   loadRows();
 }
 
-document.getElementById('storeFilter').addEventListener('change', (e) => { state.store = e.target.value; loadRows(); });
-document.getElementById('stateFilter').addEventListener('change', (e) => { state.status = e.target.value; loadRows(); });
-document.getElementById('search').addEventListener('input', (e) => { state.search = e.target.value; renderTable(); });
+// Any change to the query starts again at the first page - staying on page 4 of
+// a result set that no longer has four pages would show an empty table.
+document.getElementById('storeFilter').addEventListener('change', (e) => {
+  state.store = e.target.value; state.page = 0; loadRows();
+});
+document.getElementById('stateFilter').addEventListener('change', (e) => {
+  state.status = e.target.value; state.page = 0; loadRows();
+});
+// Searching hits the service now, so wait for a pause in typing rather than
+// issuing a request per keystroke.
+document.getElementById('search').addEventListener('input', (e) => {
+  state.search = e.target.value;
+  clearTimeout(state.searchTimer);
+  state.searchTimer = setTimeout(() => { state.page = 0; loadRows(); }, 250);
+});
 document.getElementById('reload').addEventListener('click', () => loadRows());
 document.getElementById('drawerClose').addEventListener('click', closeDrawer);
 document.getElementById('scrim').addEventListener('click', closeDrawer);

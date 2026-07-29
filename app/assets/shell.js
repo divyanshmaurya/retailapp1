@@ -98,7 +98,8 @@ const Shell = {
 
   // --- data --------------------------------------------------------------
 
-  async fetchJson(path, options = {}) {
+  /** Issue the request and return the parsed body untouched. */
+  async fetchRaw(path, options = {}) {
     const response = await fetch(path, {
       credentials: 'include',
       headers: { Accept: 'application/json', ...(options.headers || {}) },
@@ -116,8 +117,30 @@ const Shell = {
       throw error;
     }
     if (response.status === 204) return null;
-    const payload = await response.json();
+    return response.json();
+  },
+
+  async fetchJson(path, options = {}) {
+    const payload = await Shell.fetchRaw(path, options);
+    if (payload === null) return null;
     return payload.value !== undefined ? payload.value : payload;
+  },
+
+  /**
+   * Like fetchJson, but keeps the collection's total alongside the rows.
+   *
+   * Needed wherever a table pages through a collection: `rows.length` is the
+   * size of the page, and reporting it as the number of records tells the user
+   * there are 100 alerts when there are 842.
+   *
+   * @returns {{rows: Array, total: number|null}} total is null unless the
+   *   request asked for $count and the service returned one.
+   */
+  async fetchPage(path, options = {}) {
+    const payload = await Shell.fetchRaw(path, options);
+    const rows = payload?.value ?? (Array.isArray(payload) ? payload : []);
+    const count = payload?.['@odata.count'];
+    return { rows, total: count === undefined ? null : Number(count) };
   },
 
   // --- feedback ----------------------------------------------------------
