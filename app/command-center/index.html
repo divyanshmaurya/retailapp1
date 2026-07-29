@@ -338,9 +338,20 @@ async function odata(path) {
   return payload.value !== undefined ? payload.value : payload;
 }
 
-const storeFilter = () => (state.store ? `&$filter=store_ID eq '${state.store}'` : '');
-const storeFilterFirst = () => (state.store ? `?$filter=store_ID eq '${state.store}'` : '?');
-const analyticsStoreFilter = () => (state.store ? `&$filter=storeId eq '${state.store}'` : '');
+/**
+ * Build the store filter for a given endpoint.
+ *
+ * The property name is not the same everywhere. Entity projections expose the
+ * association as `store_ID`, while the aggregate views alias the key
+ * (`store.ID as storeId`), so filtering them by `store_ID` returns HTTP 400.
+ * Passing the property in at the call site keeps the two straight; guessing it
+ * from the service name is what broke this before.
+ */
+const filterBy = (property) =>
+  (state.store ? `&$filter=${property} eq '${escapeODataString(state.store)}'` : '');
+
+/** Single quotes terminate an OData string literal, so they must be doubled. */
+const escapeODataString = (value) => String(value).replace(/'/g, "''");
 
 /* ---------------------------------------------------------------------------
    Formatting
@@ -679,7 +690,7 @@ function renderTable(container, columns, rows) {
 const BAR_HUE = 'var(--series-1)';
 
 function renderTiles() {
-  const { insights = [], metrics = [], daily = [] } = state.data;
+  const { insights = [], metrics = [], daily = [], patterns = [] } = state.data;
   const open = insights.filter((row) => row.state === 'OPEN');
   const atStake = open.reduce((sum, row) => sum + Number(row.impactValue || 0), 0);
   const critical = open.filter((row) => row.severity === 'CRITICAL' || row.severity === 'HIGH').length;
@@ -689,16 +700,27 @@ function renderTiles() {
 
   const storeDayWape = metric('DEMAND_FORECAST', 'WAPE (store-day)');
   const wasteSaved = metric('WASTE_MARKDOWN', 'Waste cost avoided');
-  const shrinkExposure = metric('CHECKOUT_INTEGRITY', 'Value at risk');
+
+  // ModelMetrics is scored per scenario for the whole network - it carries no
+  // store dimension - so those tiles cannot follow the store filter. Say so on
+  // the tile rather than showing a network number under a store heading.
+  const filtered = Boolean(state.store);
+  const scope = (text) => (filtered ? `${text} · network-wide` : text);
+
+  // Checkout exposure, on the other hand, can be scoped: ShrinkByPattern is
+  // already filtered, and summing it keeps this tile consistent with the
+  // breakdown chart sitting next to it.
+  const shrinkExposure = patterns.reduce((sum, row) => sum + Number(row.valueAtRisk || 0), 0);
 
   const revenue = daily.reduce((sum, row) => sum + Number(row.grossAmount || 0), 0);
   const units = daily.reduce((sum, row) => sum + Number(row.quantity || 0), 0);
+  const storeCount = new Set(open.map((row) => row.store_ID)).size;
 
   const tiles = [
     {
       label: 'Value at stake',
       value: euro(atStake),
-      foot: `${open.length} open insights across ${new Set(open.map((row) => row.store_ID)).size} stores`,
+      foot: `${open.length} open insights across ${storeCount} store${storeCount === 1 ? '' : 's'}`,
     },
     {
       label: 'Needs attention',
@@ -708,17 +730,17 @@ function renderTiles() {
     {
       label: 'Forecast accuracy',
       value: storeDayWape ? `${num(100 - Number(storeDayWape.metricValue), 1)}%` : '—',
-      foot: storeDayWape ? 'Store-day, 14-day backtest' : 'Run the engines to populate',
+      foot: storeDayWape ? scope('Store-day, 14-day backtest') : 'Run the engines to populate',
     },
     {
       label: 'Checkout exposure',
-      value: shrinkExposure ? euro(shrinkExposure.metricValue) : '—',
+      value: euro(shrinkExposure),
       foot: 'Cancelled value flagged as anomalous',
     },
     {
       label: 'Waste cost avoided',
       value: wasteSaved ? euroExact(wasteSaved.metricValue) : '—',
-      foot: 'From acting on markdown proposals',
+      foot: wasteSaved ? scope('From acting on markdown proposals') : 'Run the engines to populate',
     },
     {
       label: 'Trading volume',
@@ -921,13 +943,13 @@ async function loadAll() {
   document.getElementById('status').textContent = 'Loading…';
   try {
     const [insights, summary, patterns, metrics, hours, channels, daily, stores] = await Promise.all([
-      odata(`${AI}/AIInsights?$top=400&$orderby=impactValue desc${storeFilter()}`),
-      odata(`${AI}/InsightSummary?$top=200${storeFilter()}`),
-      odata(`${AI}/ShrinkByPattern?$top=200${storeFilter()}`),
+      odata(`${AI}/AIInsights?$top=400&$orderby=impactValue desc${filterBy('store_ID')}`),
+      odata(`${AI}/InsightSummary?$top=200${filterBy('storeId')}`),
+      odata(`${AI}/ShrinkByPattern?$top=200${filterBy('storeId')}`),
       odata(`${AI}/ModelMetrics?$top=100`),
-      odata(`${ANALYTICS}/SalesByHour?$top=2000${analyticsStoreFilter()}`),
-      odata(`${ANALYTICS}/ChannelMix?$top=200${analyticsStoreFilter()}`),
-      odata(`${ANALYTICS}/DailySales?$top=2000${analyticsStoreFilter()}`),
+      odata(`${ANALYTICS}/SalesByHour?$top=2000${filterBy('storeId')}`),
+      odata(`${ANALYTICS}/ChannelMix?$top=200${filterBy('storeId')}`),
+      odata(`${ANALYTICS}/DailySales?$top=2000${filterBy('storeId')}`),
       odata(`${ANALYTICS}/Stores?$top=50&$select=ID,name,format,isReferenceStore`),
     ]);
 
