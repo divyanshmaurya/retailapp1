@@ -12,6 +12,7 @@
     "url": "http://local_proxy@127.0.0.1:41729/git/divyanshmaurya/retailapp1"
   },
   "dependencies": {
+    "@cap-js/hana": "^2.8.0",
     "@cap-js/sqlite": "^2.4.0",
     "@sap/cds": "^9.9.3",
     "express": "^4.22.2"
