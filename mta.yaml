@@ -1,0 +1,89 @@
+_schema-version: '3.2'
+ID: smartstore-retail-ai
+version: 1.0.0
+description: >
+  S.Mart retail AI - SAP CAP services, six AI scenario engines and SAP Fiori
+  dashboards over SAP Customer Checkout data, deployed to SAP HANA Cloud.
+
+parameters:
+  enable-parallel-deployments: true
+  deploy_mode: html5-repo
+
+build-parameters:
+  before-all:
+    - builder: custom
+      commands:
+        - npm ci
+        - npx cds build --production
+
+modules:
+  # ---------------------------------------------------------------------------
+  # CAP service - OData V4 endpoints and the scenario engines
+  # ---------------------------------------------------------------------------
+  - name: smartstore-srv
+    type: nodejs
+    path: gen/srv
+    parameters:
+      buildpack: nodejs_buildpack
+      memory: 512M
+      disk-quota: 1024M
+    build-parameters:
+      builder: npm
+    provides:
+      - name: srv-api
+        properties:
+          srv-url: ${default-url}
+    requires:
+      - name: smartstore-db
+      - name: smartstore-auth
+
+  # ---------------------------------------------------------------------------
+  # HDI deployer - creates the tables and loads the seed CSVs into HANA Cloud
+  # ---------------------------------------------------------------------------
+  - name: smartstore-db-deployer
+    type: hdb
+    path: gen/db
+    parameters:
+      buildpack: nodejs_buildpack
+    requires:
+      - name: smartstore-db
+
+  # ---------------------------------------------------------------------------
+  # Static UI - the launchpad, the command centre and the Fiori elements apps
+  # ---------------------------------------------------------------------------
+  - name: smartstore-app
+    type: nodejs
+    path: app
+    parameters:
+      buildpack: nodejs_buildpack
+      memory: 256M
+      disk-quota: 512M
+    requires:
+      - name: srv-api
+        group: destinations
+        properties:
+          name: srv-api
+          url: ~{srv-url}
+          forwardAuthToken: true
+      - name: smartstore-auth
+
+resources:
+  # SAP HANA Cloud HDI container holding every table in the smart.retail schema.
+  - name: smartstore-db
+    type: com.sap.xs.hdi-container
+    parameters:
+      service: hana
+      service-plan: hdi-shared
+    properties:
+      hdi-service-name: ${service-name}
+
+  # XSUAA instance; roles map to the scopes declared in xs-security.json.
+  - name: smartstore-auth
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: xsuaa
+      service-plan: application
+      path: ./xs-security.json
+      config:
+        xsappname: smartstore-retail-ai-${org}-${space}
+        tenant-mode: dedicated

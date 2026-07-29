@@ -1,0 +1,67 @@
+{
+  "xsappname": "smartstore-retail-ai",
+  "tenant-mode": "dedicated",
+  "description": "Security profile for the S.Mart retail AI application",
+  "scopes": [
+    {
+      "name": "$XSAPPNAME.Viewer",
+      "description": "Read dashboards and scenario output"
+    },
+    {
+      "name": "$XSAPPNAME.Analyst",
+      "description": "Read everything and re-run the scenario engines"
+    },
+    {
+      "name": "$XSAPPNAME.StoreManager",
+      "description": "Work the alert queues: acknowledge, resolve, release orders, apply markdowns"
+    }
+  ],
+  "attributes": [
+    {
+      "name": "store",
+      "description": "Restricts a user to the stores they are responsible for",
+      "valueType": "s"
+    }
+  ],
+  "role-templates": [
+    {
+      "name": "Viewer",
+      "description": "Read-only access to dashboards",
+      "scope-references": ["$XSAPPNAME.Viewer"],
+      "attribute-references": ["store"]
+    },
+    {
+      "name": "Analyst",
+      "description": "Read access plus the ability to re-run the AI scenario engines",
+      "scope-references": ["$XSAPPNAME.Viewer", "$XSAPPNAME.Analyst"],
+      "attribute-references": ["store"]
+    },
+    {
+      "name": "StoreManager",
+      "description": "Full operational access to the alert and task queues",
+      "scope-references": [
+        "$XSAPPNAME.Viewer",
+        "$XSAPPNAME.Analyst",
+        "$XSAPPNAME.StoreManager"
+      ],
+      "attribute-references": ["store"]
+    }
+  ],
+  "role-collections": [
+    {
+      "name": "SMartRetailViewer",
+      "description": "S.Mart Retail AI - Viewer",
+      "role-template-references": ["$XSAPPNAME.Viewer"]
+    },
+    {
+      "name": "SMartRetailAnalyst",
+      "description": "S.Mart Retail AI - Analyst",
+      "role-template-references": ["$XSAPPNAME.Analyst"]
+    },
+    {
+      "name": "SMartRetailStoreManager",
+      "description": "S.Mart Retail AI - Store Manager",
+      "role-template-references": ["$XSAPPNAME.StoreManager"]
+    }
+  ]
+}
