@@ -5,7 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>AI Insight Feed</title>
 <style>
+  /* Height has to be unbroken from the root down to the component container,
+     or the 100% at the bottom resolves against an auto-height parent and
+     collapses to nothing. */
   html, body { height: 100%; margin: 0; }
+  #ui5-app { height: 100%; width: 100%; }
   #ui5-fallback {
     display: none; font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
     max-width: 760px; margin: 8vh auto; padding: 0 24px; color: #0b0b0b; line-height: 1.55;
