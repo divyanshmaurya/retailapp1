@@ -63,11 +63,32 @@ against it.
 
 ```bash
 cf create-service hana hdi-shared smartstore-db
-npm run deploy:hana        # cds deploy --to hana:smartstore-db --store-credentials
+npm run deploy:hana        # cds deploy --to hana:smartstore-db
 ```
 
-`--store-credentials` writes the binding into `~/.cds-services.json`, so `cds watch --profile
-hybrid` afterwards runs the local service against the HANA container.
+After a successful deploy, `cds deploy --to hana` calls `cds bind` itself and writes the binding
+into `.cdsrc-private.json` under the `hybrid` profile (use `-4 <profile>` to bind a different one).
+That is what makes the next step work:
+
+```bash
+npm run hybrid             # cds watch --profile hybrid
+```
+
+The service then runs on `http://localhost:4004` reading from the HANA container instead of
+SQLite — the whole interface, real data, no public route. Authentication stays mocked under this
+profile, so sign in as `manager`, `analyst` or `viewer` (password same as the username).
+
+`cds bind` stores a reference to the service instance and key, not the credentials themselves; they
+are resolved at startup through the logged-in `cf` CLI. So the file is safe to keep but useless to
+anyone else, and it is gitignored either way. If a deploy predates this and `npm run hybrid` still
+opens SQLite, bind it explicitly:
+
+```bash
+cds bind -2 smartstore-db
+```
+
+An older form of this used `cds deploy --store-credentials`. That option is deprecated — it still
+works but prints a warning, and it is scheduled for removal.
 
 Verify:
 
@@ -90,7 +111,7 @@ cf deploy mta_archives/smartstore-retail-ai_1.0.0.mtar
 |---|---|
 | `smartstore-srv` | The CAP OData V4 services and the scenario engines |
 | `smartstore-db-deployer` | HDI deployer — creates the tables and loads the seed data |
-| `smartstore-app` | Static UI: launchpad, command centre, Fiori elements apps |
+| `smartstore-approuter` | Public entry point: serves the UI, proxies `/ai` and `/analytics` under XSUAA |
 | `smartstore-db` | HDI container on SAP HANA Cloud |
 | `smartstore-auth` | XSUAA instance, configured from `xs-security.json` |
 
