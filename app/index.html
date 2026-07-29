@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>S.Mart Retail AI — Launchpad</title>
+<style>
+/* Dependency-free launchpad so the entry point works with or without a UI5
+   runtime. Each tile links to its SAP Fiori elements app; the command centre
+   is self-contained and needs no CDN. */
+:root {
+  color-scheme: light;
+  --surface: #fcfcfb;
+  --page: #f9f9f7;
+  --ink: #0b0b0b;
+  --ink-2: #52514e;
+  --muted: #898781;
+  --border: rgba(11,11,11,.10);
+  --grid: #e1e0d9;
+  --accent: #2a78d6;
+  --good: #0ca30c;
+  --warning: #fab219;
+  --font: system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:where(:not([data-theme="light"])) {
+    color-scheme: dark;
+    --surface: #1a1a19; --page: #0d0d0d; --ink: #fff; --ink-2: #c3c2b7;
+    --border: rgba(255,255,255,.10); --grid: #2c2c2a; --accent: #3987e5;
+  }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--page); color: var(--ink); font-family: var(--font); }
+header {
+  background: var(--surface); border-bottom: 1px solid var(--border);
+  padding: 18px 28px;
+}
+header h1 { margin: 0 0 4px; font-size: 19px; font-weight: 600; letter-spacing: -.01em; }
+header p { margin: 0; color: var(--ink-2); font-size: 13.5px; max-width: 80ch; }
+main { padding: 24px 28px 56px; max-width: 1400px; margin: 0 auto; }
+h2.section { font-size: 13px; text-transform: uppercase; letter-spacing: .05em; color: var(--ink-2); margin: 28px 0 12px; }
+h2.section:first-of-type { margin-top: 8px; }
+.tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(268px, 1fr)); gap: 14px; }
+a.tile {
+  display: block; background: var(--surface); border: 1px solid var(--border);
+  border-radius: 10px; padding: 16px 18px; text-decoration: none; color: inherit;
+  transition: border-color .12s, transform .12s;
+}
+a.tile:hover { border-color: var(--accent); transform: translateY(-1px); }
+a.tile .kicker { font-size: 11.5px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); }
+a.tile h3 { margin: 6px 0 6px; font-size: 15.5px; font-weight: 600; }
+a.tile p { margin: 0; font-size: 13px; color: var(--ink-2); line-height: 1.45; }
+a.tile .badge {
+  display: inline-block; margin-top: 10px; font-size: 11.5px; font-weight: 600;
+  padding: 2px 8px; border-radius: 999px;
+  color: var(--good); background: color-mix(in srgb, var(--good) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--good) 35%, transparent);
+}
+a.tile .badge.ui5 {
+  color: var(--ink-2); background: color-mix(in srgb, var(--muted) 12%, transparent);
+  border-color: var(--grid);
+}
+.note {
+  background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--warning);
+  border-radius: 8px; padding: 14px 16px; margin: 26px 0 0; font-size: 13px; color: var(--ink-2);
+}
+.note strong { color: var(--ink); }
+code { font-size: 12.5px; background: color-mix(in srgb, var(--muted) 14%, transparent); padding: 1px 5px; border-radius: 4px; }
+footer { color: var(--muted); font-size: 12.5px; border-top: 1px solid var(--grid); margin-top: 32px; padding-top: 14px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>S.Mart Retail AI</h1>
+  <p>
+    Six AI scenarios over the SAP Customer Checkout data from the S.Mart Walldorf autonomous store,
+    amalgamated with a synthesized six-store network. Built on SAP CAP with OData V4 services,
+    deployable to SAP HANA Cloud.
+  </p>
+</header>
+
+<main>
+  <h2 class="section">Command centre</h2>
+  <div class="tiles">
+    <a class="tile" href="/command-center/index.html">
+      <div class="kicker">All scenarios</div>
+      <h3>AI Command Centre</h3>
+      <p>KPI tiles, trading patterns, checkout-integrity breakdown and the ranked insight feed, with a
+         one-click re-run of every scenario engine.</p>
+      <span class="badge">No CDN required</span>
+    </a>
+  </div>
+
+  <h2 class="section">Scenario apps &mdash; SAP Fiori elements</h2>
+  <div class="tiles">
+    <a class="tile" href="/checkout-integrity/webapp/index.html">
+      <div class="kicker">Loss prevention</div>
+      <h3>Checkout Integrity Radar</h3>
+      <p>RFID misreads, absent tags, stock variance and price errors on the unstaffed gates, each with
+         the evidence behind the call.</p>
+      <span class="badge ui5">List Report &amp; Object Page</span>
+    </a>
+    <a class="tile" href="/replenishment-cockpit/webapp/index.html">
+      <div class="kicker">Autonomous ordering</div>
+      <h3>Replenishment Cockpit</h3>
+      <p>Reorder proposals sized from forecast demand over the supplier lead time plus safety stock,
+         ranked by lost-sales exposure.</p>
+      <span class="badge ui5">List Report &amp; Object Page</span>
+    </a>
+    <a class="tile" href="/fresh-waste-guard/webapp/index.html">
+      <div class="kicker">Fresh food</div>
+      <h3>Fresh Waste Guard</h3>
+      <p>Markdown depth chosen by sweeping candidate discounts and keeping the one that recovers the
+         most margin before expiry.</p>
+      <span class="badge ui5">List Report &amp; Object Page</span>
+    </a>
+    <a class="tile" href="/demand-forecast/webapp/index.html">
+      <div class="kicker">Hourly demand</div>
+      <h3>Demand Forecast</h3>
+      <p>Per store, article and hour, with prediction intervals and the backtested accuracy of the
+         model behind each row.</p>
+      <span class="badge ui5">List Report &amp; Object Page</span>
+    </a>
+    <a class="tile" href="/basket-affinity/webapp/index.html">
+      <div class="kicker">Merchandising</div>
+      <h3>Basket Affinity &amp; Planogram</h3>
+      <p>Association rules mined from real baskets, flagging pairs that sell together but sit in
+         different temperature zones today.</p>
+      <span class="badge ui5">List Report &amp; Object Page</span>
+    </a>
+    <a class="tile" href="/personal-offers/webapp/index.html">
+      <div class="kicker">Personalisation</div>
+      <h3>Personalised Offers</h3>
+      <p>Next best offer per S.Mart app customer, from purchase cadence and basket affinity &mdash;
+         consenting customers only.</p>
+      <span class="badge ui5">List Report &amp; Object Page</span>
+    </a>
+    <a class="tile" href="/cold-chain/webapp/index.html">
+      <div class="kicker">Store operations</div>
+      <h3>Cold Chain Monitor</h3>
+      <p>Sustained chiller and freezer excursions, scored by how far out, for how long, and how much
+         stock is exposed.</p>
+      <span class="badge ui5">List Report &amp; Object Page</span>
+    </a>
+    <a class="tile" href="/insight-feed/webapp/index.html">
+      <div class="kicker">All scenarios</div>
+      <h3>AI Insight Feed</h3>
+      <p>One queue across every engine, ranked by euros at stake weighted by the model's confidence
+         in its own recommendation.</p>
+      <span class="badge ui5">List Report &amp; Object Page</span>
+    </a>
+  </div>
+
+  <h2 class="section">Service endpoints</h2>
+  <div class="tiles">
+    <a class="tile" href="/ai/$metadata">
+      <div class="kicker">OData V4</div>
+      <h3>AIService</h3>
+      <p>Scenario outputs, queue actions and the <code>recalculate</code>, <code>simulateForecast</code>
+         and <code>simulateMarkdown</code> actions.</p>
+    </a>
+    <a class="tile" href="/analytics/$metadata">
+      <div class="kicker">OData V4</div>
+      <h3>AnalyticsService</h3>
+      <p>Sales, receipts, inventory, footfall and the pre-aggregated daily, hourly, article and
+         channel views.</p>
+    </a>
+  </div>
+
+  <div class="note">
+    <strong>Signing in.</strong> The services require an authenticated user. In development CAP uses
+    mocked authentication &mdash; sign in as <code>manager</code> / <code>manager</code>
+    (or <code>analyst</code>, <code>viewer</code>).
+    <br><br>
+    <strong>SAP Fiori elements apps need a SAPUI5 runtime.</strong> They bootstrap from
+    <code>https://ui5.sap.com</code>, so they render wherever that host is reachable &mdash; SAP Business
+    Application Studio, a local machine, or SAP BTP. In an air-gapped environment use the
+    <strong>AI Command Centre</strong>, which ships its own rendering and needs no external asset.
+  </div>
+
+  <footer>
+    Walldorf figures originate from the SAP Customer Checkout &ldquo;Complete Sales Report&rdquo; export;
+    the rest of the network is synthesized from the same behavioural profile.
+  </footer>
+</main>
+</body>
+</html>

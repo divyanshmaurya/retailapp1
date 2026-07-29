@@ -1,0 +1,119 @@
+{
+  "_version": "1.59.0",
+  "sap.app": {
+    "id": "smart.retail.coldchain",
+    "type": "application",
+    "title": "Cold Chain Monitor",
+    "description": "Sustained temperature excursions and the stock they put at risk",
+    "applicationVersion": {
+      "version": "1.0.0"
+    },
+    "dataSources": {
+      "mainService": {
+        "uri": "/ai/",
+        "type": "OData",
+        "settings": {
+          "odataVersion": "4.0"
+        }
+      }
+    },
+    "crossNavigation": {
+      "inbounds": {
+        "cold-chain-inbound": {
+          "semanticObject": "ColdChainAlert",
+          "action": "display",
+          "title": "Cold Chain Monitor",
+          "subTitle": "Cold chain",
+          "signature": {
+            "parameters": {},
+            "additionalParameters": "allowed"
+          }
+        }
+      }
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
+  "sap.ui5": {
+    "dependencies": {
+      "minUI5Version": "1.120.0",
+      "libs": {
+        "sap.fe.templates": {},
+        "sap.m": {},
+        "sap.ui.core": {}
+      }
+    },
+    "models": {
+      "": {
+        "dataSource": "mainService",
+        "preload": true,
+        "settings": {
+          "synchronizationMode": "None",
+          "operationMode": "Server",
+          "autoExpandSelect": true,
+          "earlyRequests": true
+        }
+      }
+    },
+    "routing": {
+      "routes": [
+        {
+          "pattern": ":?query:",
+          "name": "ColdChainAlertsList",
+          "target": "ColdChainAlertsList"
+        },
+        {
+          "pattern": "ColdChainAlerts({key}):?query:",
+          "name": "ColdChainAlertsDetail",
+          "target": "ColdChainAlertsDetail"
+        }
+      ],
+      "targets": {
+        "ColdChainAlertsList": {
+          "type": "Component",
+          "id": "ColdChainAlertsList",
+          "name": "sap.fe.templates.ListReport",
+          "options": {
+            "settings": {
+              "contextPath": "/ColdChainAlerts",
+              "variantManagement": "Page",
+              "initialLoad": true,
+              "navigation": {
+                "ColdChainAlerts": {
+                  "detail": {
+                    "route": "ColdChainAlertsDetail"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "ColdChainAlertsDetail": {
+          "type": "Component",
+          "id": "ColdChainAlertsDetail",
+          "name": "sap.fe.templates.ObjectPage",
+          "options": {
+            "settings": {
+              "contextPath": "/ColdChainAlerts",
+              "editableHeaderContent": false
+            }
+          }
+        }
+      }
+    },
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    }
+  },
+  "sap.fiori": {
+    "registrationIds": [],
+    "archeType": "transactional"
+  }
+}

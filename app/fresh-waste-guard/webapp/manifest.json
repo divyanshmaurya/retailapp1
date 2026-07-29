@@ -1,0 +1,119 @@
+{
+  "_version": "1.59.0",
+  "sap.app": {
+    "id": "smart.retail.freshwaste",
+    "type": "application",
+    "title": "Fresh Waste Guard",
+    "description": "Markdown proposals that maximise recovered margin on same-day food",
+    "applicationVersion": {
+      "version": "1.0.0"
+    },
+    "dataSources": {
+      "mainService": {
+        "uri": "/ai/",
+        "type": "OData",
+        "settings": {
+          "odataVersion": "4.0"
+        }
+      }
+    },
+    "crossNavigation": {
+      "inbounds": {
+        "fresh-waste-guard-inbound": {
+          "semanticObject": "MarkdownRecommendation",
+          "action": "display",
+          "title": "Fresh Waste Guard",
+          "subTitle": "Fresh food & waste",
+          "signature": {
+            "parameters": {},
+            "additionalParameters": "allowed"
+          }
+        }
+      }
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
+  "sap.ui5": {
+    "dependencies": {
+      "minUI5Version": "1.120.0",
+      "libs": {
+        "sap.fe.templates": {},
+        "sap.m": {},
+        "sap.ui.core": {}
+      }
+    },
+    "models": {
+      "": {
+        "dataSource": "mainService",
+        "preload": true,
+        "settings": {
+          "synchronizationMode": "None",
+          "operationMode": "Server",
+          "autoExpandSelect": true,
+          "earlyRequests": true
+        }
+      }
+    },
+    "routing": {
+      "routes": [
+        {
+          "pattern": ":?query:",
+          "name": "MarkdownRecommendationsList",
+          "target": "MarkdownRecommendationsList"
+        },
+        {
+          "pattern": "MarkdownRecommendations({key}):?query:",
+          "name": "MarkdownRecommendationsDetail",
+          "target": "MarkdownRecommendationsDetail"
+        }
+      ],
+      "targets": {
+        "MarkdownRecommendationsList": {
+          "type": "Component",
+          "id": "MarkdownRecommendationsList",
+          "name": "sap.fe.templates.ListReport",
+          "options": {
+            "settings": {
+              "contextPath": "/MarkdownRecommendations",
+              "variantManagement": "Page",
+              "initialLoad": true,
+              "navigation": {
+                "MarkdownRecommendations": {
+                  "detail": {
+                    "route": "MarkdownRecommendationsDetail"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "MarkdownRecommendationsDetail": {
+          "type": "Component",
+          "id": "MarkdownRecommendationsDetail",
+          "name": "sap.fe.templates.ObjectPage",
+          "options": {
+            "settings": {
+              "contextPath": "/MarkdownRecommendations",
+              "editableHeaderContent": false
+            }
+          }
+        }
+      }
+    },
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    }
+  },
+  "sap.fiori": {
+    "registrationIds": [],
+    "archeType": "transactional"
+  }
+}

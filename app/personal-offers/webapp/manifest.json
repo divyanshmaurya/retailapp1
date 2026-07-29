@@ -1,0 +1,119 @@
+{
+  "_version": "1.59.0",
+  "sap.app": {
+    "id": "smart.retail.personaloffers",
+    "type": "application",
+    "title": "Personalised Offers",
+    "description": "Next best offer per consenting S.Mart app customer",
+    "applicationVersion": {
+      "version": "1.0.0"
+    },
+    "dataSources": {
+      "mainService": {
+        "uri": "/ai/",
+        "type": "OData",
+        "settings": {
+          "odataVersion": "4.0"
+        }
+      }
+    },
+    "crossNavigation": {
+      "inbounds": {
+        "personal-offers-inbound": {
+          "semanticObject": "NextBestOffer",
+          "action": "display",
+          "title": "Personalised Offers",
+          "subTitle": "Personalisation",
+          "signature": {
+            "parameters": {},
+            "additionalParameters": "allowed"
+          }
+        }
+      }
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
+  "sap.ui5": {
+    "dependencies": {
+      "minUI5Version": "1.120.0",
+      "libs": {
+        "sap.fe.templates": {},
+        "sap.m": {},
+        "sap.ui.core": {}
+      }
+    },
+    "models": {
+      "": {
+        "dataSource": "mainService",
+        "preload": true,
+        "settings": {
+          "synchronizationMode": "None",
+          "operationMode": "Server",
+          "autoExpandSelect": true,
+          "earlyRequests": true
+        }
+      }
+    },
+    "routing": {
+      "routes": [
+        {
+          "pattern": ":?query:",
+          "name": "NextBestOffersList",
+          "target": "NextBestOffersList"
+        },
+        {
+          "pattern": "NextBestOffers({key}):?query:",
+          "name": "NextBestOffersDetail",
+          "target": "NextBestOffersDetail"
+        }
+      ],
+      "targets": {
+        "NextBestOffersList": {
+          "type": "Component",
+          "id": "NextBestOffersList",
+          "name": "sap.fe.templates.ListReport",
+          "options": {
+            "settings": {
+              "contextPath": "/NextBestOffers",
+              "variantManagement": "Page",
+              "initialLoad": true,
+              "navigation": {
+                "NextBestOffers": {
+                  "detail": {
+                    "route": "NextBestOffersDetail"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "NextBestOffersDetail": {
+          "type": "Component",
+          "id": "NextBestOffersDetail",
+          "name": "sap.fe.templates.ObjectPage",
+          "options": {
+            "settings": {
+              "contextPath": "/NextBestOffers",
+              "editableHeaderContent": false
+            }
+          }
+        }
+      }
+    },
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    }
+  },
+  "sap.fiori": {
+    "registrationIds": [],
+    "archeType": "transactional"
+  }
+}

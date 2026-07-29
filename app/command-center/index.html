@@ -1,0 +1,1043 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>S.Mart AI Command Centre</title>
+<style>
+/* ---------------------------------------------------------------------------
+   Self-contained by design: this dashboard loads no external script, font or
+   stylesheet, so it renders in an air-gapped environment where the SAPUI5 CDN
+   is unreachable. The SAP Fiori elements apps in the sibling folders cover the
+   same data with standard SAP tooling when a UI5 runtime is available.
+   Colours come from a CVD-validated palette; severity uses the reserved status
+   ramp and is always paired with a text label, never carried by colour alone.
+--------------------------------------------------------------------------- */
+:root {
+  color-scheme: light;
+  --surface-1: #fcfcfb;
+  --page: #f9f9f7;
+  --text-primary: #0b0b0b;
+  --text-secondary: #52514e;
+  --text-muted: #898781;
+  --grid: #e1e0d9;
+  --axis: #c3c2b7;
+  --border: rgba(11, 11, 11, 0.10);
+
+  --series-1: #2a78d6;
+  --series-2: #eb6834;
+  --series-3: #1baf7a;
+  --series-4: #eda100;
+  --series-5: #e87ba4;
+  --series-6: #008300;
+
+  --status-good: #0ca30c;
+  --status-warning: #fab219;
+  --status-serious: #ec835a;
+  --status-critical: #d03b3b;
+
+  --radius: 10px;
+  --font: system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:where(:not([data-theme="light"])) {
+    color-scheme: dark;
+    --surface-1: #1a1a19;
+    --page: #0d0d0d;
+    --text-primary: #ffffff;
+    --text-secondary: #c3c2b7;
+    --text-muted: #898781;
+    --grid: #2c2c2a;
+    --axis: #383835;
+    --border: rgba(255, 255, 255, 0.10);
+    --series-1: #3987e5;
+    --series-2: #d95926;
+    --series-3: #199e70;
+    --series-4: #c98500;
+    --series-5: #d55181;
+    --series-6: #008300;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --surface-1: #1a1a19;
+  --page: #0d0d0d;
+  --text-primary: #ffffff;
+  --text-secondary: #c3c2b7;
+  --grid: #2c2c2a;
+  --axis: #383835;
+  --border: rgba(255, 255, 255, 0.10);
+  --series-1: #3987e5;
+  --series-2: #d95926;
+  --series-3: #199e70;
+  --series-4: #c98500;
+  --series-5: #d55181;
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--page);
+  color: var(--text-primary);
+  font-family: var(--font);
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+header.shell {
+  background: var(--surface-1);
+  border-bottom: 1px solid var(--border);
+  padding: 14px 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+}
+.brand { display: flex; align-items: baseline; gap: 10px; margin-right: auto; }
+.brand h1 { font-size: 17px; margin: 0; font-weight: 600; letter-spacing: -0.01em; }
+.brand .sub { color: var(--text-secondary); font-size: 12.5px; }
+
+.controls { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+select, button {
+  font: inherit;
+  font-size: 13px;
+  color: var(--text-primary);
+  background: var(--surface-1);
+  border: 1px solid var(--axis);
+  border-radius: 6px;
+  padding: 6px 10px;
+  cursor: pointer;
+}
+button:hover, select:hover { border-color: var(--series-1); }
+button.primary { background: var(--series-1); border-color: var(--series-1); color: #fff; }
+button.primary:hover { filter: brightness(1.08); }
+button[aria-pressed="true"] { border-color: var(--series-1); box-shadow: inset 0 0 0 1px var(--series-1); }
+
+main { padding: 20px 24px 48px; max-width: 1500px; margin: 0 auto; }
+
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+  margin-bottom: 20px;
+}
+.tile {
+  background: var(--surface-1);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+}
+.tile .label {
+  font-size: 12px;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 6px;
+}
+.tile .value { font-size: 27px; font-weight: 600; letter-spacing: -0.02em; }
+.tile .foot { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(420px, 1fr));
+  gap: 16px;
+}
+.card {
+  background: var(--surface-1);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 18px 12px;
+  min-width: 0;
+}
+.card.wide { grid-column: 1 / -1; }
+.card h2 {
+  font-size: 14.5px;
+  margin: 0 0 2px;
+  font-weight: 600;
+}
+.card .hint { font-size: 12.5px; color: var(--text-secondary); margin: 0 0 14px; }
+
+.legend { display: flex; gap: 14px; flex-wrap: wrap; margin: 0 0 10px; font-size: 12.5px; color: var(--text-secondary); }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.swatch { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+
+.chart-scroll { overflow-x: auto; }
+svg { display: block; max-width: 100%; }
+svg text { font-family: var(--font); }
+.axis-label { fill: var(--text-muted); font-size: 11px; }
+.value-label { fill: var(--text-secondary); font-size: 11px; font-variant-numeric: tabular-nums; }
+.gridline { stroke: var(--grid); stroke-width: 1; }
+.baseline { stroke: var(--axis); stroke-width: 1; }
+
+table { border-collapse: collapse; width: 100%; font-size: 13px; }
+th, td { text-align: left; padding: 7px 10px; border-bottom: 1px solid var(--grid); vertical-align: top; }
+th { color: var(--text-secondary); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.03em; }
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+tbody tr:hover { background: color-mix(in srgb, var(--series-1) 6%, transparent); }
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11.5px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 999px;
+  white-space: nowrap;
+  border: 1px solid transparent;
+}
+.pill::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+.pill.CRITICAL { color: var(--status-critical); border-color: color-mix(in srgb, var(--status-critical) 40%, transparent); background: color-mix(in srgb, var(--status-critical) 10%, transparent); }
+.pill.HIGH     { color: var(--status-serious);  border-color: color-mix(in srgb, var(--status-serious) 40%, transparent);  background: color-mix(in srgb, var(--status-serious) 10%, transparent); }
+.pill.MEDIUM   { color: var(--status-warning);  border-color: color-mix(in srgb, var(--status-warning) 45%, transparent);  background: color-mix(in srgb, var(--status-warning) 12%, transparent); }
+.pill.LOW      { color: var(--status-good);     border-color: color-mix(in srgb, var(--status-good) 40%, transparent);     background: color-mix(in srgb, var(--status-good) 10%, transparent); }
+
+.tooltip {
+  position: fixed;
+  pointer-events: none;
+  background: var(--surface-1);
+  border: 1px solid var(--axis);
+  border-radius: 6px;
+  padding: 7px 10px;
+  font-size: 12.5px;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.16);
+  opacity: 0;
+  transition: opacity .1s;
+  z-index: 50;
+  max-width: 300px;
+}
+.tooltip.on { opacity: 1; }
+.tooltip .tt-title { font-weight: 600; margin-bottom: 2px; }
+.tooltip .tt-row { color: var(--text-secondary); font-variant-numeric: tabular-nums; }
+
+.status-bar {
+  font-size: 12.5px;
+  color: var(--text-secondary);
+  padding: 10px 0 0;
+}
+.err {
+  background: color-mix(in srgb, var(--status-critical) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--status-critical) 40%, transparent);
+  color: var(--text-primary);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  margin-bottom: 16px;
+}
+.err code { font-size: 12px; }
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap;
+}
+.provenance {
+  font-size: 12px;
+  color: var(--text-muted);
+  border-top: 1px solid var(--grid);
+  margin-top: 24px;
+  padding-top: 12px;
+}
+</style>
+</head>
+<body>
+
+<header class="shell">
+  <div class="brand">
+    <h1>S.Mart AI Command Centre</h1>
+    <span class="sub">Autonomous retail &middot; SAP Customer Checkout &amp; SAP HANA Cloud</span>
+  </div>
+  <div class="controls">
+    <label class="visually-hidden" for="storeFilter">Store</label>
+    <select id="storeFilter"><option value="">All stores</option></select>
+    <button id="tableToggle" aria-pressed="false" title="Show the underlying numbers as tables">Table view</button>
+    <button id="themeToggle" title="Switch between light and dark">Dark</button>
+    <button id="recalcBtn" class="primary" title="Re-run every scenario engine against current data">Re-run engines</button>
+  </div>
+</header>
+
+<main>
+  <div id="errorBox"></div>
+
+  <section class="tiles" id="tiles" aria-label="Key performance indicators"></section>
+
+  <section class="grid">
+    <div class="card">
+      <h2>Value at stake by scenario</h2>
+      <p class="hint">Open insights, ranked by euros at risk or recoverable.</p>
+      <div class="chart-scroll"><div id="scenarioChart"></div></div>
+      <div id="scenarioTable" hidden></div>
+    </div>
+
+    <div class="card">
+      <h2>Checkout integrity by failure pattern</h2>
+      <p class="hint">Why the autonomous gates void lines &mdash; value at risk per pattern.</p>
+      <div class="chart-scroll"><div id="patternChart"></div></div>
+      <div id="patternTable" hidden></div>
+    </div>
+
+    <div class="card wide">
+      <h2>Trading pattern by hour</h2>
+      <p class="hint">Units sold per trading hour. The weekday lunch peak and the quiet weekend are the signature of a campus store &mdash; and the shape the demand engine learns.</p>
+      <div class="legend" id="hourLegend"></div>
+      <div class="chart-scroll"><div id="hourChart"></div></div>
+      <div id="hourTable" hidden></div>
+    </div>
+
+    <div class="card">
+      <h2>Checkout channel mix</h2>
+      <p class="hint">Share of receipts by terminal type across the network.</p>
+      <div class="legend" id="channelLegend"></div>
+      <div class="chart-scroll"><div id="channelChart"></div></div>
+      <div id="channelTable" hidden></div>
+    </div>
+
+    <div class="card">
+      <h2>Model scorecard</h2>
+      <p class="hint">What each engine produced on its last run.</p>
+      <div id="metricsTable"></div>
+    </div>
+
+    <div class="card wide">
+      <h2>Ranked insight feed</h2>
+      <p class="hint">Every scenario in one queue, ordered by value at stake weighted by model confidence.</p>
+      <div id="insightTable"></div>
+    </div>
+  </section>
+
+  <p class="provenance" id="provenance"></p>
+  <div class="status-bar" id="status"></div>
+</main>
+
+<div class="tooltip" id="tooltip" role="status" aria-live="polite"></div>
+
+<script>
+'use strict';
+
+/* ---------------------------------------------------------------------------
+   Data access
+--------------------------------------------------------------------------- */
+
+const AI = '/ai';
+const ANALYTICS = '/analytics';
+
+const state = { store: '', tableView: false, data: {} };
+
+async function odata(path) {
+  const response = await fetch(path, {
+    headers: { Accept: 'application/json' },
+    credentials: 'include',
+  });
+  if (response.status === 401) {
+    const error = new Error('Not authenticated');
+    error.unauthorized = true;
+    throw error;
+  }
+  if (!response.ok) throw new Error(`${response.status} ${response.statusText} for ${path}`);
+  const payload = await response.json();
+  return payload.value !== undefined ? payload.value : payload;
+}
+
+const storeFilter = () => (state.store ? `&$filter=store_ID eq '${state.store}'` : '');
+const storeFilterFirst = () => (state.store ? `?$filter=store_ID eq '${state.store}'` : '?');
+const analyticsStoreFilter = () => (state.store ? `&$filter=storeId eq '${state.store}'` : '');
+
+/* ---------------------------------------------------------------------------
+   Formatting
+--------------------------------------------------------------------------- */
+
+const euro = (value) => new Intl.NumberFormat('en-GB', {
+  style: 'currency', currency: 'EUR', maximumFractionDigits: 0,
+}).format(Number(value) || 0);
+
+const euroExact = (value) => new Intl.NumberFormat('en-GB', {
+  style: 'currency', currency: 'EUR', minimumFractionDigits: 2, maximumFractionDigits: 2,
+}).format(Number(value) || 0);
+
+const num = (value, digits = 0) => new Intl.NumberFormat('en-GB', {
+  minimumFractionDigits: digits, maximumFractionDigits: digits,
+}).format(Number(value) || 0);
+
+const titleCase = (text) => String(text || '')
+  .toLowerCase().replace(/_/g, ' ')
+  .replace(/\b\w/g, (character) => character.toUpperCase());
+
+const escapeHtml = (text) => String(text ?? '').replace(/[&<>"']/g, (character) => (
+  { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[character]
+));
+
+/* ---------------------------------------------------------------------------
+   Tooltip
+--------------------------------------------------------------------------- */
+
+const tooltip = document.getElementById('tooltip');
+
+function showTip(event, title, rows) {
+  tooltip.innerHTML = `<div class="tt-title">${escapeHtml(title)}</div>`
+    + rows.map((row) => `<div class="tt-row">${escapeHtml(row)}</div>`).join('');
+  tooltip.classList.add('on');
+  moveTip(event);
+}
+
+function moveTip(event) {
+  const pad = 14;
+  const box = tooltip.getBoundingClientRect();
+  let x = event.clientX + pad;
+  let y = event.clientY + pad;
+  if (x + box.width > window.innerWidth - 8) x = event.clientX - box.width - pad;
+  if (y + box.height > window.innerHeight - 8) y = event.clientY - box.height - pad;
+  tooltip.style.left = `${x}px`;
+  tooltip.style.top = `${y}px`;
+}
+
+const hideTip = () => tooltip.classList.remove('on');
+
+/** Attach the standard hover behaviour to an SVG mark. */
+function bindTip(element, title, rows) {
+  element.addEventListener('mouseenter', (event) => showTip(event, title, rows));
+  element.addEventListener('mousemove', moveTip);
+  element.addEventListener('mouseleave', hideTip);
+}
+
+/* ---------------------------------------------------------------------------
+   SVG helpers
+--------------------------------------------------------------------------- */
+
+const SVG_NS = 'http://www.w3.org/2000/svg';
+
+function svgEl(name, attributes = {}) {
+  const element = document.createElementNS(SVG_NS, name);
+  for (const [key, value] of Object.entries(attributes)) {
+    element.setAttribute(key, value);
+  }
+  return element;
+}
+
+/**
+ * Rounded rectangle with only the two ends away from the baseline rounded, so
+ * bars stay anchored to the axis instead of floating.
+ */
+function barPath(x, y, width, height, radius, horizontal) {
+  const r = Math.max(0, Math.min(radius, horizontal ? width : height, (horizontal ? height : width) / 2));
+  if (r <= 0.5) return `M${x},${y}h${width}v${height}h${-width}Z`;
+  if (horizontal) {
+    return `M${x},${y}h${width - r}a${r},${r} 0 0 1 ${r},${r}v${height - 2 * r}`
+      + `a${r},${r} 0 0 1 ${-r},${r}h${-(width - r)}Z`;
+  }
+  return `M${x},${y + r}a${r},${r} 0 0 1 ${r},${-r}h${width - 2 * r}`
+    + `a${r},${r} 0 0 1 ${r},${r}v${height - r}h${-width}Z`;
+}
+
+const niceMax = (value) => {
+  if (value <= 0) return 1;
+  const magnitude = 10 ** Math.floor(Math.log10(value));
+  const scaled = value / magnitude;
+  const step = scaled <= 1 ? 1 : scaled <= 2 ? 2 : scaled <= 5 ? 5 : 10;
+  return step * magnitude;
+};
+
+/* ---------------------------------------------------------------------------
+   Chart: horizontal bars (magnitude by category)
+--------------------------------------------------------------------------- */
+
+function horizontalBars(container, rows, options = {}) {
+  container.innerHTML = '';
+  if (!rows.length) {
+    container.innerHTML = '<p class="hint">No open items for this selection.</p>';
+    return;
+  }
+
+  const labelWidth = options.labelWidth || 168;
+  const rowHeight = 30;
+  const gap = 8;
+  const right = 78;
+  const width = Math.max(container.clientWidth || 460, 400);
+  const height = rows.length * (rowHeight + gap) + 16;
+  const plotWidth = width - labelWidth - right;
+  const maximum = niceMax(Math.max(...rows.map((row) => row.value), 0));
+
+  const svg = svgEl('svg', { width, height, viewBox: `0 0 ${width} ${height}`, role: 'img' });
+  svg.appendChild(svgEl('title', {})).textContent = options.title || 'Bar chart';
+
+  rows.forEach((row, index) => {
+    const y = index * (rowHeight + gap) + 8;
+    const barWidth = maximum > 0 ? (row.value / maximum) * plotWidth : 0;
+
+    const label = svgEl('text', {
+      x: labelWidth - 10, y: y + rowHeight / 2 + 4, 'text-anchor': 'end', class: 'axis-label',
+    });
+    label.textContent = row.label;
+    svg.appendChild(label);
+
+    // Track behind the bar gives the eye a consistent full-width reference.
+    svg.appendChild(svgEl('rect', {
+      x: labelWidth, y, width: plotWidth, height: rowHeight,
+      fill: 'var(--grid)', opacity: 0.4, rx: 4,
+    }));
+
+    const bar = svgEl('path', {
+      d: barPath(labelWidth, y, Math.max(barWidth, 2), rowHeight, 4, true),
+      fill: row.color || 'var(--series-1)',
+    });
+    bindTip(bar, row.label, row.tip || [`${euroExact(row.value)}`]);
+    svg.appendChild(bar);
+
+    const valueLabel = svgEl('text', {
+      x: labelWidth + Math.max(barWidth, 2) + 8,
+      y: y + rowHeight / 2 + 4, class: 'value-label',
+    });
+    valueLabel.textContent = options.format ? options.format(row.value) : euro(row.value);
+    svg.appendChild(valueLabel);
+  });
+
+  container.appendChild(svg);
+}
+
+/* ---------------------------------------------------------------------------
+   Chart: multi-series line (hour of day)
+--------------------------------------------------------------------------- */
+
+function lineChart(container, series, options = {}) {
+  container.innerHTML = '';
+  if (!series.length || !series.some((entry) => entry.points.length)) {
+    container.innerHTML = '<p class="hint">No trading data for this selection.</p>';
+    return;
+  }
+
+  const width = Math.max(container.clientWidth || 900, 640);
+  const height = 300;
+  const margin = { top: 14, right: 74, bottom: 34, left: 48 };
+  const plotWidth = width - margin.left - margin.right;
+  const plotHeight = height - margin.top - margin.bottom;
+
+  const allValues = series.flatMap((entry) => entry.points.map((point) => point.y));
+  const maximum = niceMax(Math.max(...allValues, 1));
+  const xs = [...new Set(series.flatMap((entry) => entry.points.map((point) => point.x)))].sort((a, b) => a - b);
+  const xMin = Math.min(...xs);
+  const xMax = Math.max(...xs);
+
+  const scaleX = (x) => margin.left + (xMax === xMin ? plotWidth / 2 : ((x - xMin) / (xMax - xMin)) * plotWidth);
+  const scaleY = (y) => margin.top + plotHeight - (y / maximum) * plotHeight;
+
+  const svg = svgEl('svg', { width, height, viewBox: `0 0 ${width} ${height}`, role: 'img' });
+  svg.appendChild(svgEl('title', {})).textContent = options.title || 'Line chart';
+
+  // Horizontal gridlines with value ticks.
+  const ticks = 4;
+  for (let index = 0; index <= ticks; index += 1) {
+    const value = (maximum / ticks) * index;
+    const y = scaleY(value);
+    svg.appendChild(svgEl('line', {
+      x1: margin.left, x2: margin.left + plotWidth, y1: y, y2: y,
+      class: index === 0 ? 'baseline' : 'gridline',
+    }));
+    const tick = svgEl('text', { x: margin.left - 8, y: y + 4, 'text-anchor': 'end', class: 'axis-label' });
+    tick.textContent = num(value);
+    svg.appendChild(tick);
+  }
+
+  // Hour ticks every three hours keeps the axis readable at this width.
+  for (const x of xs) {
+    if (x % 3 !== 0) continue;
+    const tick = svgEl('text', {
+      x: scaleX(x), y: height - 12, 'text-anchor': 'middle', class: 'axis-label',
+    });
+    tick.textContent = `${String(x).padStart(2, '0')}h`;
+    svg.appendChild(tick);
+  }
+
+  // Series that end at similar values would overprint their direct labels, so
+  // reserve a slot per label and nudge any that would collide.
+  const usedLabelY = [];
+  const reserveLabelY = (preferred) => {
+    let y = preferred;
+    while (usedLabelY.some((taken) => Math.abs(taken - y) < 14)) y += 14;
+    usedLabelY.push(y);
+    return y;
+  };
+
+  series.forEach((entry) => {
+    const points = [...entry.points].sort((a, b) => a.x - b.x);
+    if (!points.length) return;
+    const d = points.map((point, index) =>
+      `${index === 0 ? 'M' : 'L'}${scaleX(point.x).toFixed(1)},${scaleY(point.y).toFixed(1)}`).join('');
+    svg.appendChild(svgEl('path', {
+      d, fill: 'none', stroke: entry.color, 'stroke-width': 2,
+      'stroke-linejoin': 'round', 'stroke-linecap': 'round',
+    }));
+
+    // Direct label at the series end - identity without relying on the legend.
+    const last = points[points.length - 1];
+    const label = svgEl('text', {
+      x: scaleX(last.x) + 8, y: reserveLabelY(scaleY(last.y) + 4),
+      class: 'value-label', fill: entry.color,
+    });
+    label.textContent = entry.name;
+    svg.appendChild(label);
+
+    points.forEach((point) => {
+      const marker = svgEl('circle', {
+        cx: scaleX(point.x), cy: scaleY(point.y), r: 4.5,
+        fill: entry.color, stroke: 'var(--surface-1)', 'stroke-width': 2,
+      });
+      bindTip(marker, `${entry.name} · ${String(point.x).padStart(2, '0')}:00`,
+        [`${num(point.y, 1)} units`]);
+      svg.appendChild(marker);
+    });
+  });
+
+  container.appendChild(svg);
+}
+
+/* ---------------------------------------------------------------------------
+   Chart: donut (part of a whole, few categories)
+--------------------------------------------------------------------------- */
+
+function donut(container, rows) {
+  container.innerHTML = '';
+  const total = rows.reduce((sum, row) => sum + row.value, 0);
+  if (!total) {
+    container.innerHTML = '<p class="hint">No receipts for this selection.</p>';
+    return;
+  }
+
+  const size = 236;
+  const radius = 100;
+  const inner = 62;
+  const centre = size / 2;
+  const svg = svgEl('svg', { width: size, height: size, viewBox: `0 0 ${size} ${size}`, role: 'img' });
+  svg.appendChild(svgEl('title', {})).textContent = 'Receipt share by terminal type';
+
+  let angle = -Math.PI / 2;
+  // A 2px surface gap between segments keeps adjacent fills legible.
+  const gapAngle = 0.018;
+
+  rows.forEach((row) => {
+    const sweep = (row.value / total) * Math.PI * 2;
+    const start = angle + gapAngle / 2;
+    const end = angle + sweep - gapAngle / 2;
+    angle += sweep;
+    if (end <= start) return;
+
+    const large = end - start > Math.PI ? 1 : 0;
+    const path = svgEl('path', {
+      d: [
+        `M${centre + radius * Math.cos(start)},${centre + radius * Math.sin(start)}`,
+        `A${radius},${radius} 0 ${large} 1 ${centre + radius * Math.cos(end)},${centre + radius * Math.sin(end)}`,
+        `L${centre + inner * Math.cos(end)},${centre + inner * Math.sin(end)}`,
+        `A${inner},${inner} 0 ${large} 0 ${centre + inner * Math.cos(start)},${centre + inner * Math.sin(start)}`,
+        'Z',
+      ].join(''),
+      fill: row.color,
+    });
+    bindTip(path, row.label, [
+      `${num(row.value)} receipts`,
+      `${num((row.value / total) * 100, 1)}% of the network`,
+    ]);
+    svg.appendChild(path);
+  });
+
+  const centreValue = svgEl('text', {
+    x: centre, y: centre - 2, 'text-anchor': 'middle',
+    fill: 'var(--text-primary)', 'font-size': 22, 'font-weight': 600,
+  });
+  centreValue.textContent = num(total);
+  svg.appendChild(centreValue);
+  const centreLabel = svgEl('text', {
+    x: centre, y: centre + 16, 'text-anchor': 'middle', class: 'axis-label',
+  });
+  centreLabel.textContent = 'receipts';
+  svg.appendChild(centreLabel);
+
+  container.appendChild(svg);
+}
+
+/* ---------------------------------------------------------------------------
+   Table rendering (the accessibility fallback for every chart)
+--------------------------------------------------------------------------- */
+
+function renderTable(container, columns, rows) {
+  const head = columns.map((column) =>
+    `<th class="${column.numeric ? 'num' : ''}">${escapeHtml(column.label)}</th>`).join('');
+  const body = rows.map((row) => `<tr>${columns.map((column) => {
+    const value = column.render ? column.render(row) : row[column.key];
+    return `<td class="${column.numeric ? 'num' : ''}">${column.html ? value : escapeHtml(value)}</td>`;
+  }).join('')}</tr>`).join('');
+  container.innerHTML = `<table><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table>`;
+}
+
+/* ---------------------------------------------------------------------------
+   Sections
+--------------------------------------------------------------------------- */
+
+/**
+ * Scenario bars carry one measure against one category and every bar is
+ * directly labelled, so a single hue encodes magnitude honestly. Six hues here
+ * would be decorative - and since the bars sort by value, any two could end up
+ * adjacent, which no six-hue ordering clears for colour-vision deficiency.
+ */
+const BAR_HUE = 'var(--series-1)';
+
+function renderTiles() {
+  const { insights = [], metrics = [], daily = [] } = state.data;
+  const open = insights.filter((row) => row.state === 'OPEN');
+  const atStake = open.reduce((sum, row) => sum + Number(row.impactValue || 0), 0);
+  const critical = open.filter((row) => row.severity === 'CRITICAL' || row.severity === 'HIGH').length;
+
+  const metric = (scenario, name) => metrics.find(
+    (row) => row.scenario === scenario && row.metricName === name);
+
+  const storeDayWape = metric('DEMAND_FORECAST', 'WAPE (store-day)');
+  const wasteSaved = metric('WASTE_MARKDOWN', 'Waste cost avoided');
+  const shrinkExposure = metric('CHECKOUT_INTEGRITY', 'Value at risk');
+
+  const revenue = daily.reduce((sum, row) => sum + Number(row.grossAmount || 0), 0);
+  const units = daily.reduce((sum, row) => sum + Number(row.quantity || 0), 0);
+
+  const tiles = [
+    {
+      label: 'Value at stake',
+      value: euro(atStake),
+      foot: `${open.length} open insights across ${new Set(open.map((row) => row.store_ID)).size} stores`,
+    },
+    {
+      label: 'Needs attention',
+      value: num(critical),
+      foot: 'Insights rated high or critical',
+    },
+    {
+      label: 'Forecast accuracy',
+      value: storeDayWape ? `${num(100 - Number(storeDayWape.metricValue), 1)}%` : '—',
+      foot: storeDayWape ? 'Store-day, 14-day backtest' : 'Run the engines to populate',
+    },
+    {
+      label: 'Checkout exposure',
+      value: shrinkExposure ? euro(shrinkExposure.metricValue) : '—',
+      foot: 'Cancelled value flagged as anomalous',
+    },
+    {
+      label: 'Waste cost avoided',
+      value: wasteSaved ? euroExact(wasteSaved.metricValue) : '—',
+      foot: 'From acting on markdown proposals',
+    },
+    {
+      label: 'Trading volume',
+      value: euro(revenue),
+      foot: `${num(units)} units in the loaded period`,
+    },
+  ];
+
+  document.getElementById('tiles').innerHTML = tiles.map((tile) => `
+    <div class="tile">
+      <div class="label">${escapeHtml(tile.label)}</div>
+      <div class="value">${escapeHtml(tile.value)}</div>
+      <div class="foot">${escapeHtml(tile.foot)}</div>
+    </div>`).join('');
+}
+
+function renderScenario() {
+  const summary = state.data.summary || [];
+  const byScenario = new Map();
+  for (const row of summary) {
+    const current = byScenario.get(row.scenario) || { impact: 0, count: 0 };
+    current.impact += Number(row.totalImpact || 0);
+    current.count += Number(row.insightCount || 0);
+    byScenario.set(row.scenario, current);
+  }
+  const rows = [...byScenario.entries()]
+    .map(([scenario, entry]) => ({
+      label: titleCase(scenario),
+      value: entry.impact,
+      count: entry.count,
+      color: BAR_HUE,
+      tip: [`${euroExact(entry.impact)} at stake`, `${entry.count} open insights`],
+    }))
+    .sort((a, b) => b.value - a.value);
+
+  horizontalBars(document.getElementById('scenarioChart'), rows, { title: 'Value at stake by scenario' });
+  renderTable(document.getElementById('scenarioTable'),
+    [
+      { label: 'Scenario', key: 'label' },
+      { label: 'Insights', key: 'count', numeric: true },
+      { label: 'Value at stake', numeric: true, render: (row) => euroExact(row.value) },
+    ], rows);
+}
+
+function renderPatterns() {
+  const patterns = state.data.patterns || [];
+  const byPattern = new Map();
+  for (const row of patterns) {
+    const current = byPattern.get(row.pattern) || { value: 0, count: 0 };
+    current.value += Number(row.valueAtRisk || 0);
+    current.count += Number(row.alertCount || 0);
+    byPattern.set(row.pattern, current);
+  }
+  // One measure, one category: a single hue carries magnitude honestly here.
+  const rows = [...byPattern.entries()]
+    .map(([pattern, entry]) => ({
+      label: titleCase(pattern),
+      value: entry.value,
+      count: entry.count,
+      color: 'var(--series-1)',
+      tip: [`${euroExact(entry.value)} at risk`, `${entry.count} alerts`],
+    }))
+    .sort((a, b) => b.value - a.value);
+
+  horizontalBars(document.getElementById('patternChart'), rows, { title: 'Value at risk by failure pattern' });
+  renderTable(document.getElementById('patternTable'),
+    [
+      { label: 'Pattern', key: 'label' },
+      { label: 'Alerts', key: 'count', numeric: true },
+      { label: 'Value at risk', numeric: true, render: (row) => euroExact(row.value) },
+    ], rows);
+}
+
+function renderHours() {
+  const rows = state.data.hours || [];
+  // Weekday vs weekend is the contrast that matters for a campus store.
+  const weekday = new Map();
+  const weekend = new Map();
+  for (const row of rows) {
+    const bucket = Number(row.dayOfWeek) >= 5 ? weekend : weekday;
+    const hour = Number(row.hourOfDay);
+    bucket.set(hour, (bucket.get(hour) || 0) + Number(row.quantity || 0));
+  }
+  // Average per day-type so the two lines are comparable (5 weekdays, 2 weekend days).
+  const toPoints = (map, days) => [...map.entries()]
+    .map(([hour, quantity]) => ({ x: hour, y: quantity / days }))
+    .sort((a, b) => a.x - b.x);
+
+  const series = [
+    { name: 'Weekday', color: 'var(--series-1)', points: toPoints(weekday, 5) },
+    { name: 'Weekend', color: 'var(--series-2)', points: toPoints(weekend, 2) },
+  ];
+
+  document.getElementById('hourLegend').innerHTML = series.map((entry) =>
+    `<span><i class="swatch" style="background:${entry.color}"></i>${escapeHtml(entry.name)}</span>`).join('');
+
+  lineChart(document.getElementById('hourChart'), series, { title: 'Units per trading hour' });
+
+  const hours = [...new Set([...weekday.keys(), ...weekend.keys()])].sort((a, b) => a - b);
+  renderTable(document.getElementById('hourTable'),
+    [
+      { label: 'Hour', render: (row) => `${String(row.hour).padStart(2, '0')}:00` },
+      { label: 'Weekday units/day', numeric: true, render: (row) => num(row.weekday, 1) },
+      { label: 'Weekend units/day', numeric: true, render: (row) => num(row.weekend, 1) },
+    ],
+    hours.map((hour) => ({
+      hour,
+      weekday: (weekday.get(hour) || 0) / 5,
+      weekend: (weekend.get(hour) || 0) / 2,
+    })));
+}
+
+function renderChannels() {
+  const rows = state.data.channels || [];
+  const byKind = new Map();
+  for (const row of rows) {
+    const current = byKind.get(row.posKind) || { receipts: 0, gross: 0, dwell: [] };
+    current.receipts += Number(row.receiptCount || 0);
+    current.gross += Number(row.grossAmount || 0);
+    if (row.avgDwellSeconds) current.dwell.push(Number(row.avgDwellSeconds));
+    byKind.set(row.posKind, current);
+  }
+  const palette = ['var(--series-1)', 'var(--series-2)', 'var(--series-3)'];
+  const data = [...byKind.entries()]
+    .sort((a, b) => b[1].receipts - a[1].receipts)
+    .map(([kind, entry], index) => ({
+      label: titleCase(kind),
+      value: entry.receipts,
+      gross: entry.gross,
+      dwell: entry.dwell.length ? entry.dwell.reduce((a, b) => a + b, 0) / entry.dwell.length : null,
+      color: palette[index % palette.length],
+    }));
+
+  document.getElementById('channelLegend').innerHTML = data.map((entry) =>
+    `<span><i class="swatch" style="background:${entry.color}"></i>${escapeHtml(entry.label)}</span>`).join('');
+
+  donut(document.getElementById('channelChart'), data);
+  renderTable(document.getElementById('channelTable'),
+    [
+      { label: 'Terminal type', key: 'label' },
+      { label: 'Receipts', numeric: true, render: (row) => num(row.value) },
+      { label: 'Gross', numeric: true, render: (row) => euroExact(row.gross) },
+      { label: 'Avg trip', numeric: true, render: (row) => (row.dwell ? `${num(row.dwell)}s` : '—') },
+    ], data);
+}
+
+function renderMetrics() {
+  const metrics = state.data.metrics || [];
+  const rows = [...metrics].sort((a, b) =>
+    a.scenario.localeCompare(b.scenario) || a.metricName.localeCompare(b.metricName));
+  renderTable(document.getElementById('metricsTable'),
+    [
+      { label: 'Scenario', render: (row) => titleCase(row.scenario) },
+      { label: 'Metric', key: 'metricName' },
+      {
+        label: 'Value',
+        numeric: true,
+        render: (row) => (row.unit === 'EUR'
+          ? euroExact(row.metricValue)
+          : `${num(row.metricValue, row.unit === '%' ? 1 : 0)}${row.unit === '%' ? '%' : ''}`),
+      },
+      { label: 'Unit', render: (row) => (row.unit === 'EUR' || row.unit === '%' ? '' : row.unit) },
+    ], rows);
+}
+
+function renderInsights() {
+  const insights = (state.data.insights || [])
+    .filter((row) => row.state === 'OPEN')
+    .slice(0, 25);
+
+  renderTable(document.getElementById('insightTable'),
+    [
+      {
+        label: 'Severity',
+        html: true,
+        render: (row) => `<span class="pill ${escapeHtml(row.severity)}">${escapeHtml(row.severity)}</span>`,
+      },
+      { label: 'Scenario', render: (row) => titleCase(row.scenario) },
+      { label: 'Insight', key: 'title' },
+      { label: 'Store', render: (row) => row.store_ID },
+      { label: 'Impact', numeric: true, render: (row) => euroExact(row.impactValue) },
+      { label: 'Confidence', numeric: true, render: (row) => `${num(Number(row.confidence) * 100, 0)}%` },
+      { label: 'Recommended action', key: 'recommendedAction' },
+    ], insights);
+}
+
+/* ---------------------------------------------------------------------------
+   Load and orchestrate
+--------------------------------------------------------------------------- */
+
+function showError(message, detail) {
+  document.getElementById('errorBox').innerHTML = `
+    <div class="err">
+      <strong>${escapeHtml(message)}</strong>
+      ${detail ? `<div><code>${escapeHtml(detail)}</code></div>` : ''}
+    </div>`;
+}
+
+async function loadAll() {
+  document.getElementById('status').textContent = 'Loading…';
+  try {
+    const [insights, summary, patterns, metrics, hours, channels, daily, stores] = await Promise.all([
+      odata(`${AI}/AIInsights?$top=400&$orderby=impactValue desc${storeFilter()}`),
+      odata(`${AI}/InsightSummary?$top=200${storeFilter()}`),
+      odata(`${AI}/ShrinkByPattern?$top=200${storeFilter()}`),
+      odata(`${AI}/ModelMetrics?$top=100`),
+      odata(`${ANALYTICS}/SalesByHour?$top=2000${analyticsStoreFilter()}`),
+      odata(`${ANALYTICS}/ChannelMix?$top=200${analyticsStoreFilter()}`),
+      odata(`${ANALYTICS}/DailySales?$top=2000${analyticsStoreFilter()}`),
+      odata(`${ANALYTICS}/Stores?$top=50&$select=ID,name,format,isReferenceStore`),
+    ]);
+
+    state.data = { insights, summary, patterns, metrics, hours, channels, daily, stores };
+    document.getElementById('errorBox').innerHTML = '';
+
+    const select = document.getElementById('storeFilter');
+    if (select.options.length <= 1) {
+      for (const store of stores) {
+        const option = document.createElement('option');
+        option.value = store.ID;
+        option.textContent = store.isReferenceStore ? `${store.name} (SAP export)` : store.name;
+        select.appendChild(option);
+      }
+      select.value = state.store;
+    }
+
+    renderTiles();
+    renderScenario();
+    renderPatterns();
+    renderHours();
+    renderChannels();
+    renderMetrics();
+    renderInsights();
+
+    const reference = stores.find((store) => store.isReferenceStore);
+    const days = new Set((daily || []).map((row) => row.businessDate)).size;
+    document.getElementById('provenance').textContent =
+      `Walldorf figures originate from the SAP Customer Checkout "Complete Sales Report" export`
+      + `${reference ? ` (${reference.name})` : ''}; the remaining stores are synthesized from the same `
+      + `behavioural profile. ${days} trading days loaded.`;
+    document.getElementById('status').textContent =
+      `Updated ${new Date().toLocaleTimeString()} · ${insights.length} insights, ${hours.length} store-hour aggregates.`;
+  } catch (error) {
+    if (error.unauthorized) {
+      showError('Not signed in.',
+        'This CAP service uses mocked authentication in development. Reload and sign in as manager / manager.');
+    } else {
+      showError('Could not load dashboard data.', error.message);
+    }
+    document.getElementById('status').textContent = '';
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Controls
+--------------------------------------------------------------------------- */
+
+document.getElementById('storeFilter').addEventListener('change', (event) => {
+  state.store = event.target.value;
+  loadAll();
+});
+
+document.getElementById('tableToggle').addEventListener('click', (event) => {
+  state.tableView = !state.tableView;
+  event.target.setAttribute('aria-pressed', String(state.tableView));
+  for (const id of ['scenario', 'pattern', 'hour', 'channel']) {
+    document.getElementById(`${id}Chart`).hidden = state.tableView;
+    document.getElementById(`${id}Table`).hidden = !state.tableView;
+  }
+});
+
+document.getElementById('themeToggle').addEventListener('click', (event) => {
+  const dark = document.documentElement.getAttribute('data-theme') === 'dark';
+  document.documentElement.setAttribute('data-theme', dark ? 'light' : 'dark');
+  event.target.textContent = dark ? 'Dark' : 'Light';
+  // Charts read colours from CSS variables at draw time, so redraw on switch.
+  if (state.data.insights) {
+    renderScenario(); renderPatterns(); renderHours(); renderChannels();
+  }
+});
+
+document.getElementById('recalcBtn').addEventListener('click', async (event) => {
+  const button = event.target;
+  button.disabled = true;
+  const original = button.textContent;
+  button.textContent = 'Running…';
+  try {
+    const response = await fetch(`${AI}/recalculate`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify(state.store ? { store_ID: state.store } : {}),
+    });
+    if (!response.ok) throw new Error(`${response.status} ${response.statusText}`);
+    const payload = await response.json();
+    const results = payload.value || [];
+    document.getElementById('status').textContent =
+      `Re-ran ${results.length} engines: ` + results.map((row) => `${titleCase(row.scenario)} ${row.rowsWritten}`).join(', ');
+    await loadAll();
+  } catch (error) {
+    showError('Re-running the engines failed.', error.message);
+  } finally {
+    button.disabled = false;
+    button.textContent = original;
+  }
+});
+
+// Charts are sized from their container, so a resize needs a redraw.
+let resizeTimer = null;
+window.addEventListener('resize', () => {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(() => {
+    if (state.data.insights) {
+      renderScenario(); renderPatterns(); renderHours(); renderChannels();
+    }
+  }, 180);
+});
+
+loadAll();
+</script>
+</body>
+</html>
