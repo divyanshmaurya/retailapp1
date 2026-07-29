@@ -156,7 +156,13 @@ async function countOf(path, entity) {
     const response = await fetch(`${path}/${entity}?$top=1&$count=true`, {
       headers: { Accept: 'application/json' }, credentials: 'include',
     });
-    if (!response.ok) return response.status === 401 ? 'sign in' : `HTTP ${response.status}`;
+    if (!response.ok) {
+      if (response.status === 401) return 'sign in';
+      // 403 here means signed in as somebody with no roles, which is a
+      // different problem and needs a different word.
+      if (response.status === 403) return 'no access';
+      return `HTTP ${response.status}`;
+    }
     const payload = await response.json();
     const count = payload['@odata.count'];
     return count === undefined ? '—' : Shell.num(count);

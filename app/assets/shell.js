@@ -143,6 +143,40 @@ const Shell = {
     return { rows, total: count === undefined ? null : Number(count) };
   },
 
+  // --- authentication ----------------------------------------------------
+
+  /** Is this failure about who you are, rather than about the data? */
+  isAuthError: (error) => error && (error.status === 401 || error.status === 403),
+
+  /**
+   * Explain an authentication failure in terms the reader can act on.
+   *
+   * 403 is the one that needs care. Mocked authentication accepts any user name
+   * with any password and gives an unrecognised one no roles, so mistyping the
+   * sign-in leaves every screen failing with a message about missing roles and
+   * no obvious way back - the browser has cached the bad credentials and will
+   * not ask again until it sees a 401. Hence the sign-out link, which exists
+   * only to produce one.
+   */
+  authErrorHtml(error) {
+    const forbidden = error.status === 403;
+    const who = forbidden
+      ? String(error.message || '').match(/User '([^']+)'/)?.[1]
+      : null;
+
+    return '<div class="state-error" style="margin:16px">'
+      + `<strong>${forbidden ? 'Signed in without the right permissions.' : 'Not signed in.'}</strong>`
+      + (who
+        ? `<div style="margin-top:6px">You are signed in as <code>${Shell.esc(who)}</code>, `
+          + 'which carries no roles. Development uses mocked authentication, which accepts any '
+          + 'name and any password - so a typo signs you in as a user that cannot read anything.</div>'
+        : '<div style="margin-top:6px">Development uses mocked authentication.</div>')
+      + '<div style="margin-top:6px">Sign in as <code>manager</code> / <code>manager</code> for '
+      + 'full access, <code>analyst</code> or <code>viewer</code> to see the roles take effect.</div>'
+      + '<div style="margin-top:10px"><a class="btn btn-primary" href="/signout">Sign in as a '
+      + 'different user</a></div></div>';
+  },
+
   // --- feedback ----------------------------------------------------------
 
   toast(message) {

@@ -128,10 +128,27 @@ test('service: search uses tolower on both sides', async () => {
 // Authorisation
 // ---------------------------------------------------------------------------
 
-test('service: an unauthenticated request is rejected', async () => {
+test('service: an unauthenticated request is challenged, not merely refused', async () => {
   const response = await GET('/ai/ShrinkAlerts?$top=1');
-  assert.ok(response.status === 401 || response.status === 403,
-    `expected the service to be closed, got ${response.status}`);
+
+  // 401 with a challenge specifically, not 403. A browser only opens its
+  // sign-in prompt on a 401; a 403 leaves the user staring at an error with no
+  // way to authenticate. This assertion was originally written to accept either
+  // and so did not catch that.
+  assert.equal(response.status, 401, 'the service must challenge, so the browser prompts');
+  assert.match(response.headers['www-authenticate'] || '', /^Basic/,
+    'a challenge without WWW-Authenticate does not prompt anything');
+});
+
+test('service: an unknown user is refused rather than quietly given access', async () => {
+  // Mocked authentication accepts any name with any password and grants an
+  // unrecognised one no roles. That is safe - it fails closed - but it means a
+  // mistyped sign-in looks like a broken application rather than a bad
+  // password, which is why the UI has to explain it.
+  const response = await GET('/ai/ShrinkAlerts?$top=1', as('nobody'));
+  expectStatus(response, 403, 'an unknown user reading alerts');
+  assert.match(response.data?.error?.message || '', /nobody/,
+    'the message should name the user, so the UI can tell them who they are');
 });
 
 test('service: a viewer may read but not work the queue', async () => {

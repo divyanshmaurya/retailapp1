@@ -499,6 +499,11 @@ function showError(message, detail) {
     + (detail ? `<code>${Shell.esc(detail)}</code>` : '') + '</div>';
 }
 
+/** Signed out, or signed in as somebody without the roles. */
+function showAuthError(error) {
+  document.getElementById('errorHost').innerHTML = Shell.authErrorHtml(error);
+}
+
 function showSkeletons() {
   document.getElementById('stats').innerHTML = Array.from({ length: 6 }, () =>
     '<div class="stat"><div class="skeleton skeleton-row" style="width:60%"></div>'
@@ -550,8 +555,8 @@ async function loadAll() {
     document.getElementById('statusLine').textContent =
       `Updated ${new Date().toLocaleTimeString()} · ${insights.length} insights, ${hours.length} store-hour aggregates.`;
   } catch (error) {
-    if (error.status === 401) {
-      showError('Not signed in.', 'Development uses mocked authentication — reload and sign in as manager / manager.');
+    if (Shell.isAuthError(error)) {
+      showAuthError(error);
     } else {
       showError('Could not load dashboard data.', error.message);
     }

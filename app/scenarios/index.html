@@ -459,10 +459,10 @@ async function loadRows() {
   } catch (error) {
     document.getElementById('kpis').innerHTML = '';
     document.getElementById('rowCount').textContent = '';
-    host.innerHTML = `<div class="state-error" style="margin:16px"><strong>Could not load ${Shell.esc(view.entity)}.</strong>`
-      + `<code>${Shell.esc(error.message)}</code>`
-      + (error.status === 401 ? '<div style="margin-top:6px">Sign in as manager / manager and reload.</div>' : '')
-      + '</div>';
+    host.innerHTML = Shell.isAuthError(error)
+      ? Shell.authErrorHtml(error)
+      : `<div class="state-error" style="margin:16px"><strong>Could not load ${Shell.esc(view.entity)}.</strong>`
+        + `<code>${Shell.esc(error.message)}</code></div>`;
   } finally {
     state.loading = false;
   }
