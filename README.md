@@ -88,13 +88,46 @@ Three stages, each independently runnable:
 | 2. Synthesize | `npm run synthesize` | Builds the store network and all fact tables into `db/data/` |
 | 3. Score | `npm run build:ai` | Runs the six engines and writes the AI entity CSVs |
 
-Stage 2 is seeded, so the dataset is reproducible byte for byte.
+The whole pipeline is reproducible byte for byte: stage 2 is seeded, and stage 3
+stamps its output from the last observed business date rather than from the
+clock. CI re-runs it and fails if the committed CSVs no longer match.
+
+#### Loading a new export
+
+A fresh export can be merged into what is already there instead of replacing it:
+
+```bash
+cp CompleteSalesReport_July.xlsx data/source/
+npm run etl:incremental
+```
+
+Not every table merges the same way, and the difference matters:
+
+- **`hourly_sales` is a fact table** - one row per article per trading hour. New
+  days are added; an hour that appears in both exports is superseded by the
+  later one, on the assumption that a re-export is a correction.
+- **Everything else is a summary of the reported period.** `articles` is units
+  and revenue per article across the whole window, not per day, so two
+  overlapping exports cannot be added together without double-counting. The
+  wider export replaces the narrower one, and a narrower one is left alone.
+
+Each workbook is recorded in `data/canonical/manifest.json` with a content hash
+and the date range it covered, so re-running over unchanged files does nothing
+and you can see which export contributed what. `--force` re-ingests anyway;
+merging is idempotent, so that is safe.
 
 ### Tests
 
 ```bash
-npm test                  # 23 unit tests over the engines
+npm test                  # 61 tests: the engines, and the OData services
+npm run test:etl          # the incremental merge
+npm run test:ui           # loads every page in Chromium, needs a running server
 ```
+
+`npm test` covers the engines on hand-built fixtures and the services through
+`cds.test`, which boots CAP in-process against a throwaway database. The service
+tests are where the projections, the role enforcement, the queue actions and the
+audit trail are pinned down - none of which the engine tests can see.
 
 ---
 

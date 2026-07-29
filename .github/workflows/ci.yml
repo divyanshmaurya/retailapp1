@@ -63,6 +63,9 @@ jobs:
       - name: Install the ETL's Python dependencies
         run: pip install pandas openpyxl
 
+      - name: Test the incremental merge
+        run: npm run test:etl
+
       # The generated CSVs are committed, so re-running the pipeline and
       # finding a diff means the committed data no longer matches the code
       # that claims to produce it. The engines are deterministic and the

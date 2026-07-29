@@ -17,6 +17,7 @@ Usage:
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import re
 import sys
@@ -450,6 +451,102 @@ EXTRACTORS = {
 }
 
 
+# ---------------------------------------------------------------------------
+# Incremental ingestion
+# ---------------------------------------------------------------------------
+#
+# Not every canonical table can be merged the same way, and getting this wrong
+# is how you double-count.
+#
+# ``hourly_sales`` is a fact table: one row per article per trading hour. A new
+# export covering later days genuinely adds rows, and the two can be unioned on
+# their natural key.
+#
+# Every other table in this export is a *summary for the reported period* -
+# ``articles`` is units and revenue per article over the whole window, not per
+# day. Two exports covering overlapping windows cannot be added together; the
+# later, wider export simply supersedes the earlier one. So those are replaced
+# rather than merged, and only by an export that covers at least as much.
+
+MERGE_KEYS = {
+    "hourly_sales": ["articleName", "hourStart"],
+}
+
+
+def file_digest(path: Path) -> str:
+    """Content hash, so re-running over an unchanged workbook is a no-op."""
+    digest = hashlib.sha256()
+    with path.open("rb") as handle:
+        for chunk in iter(lambda: handle.read(1 << 20), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
+def load_existing(target: Path):
+    """Read a canonical CSV back, or None when this is the first run."""
+    if not target.exists():
+        return None
+    frame = pd.read_csv(target)
+    return frame if not frame.empty else None
+
+
+def _comparable(frame, keys: list[str]):
+    """
+    Render the key columns as text on both sides before they are compared.
+
+    A fresh extract types ``hourStart`` as datetime64 while the same column read
+    back from CSV is a string. Left alone they never compare equal, so every
+    re-ingested hour is appended as a new row instead of superseding the old
+    one - the table silently doubles and every downstream total with it.
+    """
+    out = frame.copy()
+    for key in keys:
+        if key in out.columns:
+            out[key] = out[key].astype(str)
+    return out
+
+
+def merge_on_key(existing, incoming, keys: list[str]):
+    """
+    Union two extracts of the same fact table.
+
+    Where a key appears in both, the incoming row wins: a later export of the
+    same hour is a correction, not a duplicate. Rows are returned in key order
+    so the output is stable regardless of which workbook contributed what.
+    """
+    incoming = _comparable(incoming, keys)
+    if existing is not None:
+        existing = _comparable(existing, keys)
+
+    if existing is None:
+        combined = incoming.copy()
+    else:
+        # Align columns, so a schema that gained a field does not silently drop
+        # it or produce a ragged frame.
+        for column in incoming.columns:
+            if column not in existing.columns:
+                existing[column] = pd.NA
+        for column in existing.columns:
+            if column not in incoming.columns:
+                incoming[column] = pd.NA
+        combined = pd.concat([existing, incoming[existing.columns]], ignore_index=True)
+
+    before = len(combined)
+    combined = combined.drop_duplicates(subset=keys, keep="last")
+    combined = combined.sort_values(by=keys, kind="stable").reset_index(drop=True)
+    return combined, before - len(combined)
+
+
+def coverage(frame) -> tuple[str | None, str | None]:
+    """The date range a fact extract covers, for the manifest and for logging."""
+    if frame is None or frame.empty or "date" not in frame.columns:
+        return None, None
+    dates = frame["date"].dropna().astype(str)
+    if dates.empty:
+        return None, None
+    return dates.min(), dates.max()
+
+
 def discover_workbooks(source: Path) -> list[Path]:
     books = sorted(p for p in source.glob("*.xlsx") if not p.name.startswith("~$"))
     if not books:
@@ -478,36 +575,105 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--source", required=True, type=Path, help="folder holding the SAP .xlsx exports")
     parser.add_argument("--out", type=Path, default=Path("data/canonical"))
+    parser.add_argument(
+        "--incremental",
+        action="store_true",
+        help=(
+            "merge into the existing canonical data instead of replacing it. "
+            "Fact rows are unioned on their natural key; period summaries are "
+            "replaced only by an export that covers at least as much."
+        ),
+    )
+    parser.add_argument(
+        "--force",
+        action="store_true",
+        help="re-ingest workbooks even if their contents have not changed",
+    )
     args = parser.parse_args()
 
     books = discover_workbooks(args.source)
-    primary = pick_primary(books)
     args.out.mkdir(parents=True, exist_ok=True)
+    manifest_path = args.out / "manifest.json"
+
+    previous = {}
+    if args.incremental and manifest_path.exists():
+        try:
+            previous = json.loads(manifest_path.read_text())
+        except json.JSONDecodeError:
+            print("Existing manifest is unreadable; treating this as a first run.")
+
+    already = previous.get("ingested", {}) if args.incremental else {}
+    digests = {book.name: file_digest(book) for book in books}
+
+    fresh = [
+        book for book in books
+        if args.force or already.get(book.name, {}).get("sha256") != digests[book.name]
+    ]
+    if args.incremental and not fresh:
+        print("Nothing to do: every workbook has already been ingested unchanged.")
+        print("Use --force to ingest them again.")
+        return
+
+    if args.incremental:
+        skipped = len(books) - len(fresh)
+        if skipped:
+            print(f"Skipping {skipped} workbook(s) already ingested unchanged.")
+
+    primary = pick_primary(fresh if args.incremental else books)
+    print(f"Primary export: {primary.name}")
 
     manifest = {
         "workbooks": [b.name for b in books],
         "primary": primary.name,
+        "mode": "incremental" if args.incremental else "full",
         "reportMeta": parse_meta(read_sheet(primary, "Revenue per POS system")).__dict__,
         "cashingUp": extract_cashing_up(primary),
-        "tables": {},
+        "tables": dict(previous.get("tables", {})) if args.incremental else {},
+        "ingested": dict(already),
     }
 
-    print(f"Primary export: {primary.name}")
     for name, extractor in EXTRACTORS.items():
-        frame = extractor(primary)
         target = args.out / f"{name}.csv"
+        incoming = extractor(primary)
+        keys = MERGE_KEYS.get(name)
+
+        if args.incremental and keys and all(k in incoming.columns for k in keys):
+            existing = load_existing(target)
+            frame, replaced = merge_on_key(existing, incoming, keys)
+            added = len(frame) - (0 if existing is None else len(existing))
+            note = f"+{added} new, {replaced} superseded"
+        elif args.incremental and load_existing(target) is not None:
+            # A period summary. Replacing it with a narrower export would throw
+            # away data, and adding it to the old one would count the overlap
+            # twice, so a narrower export is left alone and said so.
+            existing = load_existing(target)
+            if len(incoming) < len(existing):
+                print(f"  {name:<18} {len(existing):>6} rows    kept (this export is narrower)")
+                continue
+            frame, note = incoming, "replaced (period summary)"
+        else:
+            frame, note = incoming, ""
+
         frame.to_csv(target, index=False)
-        manifest["tables"][name] = {"rows": len(frame), "columns": list(frame.columns)}
-        print(f"  {name:<18} {len(frame):>6} rows -> {target}")
+        first, last = coverage(frame)
+        manifest["tables"][name] = {
+            "rows": len(frame),
+            "columns": list(frame.columns),
+            **({"from": first, "to": last} if first else {}),
+        }
+        print(f"  {name:<18} {len(frame):>6} rows -> {target}{'  ' + note if note else ''}")
 
     # The secondary export is the latest single day; keep its hourly rows so the
     # dataset extends to the most recent trading hour available.
-    for book in books:
+    for book in (fresh if args.incremental else books):
         if book == primary:
             continue
         latest = extract_hourly_sales(book)
         if not latest.empty:
             target = args.out / "hourly_sales_latest.csv"
+            keys = MERGE_KEYS["hourly_sales"]
+            if args.incremental:
+                latest, _ = merge_on_key(load_existing(target), latest, keys)
             latest.to_csv(target, index=False)
             manifest["tables"]["hourly_sales_latest"] = {
                 "rows": len(latest),
@@ -516,8 +682,19 @@ def main() -> None:
             print(f"  {'hourly_sales_latest':<18} {len(latest):>6} rows -> {target}")
             break
 
-    (args.out / "manifest.json").write_text(json.dumps(manifest, indent=2, default=str))
-    print(f"\nManifest written to {args.out / 'manifest.json'}")
+    # Record what each workbook contributed, so the next incremental run can
+    # tell an unchanged file from one that has been re-exported.
+    for book in books:
+        entry = dict(already.get(book.name, {}))
+        entry["sha256"] = digests[book.name]
+        if book in fresh or not args.incremental:
+            hours = extract_hourly_sales(book)
+            first, last = coverage(hours)
+            entry.update({"hourlyRows": len(hours), "from": first, "to": last})
+        manifest["ingested"][book.name] = entry
+
+    manifest_path.write_text(json.dumps(manifest, indent=2, default=str))
+    print(f"\nManifest written to {manifest_path}")
 
 
 if __name__ == "__main__":

@@ -29,11 +29,13 @@
     "deploy:local": "cds deploy --to sqlite:db/smartstore.db",
     "deploy:hana": "cds deploy --to hana:smartstore-db --store-credentials",
     "etl": "python3 tools/etl_sap_export.py --source data/source --out data/canonical",
+    "etl:incremental": "python3 tools/etl_sap_export.py --source data/source --out data/canonical --incremental",
     "synthesize": "python3 tools/synthesize_dataset.py --canonical data/canonical --out db/data",
     "build:ai": "node tools/generate_ai_outputs.js --data db/data",
     "pipeline": "npm run etl && npm run synthesize && npm run build:ai",
     "test": "node --test test/**/*.test.js",
-    "test:ui": "node test/smoke-ui.mjs"
+    "test:ui": "node test/smoke-ui.mjs",
+    "test:etl": "python3 -m unittest discover -s tools -p 'test_*.py'"
   },
   "cds": {
     "requires": {
