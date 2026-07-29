@@ -27,6 +27,7 @@
     "build": "cds build --production",
     "deploy:local": "cds deploy --to sqlite:db/smartstore.db",
     "deploy:hana": "cds deploy --to hana:smartstore-db --store-credentials",
+    "hybrid": "cds watch --profile hybrid",
     "etl": "python3 tools/etl_sap_export.py --source data/source --out data/canonical",
     "synthesize": "python3 tools/synthesize_dataset.py --canonical data/canonical --out db/data",
     "build:ai": "node tools/generate_ai_outputs.js --data db/data",
