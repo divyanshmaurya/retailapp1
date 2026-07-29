@@ -85,8 +85,16 @@
 </head>
 <body class="sapUiBody">
 
+<!--
+  data-height and data-width are ComponentContainer settings, and they are what
+  actually matter here. A CSS height on this div styles the div; the container
+  control UI5 creates inside it keeps its own unset height, renders at zero, and
+  the app builds correctly but is never visible. That is a blank page with a
+  clean console, which is a miserable thing to debug.
+-->
 <div id="ui5-app" data-sap-ui-component data-name="smart.retail.checkoutintegrity" data-id="container"
-     data-settings='{"id":"smart.retail.checkoutintegrity"}' style="height:100%"></div>
+     data-settings='{"id":"smart.retail.checkoutintegrity"}'
+     data-height="100%" data-width="100%"></div>
 
 <div id="ui5-fallback">
   <h1>Checkout Integrity Radar could not start</h1>
