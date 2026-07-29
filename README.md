@@ -191,6 +191,19 @@ curl -u manager:manager -X POST localhost:4004/ai/simulateForecast \
 curl -u manager:manager -X POST localhost:4004/ai/simulateMarkdown \
   -H 'Content-Type: application/json' \
   -d '{"store_ID":"WDF01","article_ID":"AR00245","discountPct":30}'
+
+# Replay the forecast from a point inside the loaded history, then score it
+# against what actually sold. Without asOf the horizon sits entirely in the
+# future and there is nothing to measure.
+curl -u analyst:analyst -X POST localhost:4004/ai/recalculate \
+  -H 'Content-Type: application/json' \
+  -d '{"scenario":"DEMAND_FORECAST","asOf":"2026-06-26T12:00:00Z"}'
+curl -u analyst:analyst -X POST localhost:4004/ai/backfillActuals \
+  -H 'Content-Type: application/json' -d '{}'
+
+# Did acting on the recommendations actually work?
+curl -u analyst:analyst -X POST localhost:4004/ai/evaluateOutcomes \
+  -H 'Content-Type: application/json' -d '{"asOf":"2026-06-20"}'
 ```
 
 ---
@@ -216,12 +229,36 @@ StoreManager roles.
 - **Forecast accuracy is reported as WAPE, not MAPE.** Hourly SKU demand here is intermittent —
   most non-zero hours sell one or two units — and MAPE is close to meaningless on that shape,
   because a one-unit miss against a one-unit actual is a 100% error. Current backtest over a
-  14-day holdout: **28.8% WAPE at store-day grain**, 186% at SKU-hour grain. The store-day figure
-  is the one to judge it by; the SKU-hour figure is reported rather than hidden because that is
-  genuinely how hard the grain is.
+  14-day holdout: **30.2% WAPE at store-day grain**, 180% at SKU-hour grain.
+- **A WAPE on its own cannot be read at SKU-hour grain, so it is never shown alone.** On
+  intermittent demand the *all-zero* forecast scores exactly 100%, because its total absolute
+  error is the total actual volume. Any honest forecast scores worse than that, and shrinking a
+  forecast toward zero improves the number all the way down — so a falling SKU-hour WAPE is just
+  as likely to mean the model has quietly stopped predicting demand. The scorecard therefore
+  carries three figures beside it: what a seasonal-naive forecast (last week, same hour) achieves,
+  the model's skill against that benchmark, and the signed bias. Currently **+11.5% skill at
+  store-day** and **−1.1% at SKU-hour** — the model earns its keep at the grain decisions are
+  taken at, and does not beat last week at the grain below it. That is the honest picture, and it
+  was invisible while only WAPE was reported.
+- **Croston's method is used where the series warrants it**, with the Syntetos–Boylan correction,
+  chosen per article by a holdout rather than assumed. 879 of 1,962 forecast rows come from it.
+  Splicing it in naively looked like a large win — SKU-hour WAPE fell from 183% to 163% — but the
+  store-day figure moved the wrong way and the forecast picked up a −14% aggregate bias. Almost
+  all of that "gain" was the shrinkage effect above. Article levels are now reconciled onto the
+  store's own smoothed volume, which removes the bias and is provably a no-op when no article
+  selects Croston.
+- **The backtest refits on the training window.** It used to fit on the whole series, holdout
+  included, and then score itself on it — which measures memorisation, not forecasting.
 - **The backtest scores the full grid, including hours with no sale.** Scoring only the hours that
   recorded a sale would quietly discard every hour the model predicted demand into and none
   arrived — which flattered an earlier version of this model by a wide margin.
+- **Accuracy and outcomes can be measured, not just asserted.** `backfillActuals` matches elapsed
+  forecasts against what actually sold, and `evaluateOutcomes` checks whether acting on a
+  recommendation delivered what it promised. On a fixed dataset both would otherwise be inert,
+  because forecasts run forward from the end of the data — so `recalculate` and `evaluateOutcomes`
+  accept an `asOf` that replays from a point inside the loaded history. Replayed verdicts are
+  labelled as such, and an outcome acted on after the last day of sales stays PENDING rather than
+  being recorded as a failure it has no evidence for.
 - **The engines are transparent, not black boxes.** Every alert carries the evidence and the
   arithmetic behind it, and every insight carries an explicit confidence. That is deliberate: a
   store manager acting on a recommendation should be able to see why.

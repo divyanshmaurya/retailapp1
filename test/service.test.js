@@ -20,6 +20,13 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const path = require('node:path');
 
+// An in-memory database, seeded from db/data on boot exactly as the file-backed
+// one is. Without this the tests inherit the project's configured SQLite file
+// and work the real queue in it - releasing orders, acknowledging alerts,
+// replacing forecasts - so running the suite would quietly leave the developer's
+// database in a state the seed data never described.
+process.env.CDS_REQUIRES_DB_CREDENTIALS_URL = ':memory:';
+
 const cds = require('@sap/cds');
 
 const root = path.resolve(__dirname, '..');
