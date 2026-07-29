@@ -1,0 +1,17 @@
+ID,store_ID,assetId,assetName,detectedAt,measuredTemp,targetTemp,toleranceBand,breachMinutes,severity,criticality,state,stockAtRisk,currency_code,recommendedAction
+CC-00001,BLN01,CH-BLN01,Chiller cabinet - BLN01,2026-07-03T12:00:00Z,9.61,5,3,120,HIGH,1,OPEN,75.59,EUR,"Check door seals and airflow, then re-read in one hour before moving stock."
+CC-00002,STR01,CH-STR01,Chiller cabinet - STR01,2026-06-30T12:00:00Z,9.99,5,3,60,HIGH,1,OPEN,41.23,EUR,"Check door seals and airflow, then re-read in one hour before moving stock."
+CC-00003,WDF01,CH-WDF01,Chiller cabinet - WDF01,2026-06-28T12:00:00Z,13.22,5,3,60,CRITICAL,1,OPEN,39.74,EUR,Move stock to a working cabinet and raise a service call - the unit is far outside band.
+CC-00004,WDF01,CH-WDF01,Chiller cabinet - WDF01,2026-06-29T12:00:00Z,9.64,5,3,60,MEDIUM,2,OPEN,39.74,EUR,"Check door seals and airflow, then re-read in one hour before moving stock."
+CC-00005,WDF01,CH-WDF01,Chiller cabinet - WDF01,2026-07-01T12:00:00Z,10.5,5,3,60,HIGH,1,OPEN,39.74,EUR,"Check door seals and airflow, then re-read in one hour before moving stock."
+CC-00006,WDF01,CH-WDF01,Chiller cabinet - WDF01,2026-07-02T12:00:00Z,8.85,5,3,60,MEDIUM,2,OPEN,39.74,EUR,"Check door seals and airflow, then re-read in one hour before moving stock."
+CC-00007,MUC01,CH-MUC01,Chiller cabinet - MUC01,2026-06-27T12:00:00Z,8.06,5,3,60,MEDIUM,2,OPEN,38.08,EUR,"Check door seals and airflow, then re-read in one hour before moving stock."
+CC-00008,BLN01,CH-BLN01,Chiller cabinet - BLN01,2026-06-28T12:00:00Z,10.1,5,3,60,HIGH,1,OPEN,37.79,EUR,"Check door seals and airflow, then re-read in one hour before moving stock."
+CC-00009,BLN01,CH-BLN01,Chiller cabinet - BLN01,2026-06-30T12:00:00Z,9.49,5,3,60,MEDIUM,2,OPEN,37.79,EUR,"Check door seals and airflow, then re-read in one hour before moving stock."
+CC-00010,BLN01,CH-BLN01,Chiller cabinet - BLN01,2026-07-01T12:00:00Z,1.82,5,3,60,MEDIUM,2,OPEN,37.79,EUR,"Check door seals and airflow, then re-read in one hour before moving stock."
+CC-00011,HAM01,CH-HAM01,Chiller cabinet - HAM01,2026-06-27T12:00:00Z,11.11,5,3,60,HIGH,1,OPEN,36.7,EUR,"Check door seals and airflow, then re-read in one hour before moving stock."
+CC-00012,HAM01,CH-HAM01,Chiller cabinet - HAM01,2026-07-01T12:00:00Z,10.33,5,3,60,HIGH,1,OPEN,36.7,EUR,"Check door seals and airflow, then re-read in one hour before moving stock."
+CC-00013,HAM01,CH-HAM01,Chiller cabinet - HAM01,2026-07-03T12:00:00Z,13.74,5,3,60,CRITICAL,1,OPEN,36.7,EUR,Move stock to a working cabinet and raise a service call - the unit is far outside band.
+CC-00014,WDF02,CH-WDF02,Chiller cabinet - WDF02,2026-06-27T12:00:00Z,12.09,5,3,60,CRITICAL,1,OPEN,33.59,EUR,"Check door seals and airflow, then re-read in one hour before moving stock."
+CC-00015,WDF02,FR-WDF02,Freezer cabinet - WDF02,2026-06-27T12:00:00Z,-16.16,-18,3,120,LOW,3,OPEN,21.37,EUR,"Check door seals and airflow, then re-read in one hour before moving stock."
+CC-00016,HAM01,FR-HAM01,Freezer cabinet - HAM01,2026-07-02T12:00:00Z,-9.72,-18,3,60,CRITICAL,1,OPEN,9.15,EUR,Move stock to a working cabinet and raise a service call - the unit is far outside band.

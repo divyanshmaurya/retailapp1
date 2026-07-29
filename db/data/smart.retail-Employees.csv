@@ -1,0 +1,23 @@
+ID,name,role,store_ID,cashierId
+EMP0001,Ida Haddad,Store Manager,WDF01,smart01
+EMP0002,Marta Lehmann,Shift Lead,WDF01,op002
+EMP0003,Jan Roth,Replenishment Associate,WDF01,op003
+EMP0004,Aaron Hoffmann,Store Manager,WDF02,smart01
+EMP0005,Marta Lindqvist,Shift Lead,WDF02,op005
+EMP0006,Sofia Schneider,Replenishment Associate,WDF02,op006
+EMP0007,Omar Lindqvist,Store Manager,STR01,smart01
+EMP0008,Hanna Lehmann,Shift Lead,STR01,op008
+EMP0009,Fatima Wagner,Replenishment Associate,STR01,op009
+EMP0010,Mira Novak,Store Manager,BLN01,smart01
+EMP0011,Jonas Schulz,Shift Lead,BLN01,op011
+EMP0012,Felix Moreau,Replenishment Associate,BLN01,op012
+EMP0013,Ingrid Schulz,Fresh Food Associate,BLN01,op013
+EMP0014,Mira Kern,Remote Supervisor,BLN01,op014
+EMP0015,Noah Hoffmann,Store Manager,MUC01,smart01
+EMP0016,Nora Brandt,Shift Lead,MUC01,op016
+EMP0017,Emilia Schneider,Replenishment Associate,MUC01,op017
+EMP0018,Elias Vogel,Store Manager,HAM01,smart01
+EMP0019,Elias Kern,Shift Lead,HAM01,op019
+EMP0020,Ida Schulz,Replenishment Associate,HAM01,op020
+EMP0021,Hanna Brandt,Fresh Food Associate,HAM01,op021
+EMP0022,Lukas Meyer,Remote Supervisor,HAM01,op022

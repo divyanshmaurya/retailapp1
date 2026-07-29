@@ -1,0 +1,328 @@
+ID,name,group_ID,supplier_ID,unitPriceGross,unitCost,vatRatePct,currency_code,isDeposit,isRfidTagged,shelfLifeDays,abcClass,shelfCapacity,reorderPoint,isFromSapExport
+AR90004,"Leergut 0,25 EUR",PFAND,SUP005,0.25,0.0,19.2,EUR,True,False,0,A,36,12,True
+AR90003,"Leergut 0,15 EUR",PFAND,SUP004,0.15,0.0,16.8,EUR,True,False,0,A,16,5,True
+AR90013,"Red Bull 0,25",ENERGYDRINKS,SUP004,1.7,0.8872,18.8,EUR,False,True,0,A,9,3,True
+AR90002,"Leergut 0,08 EUR",PFAND,SUP007,0.08,0.0,17.9,EUR,True,False,0,B,9,3,True
+AR90039,"Coca Cola Zero 0,4L Glas Mehrweg",COLAMIX_GETRANKE,SUP002,1.5,0.7815,19.0,EUR,False,True,0,A,7,2,True
+AR90018,DPG Vitamin Well Reload,WASSER_AROMATISIERT,SUP007,1.95,1.016,19.0,EUR,False,True,0,A,6,2,True
+AR00395,Koro Protein Bar Schoko Brownie,PROTEIN_RIEGEL,SUP008,2.5,1.2862,6.9,EUR,False,True,0,A,6,2,True
+AR00394,Koro Protein Bar Pistachio,PROTEIN_RIEGEL,SUP003,2.9,1.4907,7.0,EUR,False,True,0,A,6,2,True
+AR00136,La Magnum Almond,IMPULSEIS,SUP006,2.7,1.5126,7.1,EUR,False,True,0,A,6,2,True
+AR90034,Welde Slow,BIER,SUP009,1.7,0.9429,19.0,EUR,False,True,0,A,6,2,True
+AR90015,Red Bull Zero,ENERGYDRINKS,SUP009,1.7,0.8865,18.9,EUR,False,True,0,A,6,2,True
+AR00188,Laugenbrezel mit Butter,HERZHAFTE_BACKWAREN,SUP005,1.8,0.9244,7.1,EUR,False,True,1,A,6,2,True
+AR00080,Beef Jerky Original,SNACKS,SUP004,2.5,1.3811,6.8,EUR,False,True,0,A,6,2,True
+AR90014,"Red Bull Sugar Free 0,25",ENERGYDRINKS,SUP004,1.7,0.8865,18.9,EUR,False,True,0,A,6,2,True
+AR90012,Red Bull Green Edition,ENERGYDRINKS,SUP008,1.7,0.8857,19.0,EUR,False,True,0,A,6,2,True
+AR00245,HOMEMADE Breakfastcup 285g,FRUHSTUCK,SUP003,3.1,1.8559,6.9,EUR,False,True,3,A,6,2,True
+AR00010,Protein Bar Chocolate,PROTEIN_RIEGEL,SUP007,1.0,0.5126,7.3,EUR,False,True,0,A,6,2,True
+AR00009,Protein Bar Caramell Toffee,PROTEIN_RIEGEL,SUP001,1.0,0.5131,7.2,EUR,False,True,0,A,6,2,True
+AR90036,Welde Alkoholfrei,BIER,SUP005,1.7,0.9437,18.9,EUR,False,True,0,A,6,2,True
+AR00241,HOMEMADE BUN HAM,HOMEMADE_BUNS,SUP006,2.5,1.4967,6.9,EUR,False,True,1,A,6,2,True
+AR90019,DPG Vitamin Well Hydrate,WASSER_AROMATISIERT,SUP003,1.95,1.0168,18.9,EUR,False,True,0,A,6,2,True
+AR00289,Shot Himbeere Ingwer 60ml,KALTGETRANKE,SUP004,2.2,1.1462,19.0,EUR,False,True,0,A,6,2,True
+AR00240,HOMEMADE BUN Cheese,HOMEMADE_BUNS,SUP004,1.9,1.1396,6.7,EUR,False,True,1,A,6,2,True
+AR00084,La Nogger Choc,IMPULSEIS,SUP007,2.0,1.1215,7.0,EUR,False,True,0,A,6,2,True
+AR00011,Protein Bar Vanilla Stracci,PROTEIN_RIEGEL,SUP004,1.0,0.5126,7.3,EUR,False,True,0,A,6,2,True
+AR00244,HOMEMADE BUN Veggie Laugenecke Tom Moz,HOMEMADE_BUNS,SUP008,2.5,1.4967,6.9,EUR,False,False,1,A,6,2,True
+AR00243,HOMEMADE BUN VEGAN,HOMEMADE_BUNS,SUP003,2.5,1.4967,6.9,EUR,False,True,1,A,6,2,True
+AR00039,Airwaves Menth & Eucalypt,KAUGUMMI,SUP009,1.0,0.5405,7.3,EUR,False,True,0,A,6,2,True
+AR90009,"Powerade Mountain Blast 0,5l PEW",KALTGETRANKE,SUP009,1.6,0.8315,19.3,EUR,False,True,0,A,6,2,True
+AR00001,Kinder Bueno 43g Ferrero,SUSSE_RIEGEL,SUP001,1.0,0.54,7.4,EUR,False,True,0,A,6,2,True
+AR90011,Red Bull White Edition,ENERGYDRINKS,SUP005,1.7,0.8857,19.0,EUR,False,True,0,A,6,2,True
+AR00081,Beef Jerky Sweet & Hot,SNACKS,SUP001,2.5,1.3798,6.9,EUR,False,True,0,A,6,2,True
+AR00138,La Cornetto Haselnuss,IMPULSEIS,SUP005,2.0,1.1215,7.0,EUR,False,True,0,A,6,2,True
+AR00137,La Magnum Classic,IMPULSEIS,SUP005,2.7,1.5126,7.1,EUR,False,True,0,A,6,2,True
+AR90055,Red Bull Summer Edition,ENERGYDRINKS,SUP002,1.7,0.8865,18.9,EUR,False,True,0,A,6,2,True
+AR00024,Snickers Ice Cream Eisrie,IMPULSEIS,SUP002,2.5,1.4032,6.9,EUR,False,True,0,A,6,2,True
+AR90037,"Mezzo Mix 0,4L Glas Mehrweg",COLAMIX_GETRANKE,SUP010,1.5,0.7815,19.0,EUR,False,True,0,A,6,2,True
+AR00193,XL Laugenbrezel 130g FG,HERZHAFTE_BACKWAREN,SUP009,1.4,0.7203,6.9,EUR,False,True,1,A,6,2,True
+AR00065,BLACK FOREST ICE CREAM Schokolade 100ml,IMPULSEIS,SUP003,2.5,1.4019,7.0,EUR,False,True,0,A,6,2,True
+AR00031,Filly Nut Donut,SUSSE_BACKWAREN,SUP007,1.5,0.7703,7.1,EUR,False,True,1,A,6,2,True
+AR90020,DPG Vitamin Well Prepare,WASSER_AROMATISIERT,SUP003,1.95,1.0168,18.9,EUR,False,True,0,A,6,2,True
+AR00242,HOMEMADE BUN Salami,HOMEMADE_BUNS,SUP004,2.5,1.4967,6.9,EUR,False,True,1,A,6,2,True
+AR00210,Snickers Riegel  2 Pack,SUSSE_RIEGEL,SUP005,1.2,0.6499,7.1,EUR,False,True,0,A,6,2,True
+AR00276,Smothie Froosh Pineapple 250ml,SMOOTHIE,SUP007,2.4,1.2515,18.9,EUR,False,True,12,A,6,2,True
+AR00220,Haribo Goldbären 100g,WEINGUMMI,SUP010,1.0,0.54,7.4,EUR,False,True,0,A,6,2,True
+AR00213,Twix Xtra 75g,SUSSE_RIEGEL,SUP008,1.2,0.6499,7.1,EUR,False,True,0,A,6,2,True
+AR90038,"Coca Cola 0,4L Glas Mehrweg",COLAMIX_GETRANKE,SUP008,1.5,0.7815,19.0,EUR,False,True,0,A,6,2,True
+AR00209,Kinderriegel,SUSSE_RIEGEL,SUP010,0.5,0.272,6.6,EUR,False,True,0,B,6,2,True
+AR00013,Berliner Brezel 70g FB,SUSSE_BACKWAREN,SUP002,1.8,0.9244,7.1,EUR,False,True,1,A,6,2,True
+AR00005,Manner Neapolitaner Schnitten 75g,SUSSGEBACK,SUP010,1.0,0.5126,7.3,EUR,False,True,2,A,6,2,True
+AR90054,Red Bull Sea Blue Edition,ENERGYDRINKS,SUP006,1.7,0.8842,19.2,EUR,False,True,0,A,6,2,True
+AR90027,Teinacher Mango Maracuja,KALTGETRANKE,SUP005,1.6,0.8322,19.2,EUR,False,True,0,A,6,2,True
+AR00319,GIANT Flapjack Raspberry,SUSSE_RIEGEL,SUP008,1.2,0.6499,7.1,EUR,False,True,0,A,6,2,True
+AR00054,M&M Peanut,SNACKS,SUP007,1.0,0.5493,7.4,EUR,False,False,0,A,6,2,True
+AR00294,Shot Ginger Apple 60ml,KALTGETRANKE,SUP008,2.2,1.1472,18.9,EUR,False,True,0,A,6,2,True
+AR90031,Teinacher classic,WASSER,SUP009,1.2,0.6263,18.8,EUR,False,True,0,A,6,2,True
+AR00396,Koro Protein Bar Peanut Chocolate,PROTEIN_RIEGEL,SUP005,2.2,1.133,6.8,EUR,False,True,0,A,6,2,True
+AR00322,GIANT Yoghurt Flapjack Banana,SUSSE_RIEGEL,SUP005,1.2,0.6499,7.1,EUR,False,True,0,A,6,2,True
+AR00208,Kinder Country,SUSSE_RIEGEL,SUP009,0.5,0.2718,6.7,EUR,False,True,0,B,6,2,True
+AR00189,Gefüllter Triple Chocolate Muffin,SUSSE_BACKWAREN,SUP006,2.2,1.133,6.8,EUR,False,True,1,A,6,2,True
+AR00026,Chili & Lime Chili & Lima24 Beutel á 4,CHIPS,SUP008,1.2,0.6611,7.1,EUR,False,True,0,A,6,2,True
+AR00190,Brown Donut,SUSSE_BACKWAREN,SUP010,1.5,0.7703,7.1,EUR,False,False,1,A,6,2,True
+AR90033,Teinacher still 0.7,WASSER,SUP009,1.2,0.6263,18.8,EUR,False,True,0,B,6,2,True
+AR00402,Bio poppy & vanilla fairness 45g,SCHOKOLADE,SUP007,1.2,0.6499,7.1,EUR,False,True,0,B,6,2,True
+AR00221,Haribo Color Rado 100g,WEINGUMMI,SUP001,1.0,0.541,7.2,EUR,False,True,0,B,6,2,True
+AR00068,BF ICE CREAM Himbeere Fichte 100ml Bio V,IMPULSEIS,SUP010,2.5,1.4019,7.0,EUR,False,True,0,A,6,2,True
+AR90008,"Hochwald Eiskaffee 0,25l Dose",MILCHMISCHGETRANKE,SUP005,1.4,0.812,6.9,EUR,False,True,14,A,6,2,True
+AR00194,Laugenbrezel mit Pfeffer,HERZHAFTE_BACKWAREN,SUP010,1.8,0.9244,7.1,EUR,False,True,1,A,6,2,True
+AR00187,Twix Ice Cream Eisriegel,IMPULSEIS,SUP009,2.5,1.4032,6.9,EUR,False,True,0,A,6,2,True
+AR00071,Oreo Classic,SUSSGEBACK,SUP002,2.9,1.4907,7.0,EUR,False,True,2,A,6,2,True
+AR90040,FUZE T PFIRSICH,EISTEE,SUP003,1.7,0.8865,18.9,EUR,False,False,0,A,6,2,True
+AR00321,GIANT Flapjack Pecanut,SUSSE_RIEGEL,SUP003,1.2,0.6499,7.1,EUR,False,True,0,B,6,2,True
+AR00160,GO FRESH Tuna Sandwich,SANDWICHES,SUP002,3.8,2.2708,7.1,EUR,False,True,2,A,6,2,True
+AR00157,GO FRESH Wrap Chicken Chi,WRAPS,SUP009,3.8,2.2729,7.0,EUR,False,True,2,A,6,2,True
+AR00003,KitKat,SUSSE_RIEGEL,SUP009,1.0,0.5395,7.5,EUR,False,False,0,B,6,2,True
+AR90042,Welde Weizen,BIER,SUP009,1.9,1.0529,19.1,EUR,False,True,0,A,6,2,True
+AR90030,Teinacher Apfelschorle,KALTGETRANKE,SUP004,1.6,0.8315,19.3,EUR,False,True,0,A,6,2,True
+AR00404,"Bio creamy cocos fairness 37,5g",SCHOKOLADE,SUP005,1.2,0.6499,7.1,EUR,False,True,0,B,6,2,True
+AR00400,Bio cookies & choc fairness 45g,SCHOKOLADE,SUP010,1.2,0.6505,7.0,EUR,False,True,0,B,6,2,True
+AR00286,"Yayla Ayran Tetra 0,25L",MILCHMISCHGETRANKE,SUP007,1.2,0.6263,18.8,EUR,False,True,14,B,6,2,True
+AR00004,Duplo,SUSSE_RIEGEL,SUP002,0.5,0.2718,6.7,EUR,False,True,0,B,6,2,True
+AR90010,"Monster Energy 0,5l",ENERGYDRINKS,SUP009,2.2,1.1472,18.9,EUR,False,True,0,A,6,2,True
+AR00320,GIANT Flapjack Hazelnut,SUSSE_RIEGEL,SUP002,1.2,0.6499,7.1,EUR,False,True,0,B,6,2,True
+AR90035,Welde Naturradler,BIER,SUP005,1.7,0.9437,18.9,EUR,False,True,0,A,6,2,True
+AR90029,Teinacher Johannisbeer Holunder,KALTGETRANKE,SUP002,1.6,0.8308,19.4,EUR,False,True,0,B,6,2,True
+AR90016,Red Bull Blue Edition,ENERGYDRINKS,SUP008,1.7,0.8842,19.2,EUR,False,True,0,B,6,2,True
+AR00454,Airwaves Menth & Eucalypt Box,KAUGUMMI,SUP008,2.9,1.572,7.0,EUR,False,True,0,A,6,2,True
+AR00407,Soft Protein Riegel Salted Peanut Carame,SCHOKOLADE,SUP010,3.2,1.7346,7.0,EUR,False,True,0,A,6,2,True
+AR00159,GO FRESH Sandw Pute Ei,SANDWICHES,SUP001,3.8,2.2729,7.0,EUR,False,True,2,A,6,2,True
+AR00121,Cashews gerös,CHIPS,SUP006,2.2,1.2154,6.8,EUR,False,True,0,A,6,2,True
+AR00064,BLACK FOREST ICE CREAM Vanille 100ml Bio,IMPULSEIS,SUP008,2.5,1.4045,6.8,EUR,False,True,0,A,6,2,True
+AR00060,Hofeis Knusperkeks 130ml,IMPULSEIS,SUP002,2.5,1.4032,6.9,EUR,False,True,0,A,6,2,True
+AR00058,Hofeis Mango 130ml,IMPULSEIS,SUP002,2.5,1.4032,6.9,EUR,False,True,0,A,6,2,True
+AR00057,HofEis Erdbeere Sorbet 130ml,IMPULSEIS,SUP005,2.5,1.4019,7.0,EUR,False,True,0,A,6,2,True
+AR00006,Griesson Schoko Mountain Cookies 125g,SUSSGEBACK,SUP008,1.8,0.9261,6.9,EUR,False,True,2,A,6,2,True
+AR00285,Starbucks Cappuccino,MILCHMISCHGETRANKE,SUP003,2.95,1.7093,7.0,EUR,False,True,14,A,6,2,True
+AR00056,HofEis Joghurt Heidelbeere 130ml,IMPULSEIS,SUP010,2.5,1.4019,7.0,EUR,False,True,0,A,6,2,True
+AR00002,Knoppers,SUSSE_RIEGEL,SUP003,0.5,0.2718,6.7,EUR,False,True,0,C,6,2,True
+AR00333,BIO Hafer Drink Moccaccino 12 x 235ml Oa,KALTGETRANKE,SUP007,2.25,1.1723,19.0,EUR,False,True,0,A,6,2,True
+AR00275,Smothie Froosh Mango 250ml,SMOOTHIE,SUP002,2.4,1.2504,19.0,EUR,False,True,12,A,6,2,True
+AR00158,GO FRESH Wrap Tomat Mozza,WRAPS,SUP005,3.8,2.2729,7.0,EUR,False,True,2,A,6,2,True
+AR00094,Disposable cutlery set,FREIZEITARTIKEL,SUP010,0.3,0.12,20.0,EUR,False,True,0,C,6,2,True
+AR00041,Barebells Soft Protein Coco Choco 55g,PROTEIN_RIEGEL,SUP001,3.3,1.6947,7.1,EUR,False,True,0,A,6,2,True
+AR90053,"Moretti Beer 0,33L",BIER,SUP002,2.0,1.1092,19.0,EUR,False,True,0,A,6,2,True
+AR00397,Koro Protein Bar Butter Cups,PROTEIN_RIEGEL,SUP003,2.5,1.2862,6.9,EUR,False,True,0,A,6,2,True
+AR00203,Nussschnecke,SUSSE_BACKWAREN,SUP007,2.5,1.2862,6.9,EUR,False,True,1,A,6,2,True
+AR00185,Bio H Milch 1l Nature,MILCH,SUP001,2.25,1.3866,7.1,EUR,False,True,7,A,6,2,True
+AR00163,GO FRESH Sandw Käse,SANDWICHES,SUP002,3.8,2.2729,7.0,EUR,False,True,2,A,6,2,True
+AR00027,Black Truffle Trufa Negra 24 Beutel á,CHIPS,SUP001,1.2,0.6617,7.0,EUR,False,True,0,B,6,2,True
+AR00025,Mars Ice Cream Eisriegel,IMPULSEIS,SUP009,2.5,1.4019,7.0,EUR,False,True,0,A,6,2,True
+AR90021,YFood Trink Vanilla,MILCHMISCHGETRANKE,SUP008,4.9,2.8393,7.0,EUR,False,True,14,A,6,2,True
+AR00283,Starbucks Caramel Macchiato,MILCHMISCHGETRANKE,SUP008,2.95,1.7109,6.9,EUR,False,True,14,A,6,2,True
+AR00207,Hanuta 2er 44g,SUSSE_RIEGEL,SUP010,1.0,0.54,7.4,EUR,False,True,0,B,6,2,True
+AR00111,Paprika Chips,CHIPS,SUP002,2.5,1.3798,6.9,EUR,False,True,0,A,6,2,True
+AR00292,Shot Beetroot 60ml,KALTGETRANKE,SUP008,2.2,1.1472,18.9,EUR,False,True,0,B,6,2,True
+AR00222,Haribo Tropifrutti 100g. 30St.,WEINGUMMI,SUP005,1.0,0.5405,7.3,EUR,False,True,0,B,6,2,True
+AR00211,Mars Riegel Mars 2 Pack 70g,SUSSE_RIEGEL,SUP002,1.2,0.6499,7.1,EUR,False,True,0,B,6,2,True
+AR00166,GO FRESH Sandw SweetChili,SANDWICHES,SUP006,3.8,2.2729,7.0,EUR,False,True,2,A,6,2,True
+AR00164,GO FRESH Wrap Linse Falaf,WRAPS,SUP002,3.8,2.2729,7.0,EUR,False,False,2,A,6,2,True
+AR00154,Snickers Protein Riegel,PROTEIN_RIEGEL,SUP003,3.2,1.6449,7.0,EUR,False,True,0,A,6,2,True
+AR00109,M Cooky Spritzgebäck,SUSSGEBACK,SUP010,2.0,1.029,6.9,EUR,False,True,2,B,6,2,True
+AR00095,Nissin Cup Noodles Chicke,FERTIGGERICHTE,SUP008,2.6,1.5551,7.0,EUR,False,True,4,A,6,2,True
+AR00399,Gepa Schokolade Noir Edelbitter 100g,SCHOKOLADE,SUP001,2.75,1.4907,7.0,EUR,False,True,0,A,6,2,True
+AR00332,BIO Hafer Drink Cappuccino Oatly,KALTGETRANKE,SUP005,2.25,1.1723,19.0,EUR,False,True,0,B,6,2,True
+AR00293,Shot Cucumber Ginger 60ml,KALTGETRANKE,SUP003,2.2,1.1472,18.9,EUR,False,True,0,B,6,2,True
+AR00161,GO FRESH Sanw Schink Goud,SANDWICHES,SUP001,3.8,2.2729,7.0,EUR,False,True,2,A,6,2,True
+AR00448,Aramark Seasoning Mix,FEINKOST,SUP001,3.89,2.3994,7.0,EUR,False,True,5,A,6,2,True
+AR00282,Starbucks Caffé Latte,MILCHMISCHGETRANKE,SUP009,2.95,1.7109,6.9,EUR,False,True,14,A,6,2,True
+AR00204,Croissant Schnecke,SUSSE_BACKWAREN,SUP003,1.8,0.9244,7.1,EUR,False,True,1,B,6,2,True
+AR00178,Pringles Original,CHIPS,SUP006,1.4,0.7727,6.9,EUR,False,True,0,B,6,2,True
+AR00059,HofEis Omas Apfelkuchen 130ml,IMPULSEIS,SUP001,2.5,1.4032,6.9,EUR,False,True,0,B,6,2,True
+AR00055,HofEis Stracciatella 130ml,IMPULSEIS,SUP009,2.5,1.4032,6.9,EUR,False,True,0,B,6,2,True
+AR90041,FUZE T ZITRONE,EISTEE,SUP003,1.7,0.8865,18.9,EUR,False,True,0,B,6,2,True
+AR00416,Coffee Cup Big1,KAFFEE,SUP003,2.0,1.042,19.0,EUR,False,True,0,B,6,2,True
+AR00415,Coffee Cup Small,KAFFEE,SUP009,1.5,0.7815,19.0,EUR,False,True,0,B,6,2,True
+AR00405,"Bio hazel nougat fairness 37,5g",SCHOKOLADE,SUP008,1.2,0.5859,18.8,EUR,False,True,0,B,6,2,True
+AR00403,"Bio double milk fairness 37,5g",SCHOKOLADE,SUP008,1.2,0.5859,18.8,EUR,False,True,0,B,6,2,True
+AR00318,GIANT Flapjack Blueberry,SUSSE_RIEGEL,SUP005,1.2,0.6505,7.0,EUR,False,True,0,B,6,2,True
+AR00215,Red Band Briket Sup. Sauer 200St. Dose,WEINGUMMI,SUP007,6.9,3.7402,7.0,EUR,False,True,0,A,6,2,True
+AR00129,BiFi Roll,SNACKS,SUP010,1.4,0.7727,6.9,EUR,False,True,0,B,6,2,True
+AR00122,Pistazien ger,CHIPS,SUP001,2.5,1.3798,6.9,EUR,False,True,0,B,6,2,True
+AR00101,Brezeln,SNACKS,SUP003,1.9,1.0496,6.8,EUR,False,True,0,B,6,2,True
+AR00040,Barebells Caramel Choco 55g,PROTEIN_RIEGEL,SUP007,3.3,1.6963,7.0,EUR,False,True,0,A,6,2,True
+AR90006,Hochwald Eis Macchiato,MILCHMISCHGETRANKE,SUP004,1.4,0.812,6.9,EUR,False,True,14,B,6,2,True
+AR00401,Bio honey almond fairness 45g,SCHOKOLADE,SUP003,1.2,0.6499,7.1,EUR,False,True,0,B,6,2,True
+AR00387,Apfelchips,CHIPS,SUP005,3.0,1.6527,7.1,EUR,False,True,0,B,6,2,True
+AR00367,"Snack Nüsse, geröstet & gesalzen",CHIPS,SUP003,3.75,2.0658,7.1,EUR,False,True,0,A,6,2,True
+AR90023,Teinacher Heidelbeer Eistee,EISTEE,SUP005,1.6,0.8329,19.1,EUR,False,True,0,B,6,2,True
+AR00288,Smothie Froosh  Strawberry 250ml,SMOOTHIE,SUP007,2.4,1.2515,18.9,EUR,False,False,12,B,6,2,True
+AR00223,Saltletts Sticks 75g,SNACKS,SUP007,0.7,0.3835,7.7,EUR,False,True,0,C,6,2,True
+AR00219,Ritter Sport Edel Vollmilch 100g,SCHOKOLADE,SUP007,1.9,1.0328,6.7,EUR,False,True,0,B,6,2,True
+AR00169,Fe Yogurette,SCHOKOLADE,SUP006,2.5,1.3564,6.9,EUR,False,True,0,B,6,2,True
+AR00151,Rexona Deo Men Cobalt Dry,KORPERPFLEGE,SUP008,3.9,1.5744,18.9,EUR,False,True,0,A,6,2,True
+AR00145,OralB Classic Car 35 Mit,DROGERIEARTIKEL,SUP003,1.1,0.4422,19.4,EUR,False,True,0,C,6,2,True
+AR00120,Studentenfutt,CHIPS,SUP005,2.0,1.1028,7.0,EUR,False,True,0,B,6,2,True
+AR00115,Mentos Gum Pure Frost,BONBONS,SUP005,3.5,1.899,6.9,EUR,False,True,0,B,6,2,True
+AR00114,Pringles Sweet Paprika,CHIPS,SUP001,1.4,0.772,7.0,EUR,False,True,0,B,6,2,True
+AR90051,Untou Bio Matcha Zitrone,KALTGETRANKE,SUP007,1.6,0.8308,19.4,EUR,False,True,0,B,6,2,True
+AR90050,Untou Bio Matcha Lime,KALTGETRANKE,SUP007,1.6,0.8315,19.3,EUR,False,True,0,B,6,2,True
+AR90025,Teinacher Mineralwasser Naturell 0.33,WASSER,SUP009,1.2,0.6263,18.8,EUR,False,True,0,C,6,2,True
+AR00441,HANDL Veggie Almjäger,SB_WURSTWAREN,SUP005,2.79,1.7225,6.9,EUR,False,True,7,B,6,2,True
+AR00406,Riegel Vegan Peanut Caramel 55g Barebell,SCHOKOLADE,SUP003,3.2,1.5597,19.0,EUR,False,True,0,B,6,2,True
+AR00398,Gepa Schokolade Vollmilch 100g Bio Voll,SCHOKOLADE,SUP006,2.35,1.2738,7.0,EUR,False,True,0,B,6,2,True
+AR00386,"Mostbuben  Stille Apfelsaftschorle 0,5",KALTGETRANKE,SUP006,2.0,1.0429,18.9,EUR,False,True,0,B,6,2,True
+AR00291,Shot Kurkuma Orange 60ml,KALTGETRANKE,SUP005,2.2,1.1462,19.0,EUR,False,True,0,B,6,2,True
+AR00278,Gaudenz Cuvée Rot Weingut Knipser,SCHAUMWEIN,SUP007,11.9,6.6,19.0,EUR,False,True,0,A,6,2,True
+AR00214,Kitkat Chunky 40g Nestlé,SUSSE_RIEGEL,SUP002,1.0,0.5395,7.5,EUR,False,True,0,C,6,2,True
+AR00165,GO FRESH Wrap Thunfisch,WRAPS,SUP007,3.8,2.2729,7.0,EUR,False,True,2,B,6,2,True
+AR00144,Toothpaste Blenda Med,KORPERPFLEGE,SUP001,1.9,0.7677,18.8,EUR,False,True,0,B,6,2,True
+AR00096,Leibniz Schokokeks VM,SUSSGEBACK,SUP010,3.95,2.0304,7.0,EUR,False,True,2,B,6,2,True
+AR00090,BiFi Carazza,SNACKS,SUP010,1.3,0.7148,7.3,EUR,False,True,0,C,6,2,True
+AR00008,Schinken Käse Croissant Snack,HERZHAFTE_BACKWAREN,SUP004,1.8,0.9244,7.1,EUR,False,True,1,B,6,2,True
+AR00378,Mein Glück aus Mandeln,AUFSTRICH,SUP005,4.25,2.7035,6.9,EUR,False,True,0,B,6,2,True
+AR00366,"Snack Nüsse, BBQ",CHIPS,SUP010,3.75,2.0678,7.0,EUR,False,True,0,B,6,2,True
+AR00274,Smothie Froosh Blueberry 250ml,SMOOTHIE,SUP001,2.4,1.2515,18.9,EUR,False,True,12,B,6,2,True
+AR00176,Pringles Hot & Spicy,CHIPS,SUP008,1.4,0.7727,6.9,EUR,False,True,0,C,6,2,True
+AR00162,GO FRESH Sandw Salam Edam,SANDWICHES,SUP002,3.8,2.2729,7.0,EUR,False,True,2,B,6,2,True
+AR00135,GO FRESH Pastasalad Chicken,SALATE,SUP009,3.5,2.0915,7.1,EUR,False,True,2,B,6,2,True
+AR00106,Rexona Deo Cotton Dry,KORPERPFLEGE,SUP004,3.9,1.5744,18.9,EUR,False,True,0,B,6,2,True
+AR00074,Mikrowe Pommes extra dünn,TIEFKUHLKOST,SUP007,2.0,1.1215,7.0,EUR,False,True,0,B,6,2,True
+AR00022,Graci Müsli High Power,CEREALIEN,SUP010,3.9,2.4785,7.0,EUR,False,True,0,B,6,2,True
+AR90007,"Hochwald Eisschoko 0,25l Dose",MILCHMISCHGETRANKE,SUP006,1.4,0.812,6.9,EUR,False,True,14,C,6,2,True
+AR00434,Steiner´s High Protein Spätzle,TEIGWAREN___REIS,SUP007,3.89,2.4721,7.0,EUR,False,True,0,B,6,2,True
+AR00365,Snack Nüsse Honig & Salz,CHIPS,SUP004,3.75,2.0658,7.1,EUR,False,True,0,B,6,2,True
+AR00364,Snack Nüsse Chilli,CHIPS,SUP005,3.75,2.0658,7.1,EUR,False,True,0,B,6,2,True
+AR00327,Mahi Sauce Carolina Reaper & Pineapple,FEINKOST,SUP002,3.95,2.4364,7.0,EUR,False,True,5,B,6,2,True
+AR00281,Erbsenprotein Milchersatz Barista 1l Vly,KALTGETRANKE,SUP006,3.25,1.6933,19.0,EUR,False,True,0,B,6,2,True
+AR00277,Mionetto Treviso Prosecco Frizzante,SCHAUMWEIN,SUP004,7.9,4.3815,19.0,EUR,False,True,0,A,6,2,True
+AR00212,Mars Protein 50g,PROTEIN_RIEGEL,SUP002,3.2,1.6449,7.0,EUR,False,True,0,B,6,2,True
+AR00177,Pringles SourCream & Onion,CHIPS,SUP007,1.4,0.7727,6.9,EUR,False,True,0,C,6,2,True
+AR00108,M Cooky Gloria Gebäckmisc,SUSSGEBACK,SUP001,3.0,1.5421,7.0,EUR,False,True,2,B,6,2,True
+AR00107,Gilette Disposable razor,DROGERIEARTIKEL,SUP003,3.7,1.4924,19.0,EUR,False,True,0,B,6,2,True
+AR00087,Parking disc,FREIZEITARTIKEL,SUP002,1.5,0.605,19.0,EUR,False,True,0,C,6,2,True
+AR00069,BF ICE CREAM Weiße Schokolade & Waldbeer,IMPULSEIS,SUP008,2.5,1.4045,6.8,EUR,False,True,0,B,6,2,True
+AR00066,BLACK FOREST ICE CREAM Schwarzw. Kirsch,IMPULSEIS,SUP010,2.5,1.4019,7.0,EUR,False,True,0,B,6,2,True
+AR00063,Tempo Klassik Taschentücher,DROGERIEARTIKEL,SUP007,3.2,1.2897,19.1,EUR,False,True,0,B,6,2,True
+AR00023,Currywurst Snack,HERZHAFTE_BACKWAREN,SUP002,1.8,0.9244,7.1,EUR,False,True,1,C,6,2,True
+AR00021,Graci Müsli light,CEREALIEN,SUP002,3.9,2.4762,7.1,EUR,False,True,0,B,6,2,True
+AR00438,Takis Blue Heat,CHIPS,SUP010,2.35,1.2958,7.0,EUR,False,True,0,C,6,2,True
+AR00433,Steiner´s High Protein Fussili,TEIGWAREN___REIS,SUP002,3.89,2.4721,7.0,EUR,False,True,0,B,6,2,True
+AR00417,LARQ TWIST BOTTLE  Obsidian Black 740ml,FREIZEITARTIKEL,SUP002,44.0,19.7383,7.0,EUR,False,True,0,A,6,2,True
+AR00383,Dr. Kargs Tomate Mozzarella  Knäcke,BROT,SUP007,3.25,1.6721,6.9,EUR,False,True,3,B,6,2,True
+AR00381,La Monegaque Sardinen mit Zitrone,FISCHPRODUKTE,SUP002,3.75,2.3854,6.9,EUR,False,True,7,B,6,2,True
+AR00312,Bellezini Focaccine Rosemary,FEINKOST,SUP008,2.5,1.5449,6.8,EUR,False,True,5,C,6,2,True
+AR00290,Carrot and sea buckthorn shot 60ml,KALTGETRANKE,SUP007,2.2,1.1453,19.1,EUR,False,True,0,C,6,2,True
+AR00279,Bone dry Spätburgunder Rosé,SCHAUMWEIN,SUP007,11.9,6.6,19.0,EUR,False,True,0,A,6,2,True
+AR00198,Tempo fresh to go Protect,DESINFEKTION,SUP005,2.0,0.8067,19.0,EUR,False,True,0,C,6,2,True
+AR00191,Mexicana Stange,HERZHAFTE_BACKWAREN,SUP007,1.8,0.9244,7.1,EUR,False,True,1,C,6,2,True
+AR00152,Leibniz Butterkeks,SUSSGEBACK,SUP008,3.95,2.0323,6.9,EUR,False,True,2,B,6,2,True
+AR00146,Duschdas Shower For Men,KORPERPFLEGE,SUP005,3.95,1.5933,19.0,EUR,False,True,0,B,6,2,True
+AR00141,Barilla Fusilli,TEIGWAREN___REIS,SUP001,2.5,1.5888,7.0,EUR,False,True,0,C,6,2,True
+AR00134,GO FRESH Pastasalat Lyoner Erbse,SALATE,SUP004,3.5,2.0935,7.0,EUR,False,True,2,B,6,2,True
+AR00128,Always Ultra,DAMENHYGIENE,SUP007,4.0,1.7944,7.0,EUR,False,True,0,B,6,2,True
+AR00126,M Candy Schokoerdnüsse,SUSSIGKEITEN,SUP003,1.9,1.0328,6.7,EUR,False,True,0,C,6,2,True
+AR00118,mB Eier frisch ML,EIER,SUP008,2.95,1.8196,7.0,EUR,False,True,14,C,6,2,True
+AR00088,Wick Blau ohne Zucker,BONBONS,SUP005,2.2,1.1948,6.8,EUR,False,True,0,C,6,2,True
+AR00082,Nivea Creme,KORPERPFLEGE,SUP006,2.9,1.1707,18.9,EUR,False,False,0,C,6,2,True
+AR00067,BF ICE CREAM Haselnuss 100ml Bio Vegan,IMPULSEIS,SUP003,2.5,1.4019,7.0,EUR,False,True,0,C,6,2,True
+AR00015,Markenbutter Alu,BUTTER,SUP007,3.3,2.0355,7.0,EUR,False,False,21,B,6,2,True
+AR00456,Heitlinger Pinot Bois,AR133002,SUP004,11.5,6.5714,19.0,EUR,False,False,0,B,6,2,True
+AR00432,ichoc Choco Cookie,SNACKS,SUP005,3.5,1.9299,7.0,EUR,False,True,0,C,6,2,True
+AR00426,Barilla Spaghetti,TEIGWAREN___REIS,SUP008,2.5,1.5918,6.8,EUR,False,True,0,C,6,2,True
+AR00420,Gewürzgurken Durach,KONSERVEN,SUP007,2.6,1.6523,7.0,EUR,False,True,0,C,6,2,True
+AR00419,LARQ Twist Bottle Seaside Mint 740ml,COLAMIX_GETRANKE,SUP006,44.0,25.4953,7.0,EUR,False,True,0,A,6,2,True
+AR00390,LARQ TWIST BOTTLE Granite White 740ml,FREIZEITARTIKEL,SUP008,44.0,19.7383,7.0,EUR,False,True,0,A,6,2,True
+AR00376,Mein Glück Milch Kakao,AUFSTRICH,SUP002,4.25,2.7035,6.9,EUR,False,True,0,C,6,2,True
+AR00375,Stick Lembke Tee Minze Lavendel & Verben,HEISSGETRANKE,SUP009,4.95,2.8682,7.0,EUR,False,True,0,B,6,2,True
+AR00341,Hausmacher Leberwurst 200g Dose,KONSERVEN,SUP003,3.9,2.4762,7.1,EUR,False,True,0,C,6,2,True
+AR00331,The Yeah Blend Green Matcha Latte Powder,HEISSGETRANKE,SUP009,19.5,11.2991,7.0,EUR,False,True,0,A,6,2,True
+AR00325,Mahi Sauce Chipotle Smoked Jalapeno,FEINKOST,SUP010,3.95,2.4387,6.9,EUR,False,True,5,C,6,2,True
+AR00324,Mahi Marinade Peri Peri Mango & Lime,FEINKOST,SUP009,3.3,2.0355,7.0,EUR,False,True,5,C,6,2,True
+AR00317,Bellezini Bruschettine Tomato & Oregano,FEINKOST,SUP010,2.5,1.5449,6.8,EUR,False,True,5,C,6,2,True
+AR00314,Bellezini Focaccine Basil 12 x 150 g,FEINKOST,SUP009,2.5,1.5449,6.8,EUR,False,True,5,C,6,2,True
+AR00280,Grauburgunder | Weingut Oliver Zeter,SCHAUMWEIN,SUP008,11.9,6.6,19.0,EUR,False,True,0,B,6,2,True
+AR00270,Household sponge Zellulose,REINIGUNGSMITTEL,SUP010,2.5,1.0101,18.8,EUR,False,True,0,C,6,2,True
+AR00236,Lunchbox 800ml Edelstahl,LUNCHBOXEN,SUP004,16.0,8.605,19.0,EUR,False,True,2,A,6,2,True
+AR00230,Thermobecher 480ml Bambus & Edelstahl,GETRANKEBEHALTER,SUP002,17.0,0.0,19.0,EUR,True,False,0,A,6,2,True
+AR00218,Ritter Sport Nougat 100g,SCHOKOLADE,SUP003,1.9,1.0328,6.7,EUR,False,True,0,C,6,2,True
+AR00171,Dr Oetker Ofenfrische Peperoni Salami,PIZZA__BAGUETTE,SUP005,3.95,2.3626,7.0,EUR,False,True,3,C,6,2,True
+AR00153,Herta Finesse Schinken 100g,SB_WURSTWAREN,SUP004,3.5,2.1589,7.0,EUR,False,True,7,C,6,2,True
+AR00147,Butcher Lasagne Yeah,TIEFKUHLKOST,SUP007,4.9,2.7477,7.0,EUR,False,True,0,B,6,2,True
+AR00117,BiFi Veggie Roll XXL,SNACKS,SUP003,2.1,1.1569,7.1,EUR,False,True,0,C,6,2,True
+AR00110,Hansaplast Sensitive,DROGERIEARTIKEL,SUP009,3.5,1.4118,19.0,EUR,False,True,0,C,6,2,True
+AR00104,Nissin Cup Veggie Miso,FERTIGGERICHTE,SUP007,2.6,1.5551,7.0,EUR,False,True,4,C,6,2,True
+AR00089,Wick Zitrone ohne Zucker,BONBONS,SUP002,2.2,1.1948,6.8,EUR,False,True,0,C,6,2,True
+AR00070,Milka Alpenmilch,SCHOKOLADE,SUP002,2.3,1.2467,7.0,EUR,False,False,0,C,6,2,True
+AR00047,"Theo Birnen Balsamico Essig 0,5l",ESSIG,SUP007,8.9,5.6561,7.0,EUR,False,True,0,B,6,2,True
+AR00034,ARAMARK Grobes Meersalz 90g Mühle,GEWURZE,SUP009,2.0,1.271,7.0,EUR,False,True,0,C,6,2,True
+AR00033,Salami  Regio Di Parma 80gr,FRISCH_WURSTWAREN,SUP002,3.45,2.128,7.0,EUR,False,True,4,C,6,2,True
+AR00020,Graci Müsli High Beautiful,CEREALIEN,SUP003,3.9,2.4785,7.0,EUR,False,True,0,C,6,2,True
+AR00017,Wheat Germ & Tomato Cuori 250g,TEIGWAREN___REIS,SUP004,3.9,2.4762,7.1,EUR,False,False,0,C,6,2,True
+SM0017,Milk Chocolate Style Raisins,FREIZEITARTIKEL,SUP005,1.99,0.8013,19.2,EUR,False,True,0,C,6,2,True
+SM0014,Sunny Bites Banana Chips,KORPERPFLEGE,SUP006,0.99,0.3983,19.3,EUR,False,True,0,C,6,2,True
+IKA005,"LÅNGLUR - Fruit  smoothie, yellow/added",KALTGETRANKE,SUP002,0.99,0.5145,19.3,EUR,False,True,0,C,6,2,True
+AR90028,Teinacher Rhabarber Mirabelle,KALTGETRANKE,SUP004,1.6,0.8308,19.4,EUR,False,True,0,C,6,2,True
+AR00453,Bifi Roll XXL,SNACKS,SUP006,2.1,1.1569,7.1,EUR,False,True,0,C,6,2,True
+AR00442,Lacroix Tomato Cream Soup,FERTIGGERICHTE,SUP007,2.49,1.4907,6.9,EUR,False,True,4,C,6,2,True
+AR00436,Steiner´s Low Carb Pancakes,FEINKOST,SUP002,4.35,2.6857,6.9,EUR,False,True,5,C,6,2,True
+AR00393,Aufstrich Wie Leberwurst,AUFSTRICH,SUP007,2.75,1.7477,7.0,EUR,False,True,0,C,6,2,True
+AR00392,Proteinaufstrich Paprika Pfeffer,AUFSTRICH,SUP008,2.75,1.7412,7.4,EUR,False,True,0,C,6,2,True
+AR00389,Apfelsaft BIB 3l,KALTGETRANKE,SUP003,5.5,3.1869,7.0,EUR,False,True,0,C,6,2,True
+AR00384,HANDL Almwurzerl,SB_WURSTWAREN,SUP009,3.95,2.4364,7.0,EUR,False,True,7,C,6,2,True
+AR00382,Dr.  Kargs Protein Knäcke,BROT,SUP005,3.25,1.6659,7.3,EUR,False,True,3,C,6,2,True
+AR00380,La Monegaque Sardinen mit Chili,FISCHPRODUKTE,SUP008,3.75,2.381,7.1,EUR,False,True,7,C,6,2,True
+AR00377,Mein Glück aus Haselnüssen,AUFSTRICH,SUP003,4.25,2.6984,7.1,EUR,False,True,0,C,6,2,True
+AR00373,Stick Lembke Tee Minze Limette Hibiskus,HEISSGETRANKE,SUP004,4.95,2.8709,6.9,EUR,False,True,0,C,6,2,True
+AR00371,Stick Lembke Tee Minze Ingwer orange,HEISSGETRANKE,SUP008,4.95,2.8709,6.9,EUR,False,True,0,C,6,2,True
+AR00360,Dosenturm Unsere Besten,KONSERVEN,SUP004,14.9,9.4692,7.0,EUR,False,True,0,B,6,2,True
+AR00359,Geschnetzeltes vom D. Angus Rind im Glas,FERTIGGERICHTE,SUP009,7.9,4.7252,7.0,EUR,False,False,4,C,6,2,True
+AR00356,Wiener im Glas 390g,KONSERVEN,SUP001,5.5,3.4953,7.0,EUR,False,True,0,C,6,2,True
+AR00349,Currywurst im Glas 390g,FERTIGGERICHTE,SUP006,6.6,3.9477,7.0,EUR,False,True,4,C,6,2,True
+AR00346,Rindslyoner 200g Dose,KONSERVEN,SUP005,3.9,2.4762,7.1,EUR,False,True,0,C,6,2,True
+AR00345,Jagdwurst 200g Dose,KONSERVEN,SUP003,3.9,2.4762,7.1,EUR,False,True,0,C,6,2,True
+AR00344,Schinkenwurst 200g Dose,KONSERVEN,SUP001,3.9,2.4762,7.1,EUR,False,True,0,C,6,2,True
+AR00330,The Yeah Blend Pistatcha Latte Powder,HEISSGETRANKE,SUP009,19.5,11.2991,7.0,EUR,False,False,0,B,6,2,True
+AR00323,Mahi Marinade Peri Peri Hot,FEINKOST,SUP006,3.3,2.0336,7.1,EUR,False,True,5,C,6,2,True
+AR00306,Graci Lab. Functional Muesli 50 Gluten,CEREALIEN,SUP007,4.7,2.9841,7.1,EUR,False,True,0,C,6,2,True
+AR00304,Graci Laboratories Muesli Fruits Big Tu,CEREALIEN,SUP009,5.65,3.5907,7.0,EUR,False,False,0,C,6,2,True
+AR00303,Graci Laboratories Muesli NutsBig Tube,CEREALIEN,SUP009,5.65,3.5907,7.0,EUR,False,True,0,C,6,2,True
+AR00302,HIP Oat Milk Chocolate Cookies,SCHOKOLADE,SUP009,3.95,2.1411,7.0,EUR,False,True,0,C,6,2,True
+AR00301,HIP Oat Milk Chocolate Salty Pretzels,SCHOKOLADE,SUP002,3.95,2.1411,7.0,EUR,False,True,0,C,6,2,True
+AR00284,Alpro Haferdrink Barista Glutenfrei,KALTGETRANKE,SUP005,2.35,1.2213,19.3,EUR,False,True,0,C,6,2,True
+AR00271,Kaffee SAP Kaffee 1000gr.,KAFFEEBOHNEN,SUP001,27.0,17.1589,7.0,EUR,False,True,0,B,6,2,True
+AR00231,Deostick Sweet Summer,KORPERPFLEGE,SUP010,3.95,1.5933,19.0,EUR,False,False,0,C,6,2,True
+AR00229,Thermobecher 360ml Bambus & Edelstahl,GETRANKEBEHALTER,SUP008,15.0,0.0,19.0,EUR,True,False,0,B,6,2,True
+AR00228,Zahnbürste Bambus,KORPERPFLEGE,SUP004,6.9,2.7832,19.0,EUR,False,True,0,C,6,2,True
+AR00227,Haarbürste Bambus,DROGERIEARTIKEL,SUP006,11.9,4.8,19.0,EUR,False,True,0,B,6,2,True
+AR00216,Red Band Schnuller Cola 100St. Dose,WEINGUMMI,SUP003,6.9,3.7402,7.0,EUR,False,True,0,C,6,2,True
+AR00201,Aramark Espresso Firenze 1kg,KAFFEEBOHNEN,SUP008,27.0,17.1589,7.0,EUR,False,True,0,B,6,2,True
+AR00197,Knäckebrot Urtyp 250g Burger,BROT,SUP008,1.8,0.9244,7.1,EUR,False,False,3,C,6,2,True
+AR00196,Weizenmehl Typ 405 1kg,MEHL___ZUCKER,SUP009,1.6,1.0197,6.7,EUR,False,True,0,C,6,2,True
+AR00186,Gouda i. Scheiben frisch 100gr,SCHEIBENKASE,SUP010,2.5,1.5449,6.8,EUR,False,True,10,C,6,2,True
+AR00175,Icefrocks Premium Eiswürf,EISWURFEL,SUP004,2.5,1.4045,6.8,EUR,False,True,0,C,6,2,True
+AR00172,Dr. Oetker Ofenfrische 4 Käse,PIZZA__BAGUETTE,SUP001,3.95,2.367,6.8,EUR,False,True,3,C,6,2,True
+AR00156,Duschdas Dusche Sport 225ml Flasche Alte,KORPERPFLEGE,SUP001,3.95,1.5933,19.0,EUR,False,True,0,C,6,2,True
+AR00149,Butcher Chick Curry Ki 400g,TIEFKUHLKOST,SUP003,5.6,3.1431,6.9,EUR,False,True,0,C,6,2,True
+AR00143,Fairy Original Spülmittel,REINIGUNGSMITTEL,SUP003,2.95,1.3246,6.9,EUR,False,False,0,C,6,2,True
+AR00142,Wies Gefl Mortadella     100g,SB_WURSTWAREN,SUP004,1.8,1.1092,7.1,EUR,False,True,7,C,6,2,True
+AR00140,Bautz ner Senf mittelsch,FEINKOST,SUP008,2.9,1.7888,7.0,EUR,False,True,5,C,6,2,True
+AR00133,Zewa UltraSoft Toilettenp,DROGERIEARTIKEL,SUP005,3.5,1.4118,19.0,EUR,False,True,0,C,6,2,True
+AR00132,GO FRESH Salatmix Italia,SALATE,SUP001,6.9,4.1271,7.0,EUR,False,True,2,C,6,2,True
+AR00131,GO FRESH Saladbowl Caesar,SALATE,SUP001,6.9,4.1271,7.0,EUR,False,True,2,C,6,2,True
+AR00119,Oet Baguette Salami,PIZZA__BAGUETTE,SUP005,3.5,2.0935,7.0,EUR,False,True,3,C,6,2,True
+AR00113,Erdnussflips,CHIPS,SUP007,1.9,1.0506,6.7,EUR,False,True,0,C,6,2,True
+AR00105,Anzündwolle,FREIZEITARTIKEL,SUP004,3.95,1.5893,19.3,EUR,False,True,0,C,6,2,True
+AR00098,Kölln Hafer Porridge Frucht 375g,CEREALIEN,SUP002,5.75,3.6576,6.9,EUR,False,True,0,C,6,2,True
+AR00097,Erbsen Möhren Dose Glas,KONSERVEN_GEMUSE,SUP005,4.3,2.7327,7.0,EUR,False,True,0,C,6,2,True
+AR00086,Disposable barbecue,FREIZEITARTIKEL,SUP002,4.95,2.0,18.8,EUR,False,True,0,C,6,2,True
+AR00076,Grill Kohle,FREIZEITARTIKEL,SUP006,5.5,2.2222,18.8,EUR,False,True,0,C,6,2,True
+AR00062,Flash barbecue lighter,FREIZEITARTIKEL,SUP009,1.9,0.7683,18.7,EUR,False,True,0,C,6,2,True
+AR00061,Mais Dose Glas,KONSERVEN_GEMUSE,SUP005,2.5,1.5918,6.8,EUR,False,True,0,C,6,2,True
+AR00053,Tomatenmark 200g Tube,FEINKOST,SUP001,3.4,2.0992,6.9,EUR,False,True,5,C,6,2,True
+AR00050,"Theo Weisskirsch Balsamico 0,5l",ESSIG,SUP002,12.9,8.2058,6.9,EUR,False,True,0,B,6,2,True
+AR00049,"Theo Pflaumen Balsamico 0,5l",ESSIG,SUP006,8.9,5.6561,7.0,EUR,False,True,0,C,6,2,True
+AR00043,BIO Olivenöl nativ extra 500ml,OL,SUP005,8.9,5.6508,7.1,EUR,False,True,0,C,6,2,True
+AR00038,Nutella Glas 450g Glas,AUFSTRICH,SUP009,4.95,3.1487,6.9,EUR,False,True,0,C,6,2,True
+AR00035,ARAMARK BIO Pfeffer schwarz 40g Mühle,GEWURZE,SUP001,2.5,1.5918,6.8,EUR,False,True,0,C,6,2,True
+AR00030,ichoc Jackfruit Coconut vegan 80g,SNACKS,SUP007,3.5,1.9299,7.0,EUR,False,True,0,C,6,2,True
+AR00029,ichoc Salty Pretzel vegan 80g,SNACKS,SUP009,3.5,1.9299,7.0,EUR,False,True,0,C,6,2,True
+AR00019,Graci Laboratories Funtional Meal Cousco,FERTIGGERICHTE,SUP005,1.8,1.0756,7.1,EUR,False,True,4,C,6,2,True
+AR00018,Graci Laboratories Functional Meal Buckw,FERTIGGERICHTE,SUP003,1.8,1.0756,7.1,EUR,False,True,4,C,6,2,True
+SM0018,TOPVALU Joynuts Caramel Coffee,FREIZEITARTIKEL,SUP005,3.95,1.5933,19.0,EUR,False,True,0,C,6,2,True
+SM0016,Natural Happiness Nut & Fruit Mix,FREIZEITARTIKEL,SUP001,3.95,1.5933,19.0,EUR,False,True,0,C,6,2,True
+SM0015,Becky's DUO Cakes,FREIZEITARTIKEL,SUP004,3.95,1.5933,19.0,EUR,False,True,0,C,6,2,True
+IKA018,FAZER - Milk chocolate tablet,SNACKS,SUP005,2.1,1.1579,7.0,EUR,False,True,0,C,6,2,True
+IKA011,KAFFEREP - Oat biscuits,SNACKS,SUP002,2.1,1.1579,7.0,EUR,False,True,0,C,6,2,True
+IKA003,DRYCK BLÅBÄR - Blueberry syrup,KALTGETRANKE,SUP009,2.2,1.1462,19.0,EUR,False,True,0,C,6,2,True

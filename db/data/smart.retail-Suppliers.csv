@@ -1,0 +1,11 @@
+ID,name,country_code,leadTimeDays,reliability,minOrderValue
+SUP001,Red Bull Deutschland,DE,2,0.985,250.0
+SUP002,Koro Handels GmbH,DE,4,0.94,400.0
+SUP003,Hochwald Foods,DE,3,0.962,300.0
+SUP004,Welde Braumanufaktur,DE,5,0.93,350.0
+SUP005,Aramark Fresh Kitchen,DE,1,0.975,120.0
+SUP006,Coca-Cola European Partners,DE,2,0.99,500.0
+SUP007,Nordic Trading AB,SE,9,0.905,900.0
+SUP008,Vitamin Well Nordics,SE,7,0.921,600.0
+SUP009,Regional Bakery Kraichgau,DE,1,0.958,100.0
+SUP010,Unilever Ice Cream DE,DE,3,0.968,450.0

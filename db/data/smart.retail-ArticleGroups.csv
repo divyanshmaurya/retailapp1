@@ -1,0 +1,64 @@
+ID,name,nameDE,category,tempZone,shelfLifeDays
+AR133002,General Merchandise,AR133002,Grocery,AMBIENT,0
+AUFSTRICH,Spreads,Aufstrich,Grocery,AMBIENT,0
+BIER,Beer,Bier,Alcohol,CHILLED,0
+BONBONS,Candy,Bonbons,Confectionery,AMBIENT,0
+BROT,Bread,Brot,Bakery,AMBIENT,3
+BUTTER,Butter,Butter,Fresh,CHILLED,21
+CEREALIEN,Cereals,Cerealien,Grocery,AMBIENT,0
+CHIPS,Crisps,Chips,Snacks,AMBIENT,0
+COLAMIX_GETRANKE,Cola Mixers,ColaMix Getränke,Beverages,CHILLED,0
+DAMENHYGIENE,Feminine Care,Damenhygiene,Non-Food,AMBIENT,0
+DESINFEKTION,Sanitiser,Desinfektion,Non-Food,AMBIENT,0
+DROGERIEARTIKEL,Drugstore,Drogerieartikel,Non-Food,AMBIENT,0
+EIER,Eggs,Eier,Fresh,CHILLED,14
+EISTEE,Iced Tea,Eistee,Beverages,CHILLED,0
+EISWURFEL,Ice Cubes,Eiswürfel,Frozen,FROZEN,0
+ENERGYDRINKS,Energy Drinks,Energydrinks,Beverages,CHILLED,0
+ESSIG,Vinegar,Essig,Grocery,AMBIENT,0
+FEINKOST,Delicatessen,Feinkost,Fresh,CHILLED,5
+FERTIGGERICHTE,Ready Meals,Fertiggerichte,Food to Go,CHILLED,4
+FISCHPRODUKTE,Fish Products,Fischprodukte,Grocery,CHILLED,7
+FREIZEITARTIKEL,Lifestyle & Leisure,Freizeitartikel,Non-Food,AMBIENT,0
+FRISCH_WURSTWAREN,Fresh Cold Cuts,Frisch Wurstwaren,Fresh,CHILLED,4
+FRUHSTUCK,Breakfast,Frühstück,Food to Go,CHILLED,3
+GETRANKEBEHALTER,Beverage Containers,Getränkebehälter,Deposit,AMBIENT,0
+GEWURZE,Spices,Gewürze,Grocery,AMBIENT,0
+HEISSGETRANKE,Hot Drinks,Heissgetränke,Beverages,HOT,0
+HERZHAFTE_BACKWAREN,Savoury Bakery,Herzhafte Backwaren,Bakery,AMBIENT,1
+HOMEMADE_BUNS,Homemade Buns,Homemade Buns,Food to Go,CHILLED,1
+IMPULSEIS,Impulse Ice Cream,Impulseis,Frozen,FROZEN,0
+KAFFEE,Coffee,Kaffee,Beverages,HOT,0
+KAFFEEBOHNEN,Coffee Beans,Kaffeebohnen,Grocery,AMBIENT,0
+KALTGETRANKE,Cold Drinks,Kaltgetränke,Beverages,CHILLED,0
+KAUGUMMI,Chewing Gum,Kaugummi,Confectionery,AMBIENT,0
+KONSERVEN,Canned Goods,Konserven,Grocery,AMBIENT,0
+KONSERVEN_GEMUSE,Canned Vegetables,Konserven Gemüse,Grocery,AMBIENT,0
+KORPERPFLEGE,Personal Care,Körperpflege,Non-Food,AMBIENT,0
+LUNCHBOXEN,Lunch Boxes,Lunchboxen,Food to Go,CHILLED,2
+MEHL___ZUCKER,Flour & Sugar,Mehl & Zucker,Grocery,AMBIENT,0
+MILCH,Milk,Milch,Fresh,CHILLED,7
+MILCHMISCHGETRANKE,Milk Drinks,Milchmischgetränke,Beverages,CHILLED,14
+PFAND,Deposit Return,Pfand,Deposit,AMBIENT,0
+PIZZA__BAGUETTE,Pizza & Baguette,Pizza  Baguette,Food to Go,CHILLED,3
+PROTEIN_RIEGEL,Protein Bars,Protein Riegel,Health,AMBIENT,0
+REINIGUNGSMITTEL,Cleaning Products,Reinigungsmittel,Non-Food,AMBIENT,0
+SB_WURSTWAREN,Packed Cold Cuts,SB Wurstwaren,Fresh,CHILLED,7
+SALATE,Salads,Salate,Food to Go,CHILLED,2
+SANDWICHES,Sandwiches,Sandwiches,Food to Go,CHILLED,2
+SCHAUMWEIN,Sparkling Wine,Schaumwein,Alcohol,AMBIENT,0
+SCHEIBENKASE,Sliced Cheese,Scheibenkäse,Fresh,CHILLED,10
+SCHOKOLADE,Chocolate,Schokolade,Confectionery,AMBIENT,0
+SMOOTHIE,Smoothies,Smoothie,Beverages,CHILLED,12
+SNACKS,Snacks,Snacks,Snacks,AMBIENT,0
+SUSSE_RIEGEL,Sweet Bars,Süsse Riegel,Confectionery,AMBIENT,0
+SUSSGEBACK,Sweet Pastries,Süssgebäck,Bakery,AMBIENT,2
+SUSSE_BACKWAREN,Sweet Bakery,Süße Backwaren,Bakery,AMBIENT,1
+SUSSIGKEITEN,Sweets,Süßigkeiten,Confectionery,AMBIENT,0
+TEIGWAREN___REIS,Pasta & Rice,Teigwaren & Reis,Grocery,AMBIENT,0
+TIEFKUHLKOST,Frozen Food,Tiefkühlkost,Frozen,FROZEN,0
+WASSER,Water,Wasser,Beverages,AMBIENT,0
+WASSER_AROMATISIERT,Flavoured Water,Wasser aromatisiert,Beverages,CHILLED,0
+WEINGUMMI,Gummy Sweets,Weingummi,Confectionery,AMBIENT,0
+WRAPS,Wraps,Wraps,Food to Go,CHILLED,2
+OL,Cooking Oil,Öl,Grocery,AMBIENT,0

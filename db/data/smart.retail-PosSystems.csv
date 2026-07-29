@@ -1,0 +1,18 @@
+ID,name,store_ID,kind,vendor,healthScore
+PF02,payfree Autonomous Gate,WDF01,RFID_AUTONOMOUS,payfree / Diebold Nixdorf,92
+SM01,Self Checkout Kiosk,WDF01,SELF_CHECKOUT,Diebold Nixdorf DN Series,100
+MOB1,Mobile Scan & Go,WDF01,MOBILE,SAP Customer Checkout Mobile,100
+PF-WDF02,payfree Autonomous Gate,WDF02,RFID_AUTONOMOUS,payfree / Diebold Nixdorf,92
+SM-WDF02,Self Checkout Kiosk,WDF02,SELF_CHECKOUT,Diebold Nixdorf DN Series,100
+MO-WDF02,Mobile Scan & Go,WDF02,MOBILE,SAP Customer Checkout Mobile,100
+PF-STR01,payfree Autonomous Gate,STR01,RFID_AUTONOMOUS,payfree / Diebold Nixdorf,92
+SM-STR01,Self Checkout Kiosk,STR01,SELF_CHECKOUT,Diebold Nixdorf DN Series,100
+MO-STR01,Mobile Scan & Go,STR01,MOBILE,SAP Customer Checkout Mobile,100
+SM-BLN01,Self Checkout Kiosk,BLN01,SELF_CHECKOUT,Diebold Nixdorf DN Series,100
+MO-BLN01,Mobile Scan & Go,BLN01,MOBILE,SAP Customer Checkout Mobile,100
+PF-MUC01,payfree Autonomous Gate,MUC01,RFID_AUTONOMOUS,payfree / Diebold Nixdorf,92
+SM-MUC01,Self Checkout Kiosk,MUC01,SELF_CHECKOUT,Diebold Nixdorf DN Series,100
+MO-MUC01,Mobile Scan & Go,MUC01,MOBILE,SAP Customer Checkout Mobile,100
+PF-HAM01,payfree Autonomous Gate,HAM01,RFID_AUTONOMOUS,payfree / Diebold Nixdorf,92
+SM-HAM01,Self Checkout Kiosk,HAM01,SELF_CHECKOUT,Diebold Nixdorf DN Series,100
+MO-HAM01,Mobile Scan & Go,HAM01,MOBILE,SAP Customer Checkout Mobile,100

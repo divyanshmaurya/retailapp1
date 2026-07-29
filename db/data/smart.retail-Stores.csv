@@ -1,0 +1,7 @@
+ID,name,format,city,country_code,salesArea,opensAt,closesAt,isReferenceStore,latitude,longitude,catchmentSize
+WDF01,S.Mart Walldorf Campus,AUTONOMOUS,Walldorf,DE,68.0,0,24,True,49.2943,8.642,22000
+WDF02,S.Mart Walldorf WDF03,CAMPUS_KIOSK,Walldorf,DE,34.0,6,20,False,49.2971,8.6473,7500
+STR01,S.Mart St. Leon-Rot,AUTONOMOUS,St. Leon-Rot,DE,55.0,0,24,False,49.264,8.616,9000
+BLN01,S.Mart Berlin Rosenthaler,CONVENIENCE,Berlin,DE,92.0,6,23,False,52.526,13.4015,15000
+MUC01,S.Mart Munich Werksviertel,AUTONOMOUS,Munich,DE,61.0,0,24,False,48.1265,11.601,12000
+HAM01,S.Mart Hamburg Hafencity,FLAGSHIP,Hamburg,DE,140.0,7,22,False,53.541,9.999,18000

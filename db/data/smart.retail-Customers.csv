@@ -1,0 +1,481 @@
+ID,appUserId,displayName,segment,loyaltyTier,loyaltyPoints,enrolledOn,consentMarketing,homeStore_ID
+CUST00001,smart-app-00001,Pablo Roth,Late Shift,GOLD,81,2025-05-07,True,MUC01
+CUST00002,smart-app-00002,Sofia Fischer,Occasional,BRONZE,4533,2025-09-06,True,STR01
+CUST00003,smart-app-00003,Marta Krause,Campus Regular,GOLD,4255,2026-01-13,True,WDF02
+CUST00004,smart-app-00004,Lukas Novak,Lunch Crowd,SILVER,3345,2025-09-13,True,HAM01
+CUST00005,smart-app-00005,Nora Roth,Occasional,BRONZE,3573,2026-05-17,False,WDF01
+CUST00006,smart-app-00006,Yara Haddad,Fitness Focused,BRONZE,2539,2025-09-03,False,HAM01
+CUST00007,smart-app-00007,Aaron Roth,Late Shift,PLATINUM,972,2025-10-24,False,HAM01
+CUST00008,smart-app-00008,Milan Meyer,Lunch Crowd,SILVER,1781,2026-04-13,True,MUC01
+CUST00009,smart-app-00009,Omar Kern,Late Shift,BRONZE,3529,2025-01-28,True,MUC01
+CUST00010,smart-app-00010,Priya Sommer,Occasional,SILVER,212,2025-04-04,True,WDF02
+CUST00011,smart-app-00011,Aaron Fischer,Occasional,BRONZE,2607,2025-05-22,True,STR01
+CUST00012,smart-app-00012,Ravi Brandt,Campus Regular,PLATINUM,1262,2025-01-12,True,BLN01
+CUST00013,smart-app-00013,Yuki Fischer,Occasional,SILVER,1009,2025-10-02,True,WDF01
+CUST00014,smart-app-00014,Tobias Sommer,Late Shift,BRONZE,1675,2026-03-20,True,WDF02
+CUST00015,smart-app-00015,Nora Meyer,Late Shift,GOLD,1925,2025-08-02,True,BLN01
+CUST00016,smart-app-00016,Sofia Iyer,Lunch Crowd,SILVER,338,2025-06-27,True,BLN01
+CUST00017,smart-app-00017,Noah Wagner,Occasional,BRONZE,2323,2025-12-19,True,BLN01
+CUST00018,smart-app-00018,Nora Schulz,Occasional,SILVER,3306,2025-02-23,True,WDF02
+CUST00019,smart-app-00019,Aaron Weber,Early Commuter,SILVER,628,2025-07-09,False,STR01
+CUST00020,smart-app-00020,Nora Hoffmann,Fitness Focused,BRONZE,3282,2026-03-26,True,HAM01
+CUST00021,smart-app-00021,Anja Hoffmann,Late Shift,SILVER,770,2026-06-05,False,MUC01
+CUST00022,smart-app-00022,Emilia Roth,Lunch Crowd,BRONZE,501,2026-02-12,False,HAM01
+CUST00023,smart-app-00023,Emilia Meyer,Campus Regular,BRONZE,1754,2026-01-29,True,BLN01
+CUST00024,smart-app-00024,Jan Roth,Occasional,SILVER,4261,2026-03-03,False,WDF01
+CUST00025,smart-app-00025,Ingrid Schulz,Fitness Focused,SILVER,350,2025-03-13,True,BLN01
+CUST00026,smart-app-00026,Emilia Haddad,Campus Regular,BRONZE,923,2025-03-05,False,STR01
+CUST00027,smart-app-00027,Yuki Krause,Campus Regular,SILVER,2106,2025-11-20,False,BLN01
+CUST00028,smart-app-00028,Milan Fischer,Occasional,SILVER,2860,2026-01-03,True,BLN01
+CUST00029,smart-app-00029,Lukas Roth,Early Commuter,BRONZE,1804,2026-01-04,False,MUC01
+CUST00030,smart-app-00030,Omar Meyer,Early Commuter,SILVER,1607,2025-06-18,False,BLN01
+CUST00031,smart-app-00031,Jonas Krause,Lunch Crowd,SILVER,2966,2025-10-01,True,STR01
+CUST00032,smart-app-00032,Emilia Roth,Late Shift,SILVER,780,2026-04-14,True,HAM01
+CUST00033,smart-app-00033,Sofia Lindqvist,Early Commuter,SILVER,4763,2025-05-23,True,BLN01
+CUST00034,smart-app-00034,Felix Bauer,Late Shift,BRONZE,175,2025-03-22,False,WDF01
+CUST00035,smart-app-00035,Felix Lehmann,Early Commuter,BRONZE,3310,2026-05-06,False,STR01
+CUST00036,smart-app-00036,Daniel Brandt,Late Shift,GOLD,4036,2026-05-17,True,WDF02
+CUST00037,smart-app-00037,Sofia Kern,Occasional,SILVER,1871,2026-05-28,True,WDF02
+CUST00038,smart-app-00038,Lena Weber,Late Shift,GOLD,3669,2025-03-31,False,BLN01
+CUST00039,smart-app-00039,Felix Wagner,Early Commuter,BRONZE,542,2025-02-01,False,STR01
+CUST00040,smart-app-00040,Pablo Novak,Fitness Focused,PLATINUM,3358,2025-05-20,True,BLN01
+CUST00041,smart-app-00041,Sven Becker,Lunch Crowd,SILVER,401,2025-06-23,False,WDF02
+CUST00042,smart-app-00042,Ravi Brandt,Fitness Focused,PLATINUM,3528,2025-02-08,False,STR01
+CUST00043,smart-app-00043,Yara Wagner,Campus Regular,BRONZE,211,2025-01-02,True,BLN01
+CUST00044,smart-app-00044,Pablo Sommer,Campus Regular,GOLD,4164,2026-03-26,False,BLN01
+CUST00045,smart-app-00045,Lena Schneider,Late Shift,PLATINUM,209,2025-08-11,True,BLN01
+CUST00046,smart-app-00046,Felix Hoffmann,Campus Regular,GOLD,4040,2025-07-28,True,HAM01
+CUST00047,smart-app-00047,Ingrid Haddad,Fitness Focused,BRONZE,568,2025-08-18,True,BLN01
+CUST00048,smart-app-00048,Ida Kern,Occasional,BRONZE,2488,2025-02-19,True,WDF01
+CUST00049,smart-app-00049,Noah Haddad,Late Shift,BRONZE,2986,2025-10-03,False,BLN01
+CUST00050,smart-app-00050,Ida Iyer,Late Shift,SILVER,1433,2026-06-12,True,HAM01
+CUST00051,smart-app-00051,Yara Becker,Occasional,BRONZE,954,2026-01-09,True,STR01
+CUST00052,smart-app-00052,Nora Fischer,Early Commuter,SILVER,1264,2025-08-06,False,STR01
+CUST00053,smart-app-00053,Felix Bauer,Fitness Focused,BRONZE,1398,2025-02-28,True,HAM01
+CUST00054,smart-app-00054,Ingrid Kern,Lunch Crowd,SILVER,4720,2026-05-02,True,MUC01
+CUST00055,smart-app-00055,Jan Weber,Fitness Focused,SILVER,3328,2025-08-16,True,MUC01
+CUST00056,smart-app-00056,Chen Kern,Fitness Focused,SILVER,1254,2026-04-27,True,WDF02
+CUST00057,smart-app-00057,Jan Sommer,Campus Regular,SILVER,2656,2025-10-15,False,MUC01
+CUST00058,smart-app-00058,Pablo Hoffmann,Late Shift,BRONZE,3246,2025-10-28,True,BLN01
+CUST00059,smart-app-00059,Daniel Moreau,Fitness Focused,SILVER,3674,2025-06-24,False,BLN01
+CUST00060,smart-app-00060,Daniel Roth,Campus Regular,GOLD,2993,2025-08-09,True,HAM01
+CUST00061,smart-app-00061,Emilia Iyer,Lunch Crowd,SILVER,2001,2025-01-24,False,MUC01
+CUST00062,smart-app-00062,Sven Meyer,Campus Regular,PLATINUM,4057,2025-11-09,False,WDF01
+CUST00063,smart-app-00063,Clara Weber,Occasional,BRONZE,1062,2026-06-13,False,WDF02
+CUST00064,smart-app-00064,Ingrid Bauer,Lunch Crowd,BRONZE,4254,2025-06-01,True,HAM01
+CUST00065,smart-app-00065,Marta Lindqvist,Early Commuter,SILVER,2143,2025-11-14,False,BLN01
+CUST00066,smart-app-00066,Anja Roth,Lunch Crowd,GOLD,3851,2026-06-25,False,STR01
+CUST00067,smart-app-00067,Noah Nakamura,Campus Regular,SILVER,309,2025-08-24,True,WDF01
+CUST00068,smart-app-00068,Felix Nakamura,Lunch Crowd,BRONZE,3467,2025-04-07,True,STR01
+CUST00069,smart-app-00069,Sven Novak,Occasional,GOLD,4422,2025-03-28,False,BLN01
+CUST00070,smart-app-00070,Aaron Novak,Campus Regular,GOLD,271,2025-09-27,True,STR01
+CUST00071,smart-app-00071,Ravi Krause,Late Shift,GOLD,1305,2025-09-08,True,MUC01
+CUST00072,smart-app-00072,Nora Brandt,Fitness Focused,SILVER,2936,2025-07-13,False,WDF01
+CUST00073,smart-app-00073,Daniel Lindqvist,Fitness Focused,BRONZE,3155,2025-12-09,True,WDF02
+CUST00074,smart-app-00074,Chen Fischer,Campus Regular,BRONZE,2856,2025-10-31,True,BLN01
+CUST00075,smart-app-00075,Daniel Moreau,Lunch Crowd,BRONZE,2155,2025-06-11,False,MUC01
+CUST00076,smart-app-00076,Lena Nakamura,Early Commuter,SILVER,4792,2025-04-07,True,WDF02
+CUST00077,smart-app-00077,Elias Lindqvist,Early Commuter,BRONZE,4348,2026-03-27,False,BLN01
+CUST00078,smart-app-00078,Tobias Roth,Fitness Focused,SILVER,4429,2026-05-01,False,MUC01
+CUST00079,smart-app-00079,Tobias Krause,Early Commuter,SILVER,2604,2026-01-11,True,STR01
+CUST00080,smart-app-00080,Nora Moreau,Fitness Focused,SILVER,5,2026-05-28,False,WDF01
+CUST00081,smart-app-00081,Jan Schneider,Late Shift,BRONZE,1331,2025-07-05,False,STR01
+CUST00082,smart-app-00082,Felix Iyer,Late Shift,PLATINUM,124,2025-03-09,True,HAM01
+CUST00083,smart-app-00083,Milan Nakamura,Occasional,PLATINUM,3639,2025-11-10,True,BLN01
+CUST00084,smart-app-00084,Milan Vogel,Late Shift,SILVER,822,2025-04-07,False,WDF02
+CUST00085,smart-app-00085,Priya Schneider,Lunch Crowd,SILVER,2935,2025-01-15,True,MUC01
+CUST00086,smart-app-00086,Ingrid Weber,Late Shift,PLATINUM,1978,2026-04-17,False,HAM01
+CUST00087,smart-app-00087,Anja Weber,Early Commuter,BRONZE,3664,2025-02-22,False,WDF01
+CUST00088,smart-app-00088,Anja Haddad,Early Commuter,BRONZE,3413,2025-02-17,True,BLN01
+CUST00089,smart-app-00089,Ingrid Roth,Occasional,BRONZE,2897,2026-06-16,False,MUC01
+CUST00090,smart-app-00090,Ida Roth,Late Shift,BRONZE,4000,2025-02-14,False,STR01
+CUST00091,smart-app-00091,Milan Krause,Early Commuter,GOLD,1500,2025-11-30,False,WDF02
+CUST00092,smart-app-00092,Sven Iyer,Late Shift,GOLD,4782,2025-09-29,False,STR01
+CUST00093,smart-app-00093,Hanna Haddad,Lunch Crowd,SILVER,284,2025-10-13,True,WDF01
+CUST00094,smart-app-00094,Jan Novak,Early Commuter,BRONZE,3912,2025-01-13,False,WDF02
+CUST00095,smart-app-00095,Ingrid Vogel,Campus Regular,BRONZE,3678,2025-08-20,True,STR01
+CUST00096,smart-app-00096,Elias Vogel,Occasional,BRONZE,2304,2026-06-25,False,MUC01
+CUST00097,smart-app-00097,Omar Vogel,Campus Regular,SILVER,3000,2026-01-15,True,HAM01
+CUST00098,smart-app-00098,Sven Lindqvist,Lunch Crowd,SILVER,3261,2025-02-06,True,WDF02
+CUST00099,smart-app-00099,Lukas Schneider,Lunch Crowd,BRONZE,4733,2025-06-06,True,WDF02
+CUST00100,smart-app-00100,Daniel Novak,Early Commuter,GOLD,1519,2026-02-12,True,WDF01
+CUST00101,smart-app-00101,Milan Novak,Late Shift,BRONZE,4415,2025-09-14,True,MUC01
+CUST00102,smart-app-00102,Clara Becker,Campus Regular,SILVER,3967,2025-01-19,True,HAM01
+CUST00103,smart-app-00103,Noah Wagner,Early Commuter,BRONZE,4392,2025-07-18,True,WDF02
+CUST00104,smart-app-00104,Lukas Roth,Late Shift,BRONZE,3897,2025-02-23,False,HAM01
+CUST00105,smart-app-00105,Emilia Schulz,Early Commuter,SILVER,3038,2026-02-19,False,HAM01
+CUST00106,smart-app-00106,Felix Brandt,Campus Regular,BRONZE,3113,2026-04-07,True,BLN01
+CUST00107,smart-app-00107,Aaron Wagner,Early Commuter,BRONZE,2697,2026-03-12,True,STR01
+CUST00108,smart-app-00108,Noah Lehmann,Fitness Focused,PLATINUM,1487,2025-12-25,True,WDF01
+CUST00109,smart-app-00109,Priya Nakamura,Occasional,BRONZE,4114,2026-02-18,True,BLN01
+CUST00110,smart-app-00110,Mira Weber,Lunch Crowd,BRONZE,2173,2025-05-06,True,STR01
+CUST00111,smart-app-00111,Jan Lindqvist,Fitness Focused,GOLD,3067,2026-06-13,True,MUC01
+CUST00112,smart-app-00112,Yara Bauer,Fitness Focused,SILVER,2929,2026-02-14,False,WDF02
+CUST00113,smart-app-00113,Ravi Lindqvist,Early Commuter,BRONZE,907,2026-03-27,True,BLN01
+CUST00114,smart-app-00114,Hanna Weber,Occasional,GOLD,3886,2025-06-24,False,WDF01
+CUST00115,smart-app-00115,Hanna Moreau,Fitness Focused,GOLD,1501,2025-08-02,False,WDF02
+CUST00116,smart-app-00116,Felix Haddad,Campus Regular,BRONZE,2568,2025-11-21,True,HAM01
+CUST00117,smart-app-00117,Priya Hoffmann,Lunch Crowd,GOLD,680,2026-02-03,False,HAM01
+CUST00118,smart-app-00118,Fatima Becker,Late Shift,BRONZE,4129,2026-03-18,False,MUC01
+CUST00119,smart-app-00119,Felix Nakamura,Lunch Crowd,BRONZE,3286,2026-04-27,False,STR01
+CUST00120,smart-app-00120,Elias Sommer,Occasional,SILVER,2942,2026-04-19,True,WDF01
+CUST00121,smart-app-00121,Pablo Bauer,Campus Regular,BRONZE,2209,2026-04-05,True,BLN01
+CUST00122,smart-app-00122,Pablo Schneider,Campus Regular,SILVER,3033,2025-03-29,True,WDF02
+CUST00123,smart-app-00123,Sven Krause,Early Commuter,BRONZE,2286,2026-01-02,True,WDF02
+CUST00124,smart-app-00124,Emilia Kern,Occasional,BRONZE,18,2025-07-03,False,MUC01
+CUST00125,smart-app-00125,Lukas Kern,Campus Regular,SILVER,1922,2026-01-23,True,STR01
+CUST00126,smart-app-00126,Elias Nakamura,Early Commuter,BRONZE,2758,2026-02-12,False,WDF02
+CUST00127,smart-app-00127,Elias Moreau,Early Commuter,PLATINUM,3096,2025-12-10,True,WDF01
+CUST00128,smart-app-00128,Ida Meyer,Lunch Crowd,BRONZE,1850,2026-03-24,True,WDF01
+CUST00129,smart-app-00129,Felix Vogel,Early Commuter,PLATINUM,242,2025-11-25,False,BLN01
+CUST00130,smart-app-00130,Jan Roth,Fitness Focused,BRONZE,2529,2025-05-03,True,STR01
+CUST00131,smart-app-00131,Ravi Sommer,Occasional,GOLD,1429,2025-07-27,True,WDF01
+CUST00132,smart-app-00132,Jan Vogel,Occasional,GOLD,3045,2026-01-29,True,STR01
+CUST00133,smart-app-00133,Ingrid Krause,Early Commuter,SILVER,3403,2026-06-18,True,STR01
+CUST00134,smart-app-00134,Chen Weber,Occasional,SILVER,935,2025-05-10,True,HAM01
+CUST00135,smart-app-00135,Lukas Novak,Occasional,BRONZE,2013,2026-01-21,True,STR01
+CUST00136,smart-app-00136,Ingrid Kern,Occasional,BRONZE,1267,2025-04-18,True,WDF02
+CUST00137,smart-app-00137,Jonas Sommer,Late Shift,GOLD,3918,2026-01-11,False,WDF01
+CUST00138,smart-app-00138,Milan Haddad,Early Commuter,BRONZE,1988,2025-07-04,False,WDF01
+CUST00139,smart-app-00139,Sofia Hoffmann,Campus Regular,SILVER,3014,2025-09-18,True,MUC01
+CUST00140,smart-app-00140,Lena Schneider,Occasional,BRONZE,2532,2025-08-22,False,WDF01
+CUST00141,smart-app-00141,Milan Schulz,Late Shift,BRONZE,4372,2025-05-20,True,HAM01
+CUST00142,smart-app-00142,Chen Hoffmann,Occasional,BRONZE,2508,2025-01-29,True,WDF02
+CUST00143,smart-app-00143,Ida Haddad,Fitness Focused,GOLD,4754,2025-04-23,False,HAM01
+CUST00144,smart-app-00144,Ingrid Schneider,Campus Regular,SILVER,3280,2026-01-28,True,BLN01
+CUST00145,smart-app-00145,Pablo Wagner,Late Shift,BRONZE,2052,2025-10-15,True,WDF01
+CUST00146,smart-app-00146,Milan Roth,Fitness Focused,SILVER,44,2026-01-25,True,MUC01
+CUST00147,smart-app-00147,Yuki Novak,Campus Regular,SILVER,2630,2025-08-28,True,STR01
+CUST00148,smart-app-00148,Emilia Iyer,Lunch Crowd,GOLD,169,2025-02-14,False,MUC01
+CUST00149,smart-app-00149,Milan Nakamura,Occasional,BRONZE,680,2025-08-24,False,MUC01
+CUST00150,smart-app-00150,Ingrid Sommer,Campus Regular,BRONZE,261,2025-03-23,True,STR01
+CUST00151,smart-app-00151,Sven Nakamura,Occasional,BRONZE,4746,2026-05-29,True,MUC01
+CUST00152,smart-app-00152,Fatima Vogel,Late Shift,GOLD,617,2026-06-14,True,WDF01
+CUST00153,smart-app-00153,Jan Krause,Fitness Focused,GOLD,2914,2026-04-22,True,BLN01
+CUST00154,smart-app-00154,Anja Krause,Occasional,SILVER,2764,2025-11-25,True,STR01
+CUST00155,smart-app-00155,Lena Becker,Late Shift,SILVER,3685,2026-03-06,False,BLN01
+CUST00156,smart-app-00156,Sofia Meyer,Occasional,BRONZE,4420,2025-06-13,True,STR01
+CUST00157,smart-app-00157,Pablo Becker,Lunch Crowd,BRONZE,3753,2026-06-18,False,WDF01
+CUST00158,smart-app-00158,Nora Bauer,Fitness Focused,SILVER,4598,2026-05-05,True,WDF02
+CUST00159,smart-app-00159,Milan Brandt,Campus Regular,BRONZE,1132,2025-05-04,True,WDF02
+CUST00160,smart-app-00160,Tobias Iyer,Campus Regular,BRONZE,3265,2025-12-11,True,MUC01
+CUST00161,smart-app-00161,Emilia Krause,Late Shift,SILVER,2253,2025-10-08,False,HAM01
+CUST00162,smart-app-00162,Sven Moreau,Early Commuter,BRONZE,2782,2026-05-14,False,MUC01
+CUST00163,smart-app-00163,Ingrid Hoffmann,Early Commuter,BRONZE,519,2025-03-07,True,WDF02
+CUST00164,smart-app-00164,Priya Wagner,Late Shift,BRONZE,2886,2026-05-04,True,STR01
+CUST00165,smart-app-00165,Elias Nakamura,Fitness Focused,BRONZE,1345,2025-07-19,False,WDF02
+CUST00166,smart-app-00166,Lukas Schulz,Fitness Focused,BRONZE,2383,2026-01-15,False,STR01
+CUST00167,smart-app-00167,Tobias Kern,Late Shift,SILVER,892,2025-08-19,True,HAM01
+CUST00168,smart-app-00168,Aaron Krause,Occasional,SILVER,4197,2025-12-01,False,BLN01
+CUST00169,smart-app-00169,Elias Becker,Occasional,GOLD,3884,2025-05-31,False,WDF01
+CUST00170,smart-app-00170,Sven Lindqvist,Occasional,BRONZE,1069,2025-04-05,True,WDF02
+CUST00171,smart-app-00171,Ingrid Meyer,Fitness Focused,BRONZE,4021,2025-02-06,True,MUC01
+CUST00172,smart-app-00172,Tobias Meyer,Lunch Crowd,SILVER,2129,2025-11-11,True,STR01
+CUST00173,smart-app-00173,Priya Lindqvist,Occasional,BRONZE,3104,2026-05-27,False,MUC01
+CUST00174,smart-app-00174,Priya Lindqvist,Early Commuter,BRONZE,781,2026-04-12,True,STR01
+CUST00175,smart-app-00175,Noah Schulz,Late Shift,BRONZE,2589,2025-06-29,True,MUC01
+CUST00176,smart-app-00176,Daniel Novak,Lunch Crowd,SILVER,3902,2025-03-12,True,WDF01
+CUST00177,smart-app-00177,Felix Weber,Fitness Focused,BRONZE,252,2025-01-03,True,MUC01
+CUST00178,smart-app-00178,Jonas Wagner,Campus Regular,BRONZE,136,2025-04-23,True,MUC01
+CUST00179,smart-app-00179,Jan Fischer,Late Shift,SILVER,4655,2025-03-12,True,WDF02
+CUST00180,smart-app-00180,Jan Meyer,Lunch Crowd,SILVER,1635,2025-10-31,True,STR01
+CUST00181,smart-app-00181,Hanna Weber,Occasional,SILVER,1824,2025-12-25,False,BLN01
+CUST00182,smart-app-00182,Yara Brandt,Lunch Crowd,BRONZE,959,2025-01-08,True,MUC01
+CUST00183,smart-app-00183,Pablo Schulz,Campus Regular,SILVER,907,2026-05-08,True,MUC01
+CUST00184,smart-app-00184,Sven Iyer,Fitness Focused,BRONZE,1843,2025-01-28,True,WDF01
+CUST00185,smart-app-00185,Ravi Vogel,Fitness Focused,GOLD,2105,2025-07-16,True,BLN01
+CUST00186,smart-app-00186,Noah Fischer,Campus Regular,PLATINUM,504,2026-01-09,True,STR01
+CUST00187,smart-app-00187,Fatima Hoffmann,Campus Regular,BRONZE,365,2025-02-05,True,BLN01
+CUST00188,smart-app-00188,Jan Sommer,Lunch Crowd,GOLD,3244,2025-09-20,True,BLN01
+CUST00189,smart-app-00189,Omar Wagner,Occasional,GOLD,1202,2026-04-25,True,WDF01
+CUST00190,smart-app-00190,Fatima Meyer,Early Commuter,BRONZE,2488,2025-04-24,True,MUC01
+CUST00191,smart-app-00191,Sofia Bauer,Early Commuter,BRONZE,2095,2025-12-24,False,MUC01
+CUST00192,smart-app-00192,Sven Fischer,Lunch Crowd,PLATINUM,486,2025-02-01,True,WDF01
+CUST00193,smart-app-00193,Daniel Bauer,Early Commuter,BRONZE,1148,2025-01-04,True,WDF01
+CUST00194,smart-app-00194,Milan Becker,Late Shift,BRONZE,282,2026-02-14,True,WDF01
+CUST00195,smart-app-00195,Clara Wagner,Late Shift,SILVER,3600,2025-09-23,True,STR01
+CUST00196,smart-app-00196,Hanna Nakamura,Lunch Crowd,SILVER,3512,2025-07-29,True,HAM01
+CUST00197,smart-app-00197,Sven Krause,Fitness Focused,BRONZE,226,2025-05-27,True,WDF01
+CUST00198,smart-app-00198,Emilia Sommer,Early Commuter,PLATINUM,2172,2025-03-26,True,STR01
+CUST00199,smart-app-00199,Aaron Iyer,Campus Regular,SILVER,4462,2025-05-14,True,STR01
+CUST00200,smart-app-00200,Clara Lindqvist,Early Commuter,BRONZE,2372,2026-03-11,True,STR01
+CUST00201,smart-app-00201,Priya Brandt,Fitness Focused,SILVER,3904,2025-01-06,False,WDF02
+CUST00202,smart-app-00202,Jonas Becker,Occasional,BRONZE,1374,2026-06-19,True,HAM01
+CUST00203,smart-app-00203,Jonas Weber,Fitness Focused,SILVER,3612,2025-10-21,True,WDF02
+CUST00204,smart-app-00204,Yara Roth,Late Shift,GOLD,3211,2025-09-03,False,HAM01
+CUST00205,smart-app-00205,Mira Moreau,Campus Regular,SILVER,2886,2026-04-20,False,MUC01
+CUST00206,smart-app-00206,Sofia Iyer,Early Commuter,BRONZE,3244,2025-03-09,True,BLN01
+CUST00207,smart-app-00207,Sven Moreau,Fitness Focused,BRONZE,2582,2025-03-23,True,HAM01
+CUST00208,smart-app-00208,Tobias Lehmann,Lunch Crowd,GOLD,1357,2025-06-25,False,HAM01
+CUST00209,smart-app-00209,Omar Meyer,Occasional,PLATINUM,829,2025-04-26,True,WDF02
+CUST00210,smart-app-00210,Yuki Becker,Fitness Focused,BRONZE,4517,2026-01-24,False,WDF02
+CUST00211,smart-app-00211,Mira Novak,Early Commuter,BRONZE,33,2025-06-21,False,WDF02
+CUST00212,smart-app-00212,Yuki Haddad,Campus Regular,SILVER,4546,2025-09-25,True,MUC01
+CUST00213,smart-app-00213,Fatima Bauer,Early Commuter,BRONZE,222,2025-01-27,False,WDF01
+CUST00214,smart-app-00214,Ravi Lindqvist,Fitness Focused,BRONZE,2917,2025-04-30,True,WDF01
+CUST00215,smart-app-00215,Sven Iyer,Occasional,BRONZE,3678,2025-02-12,True,HAM01
+CUST00216,smart-app-00216,Hanna Haddad,Early Commuter,BRONZE,2722,2026-01-26,True,HAM01
+CUST00217,smart-app-00217,Marta Weber,Lunch Crowd,PLATINUM,4721,2025-12-04,True,WDF02
+CUST00218,smart-app-00218,Noah Lindqvist,Lunch Crowd,BRONZE,724,2025-10-12,False,WDF01
+CUST00219,smart-app-00219,Chen Hoffmann,Fitness Focused,BRONZE,50,2025-03-21,False,HAM01
+CUST00220,smart-app-00220,Jan Roth,Campus Regular,BRONZE,4530,2025-09-04,True,MUC01
+CUST00221,smart-app-00221,Lena Lehmann,Campus Regular,SILVER,3838,2025-02-15,False,WDF02
+CUST00222,smart-app-00222,Ravi Nakamura,Fitness Focused,SILVER,3213,2025-05-11,True,HAM01
+CUST00223,smart-app-00223,Ida Kern,Occasional,BRONZE,2887,2025-09-11,True,WDF01
+CUST00224,smart-app-00224,Fatima Wagner,Occasional,BRONZE,1954,2026-04-12,True,STR01
+CUST00225,smart-app-00225,Tobias Becker,Campus Regular,GOLD,4795,2025-01-06,True,WDF01
+CUST00226,smart-app-00226,Clara Schneider,Lunch Crowd,SILVER,1700,2025-01-28,True,WDF01
+CUST00227,smart-app-00227,Sven Lindqvist,Occasional,BRONZE,3092,2026-06-20,True,STR01
+CUST00228,smart-app-00228,Lukas Meyer,Late Shift,BRONZE,2065,2025-02-11,True,MUC01
+CUST00229,smart-app-00229,Yara Meyer,Early Commuter,BRONZE,3531,2025-03-30,False,WDF01
+CUST00230,smart-app-00230,Ingrid Sommer,Campus Regular,BRONZE,2937,2025-03-06,False,HAM01
+CUST00231,smart-app-00231,Mira Sommer,Fitness Focused,BRONZE,1248,2025-07-20,True,MUC01
+CUST00232,smart-app-00232,Mira Moreau,Occasional,BRONZE,2006,2026-06-11,True,WDF02
+CUST00233,smart-app-00233,Sven Becker,Early Commuter,BRONZE,4512,2025-07-07,False,BLN01
+CUST00234,smart-app-00234,Ravi Schulz,Lunch Crowd,SILVER,2261,2025-10-01,True,HAM01
+CUST00235,smart-app-00235,Ida Weber,Fitness Focused,BRONZE,1057,2025-07-27,False,STR01
+CUST00236,smart-app-00236,Marta Schneider,Occasional,BRONZE,1923,2026-01-05,True,WDF02
+CUST00237,smart-app-00237,Ingrid Roth,Lunch Crowd,GOLD,3700,2025-07-18,False,STR01
+CUST00238,smart-app-00238,Daniel Fischer,Fitness Focused,BRONZE,489,2025-07-28,False,STR01
+CUST00239,smart-app-00239,Ida Sommer,Fitness Focused,PLATINUM,2964,2026-06-15,True,MUC01
+CUST00240,smart-app-00240,Sven Fischer,Early Commuter,BRONZE,2202,2026-06-25,True,BLN01
+CUST00241,smart-app-00241,Jan Vogel,Lunch Crowd,GOLD,1287,2025-12-25,True,HAM01
+CUST00242,smart-app-00242,Priya Lindqvist,Lunch Crowd,SILVER,520,2026-01-20,True,MUC01
+CUST00243,smart-app-00243,Ravi Becker,Lunch Crowd,BRONZE,4331,2026-02-18,True,STR01
+CUST00244,smart-app-00244,Anja Sommer,Lunch Crowd,BRONZE,297,2025-09-14,True,STR01
+CUST00245,smart-app-00245,Daniel Vogel,Early Commuter,BRONZE,1305,2025-06-27,True,WDF01
+CUST00246,smart-app-00246,Felix Becker,Fitness Focused,SILVER,3775,2026-05-20,True,HAM01
+CUST00247,smart-app-00247,Elias Fischer,Late Shift,BRONZE,4114,2025-10-19,True,STR01
+CUST00248,smart-app-00248,Yuki Lehmann,Fitness Focused,SILVER,1666,2025-07-24,True,WDF02
+CUST00249,smart-app-00249,Lukas Fischer,Occasional,SILVER,374,2025-02-07,True,BLN01
+CUST00250,smart-app-00250,Anja Lindqvist,Campus Regular,GOLD,3893,2025-09-11,True,MUC01
+CUST00251,smart-app-00251,Priya Lindqvist,Fitness Focused,PLATINUM,3424,2026-05-18,True,WDF02
+CUST00252,smart-app-00252,Sofia Roth,Lunch Crowd,GOLD,4061,2026-03-01,False,MUC01
+CUST00253,smart-app-00253,Lena Bauer,Occasional,GOLD,2631,2025-08-28,True,STR01
+CUST00254,smart-app-00254,Noah Lehmann,Early Commuter,BRONZE,2724,2025-03-02,True,WDF02
+CUST00255,smart-app-00255,Sven Haddad,Late Shift,SILVER,925,2025-07-25,True,HAM01
+CUST00256,smart-app-00256,Yuki Krause,Campus Regular,SILVER,2481,2026-04-12,True,MUC01
+CUST00257,smart-app-00257,Sven Schulz,Fitness Focused,SILVER,486,2025-07-25,True,HAM01
+CUST00258,smart-app-00258,Mira Schulz,Fitness Focused,SILVER,2502,2026-03-09,True,WDF01
+CUST00259,smart-app-00259,Daniel Fischer,Late Shift,SILVER,2837,2025-12-08,True,MUC01
+CUST00260,smart-app-00260,Clara Meyer,Early Commuter,SILVER,927,2025-05-29,True,STR01
+CUST00261,smart-app-00261,Aaron Vogel,Fitness Focused,SILVER,4425,2025-06-07,True,STR01
+CUST00262,smart-app-00262,Fatima Brandt,Campus Regular,BRONZE,4060,2025-02-28,True,HAM01
+CUST00263,smart-app-00263,Sven Fischer,Fitness Focused,BRONZE,686,2025-05-31,False,MUC01
+CUST00264,smart-app-00264,Daniel Kern,Lunch Crowd,GOLD,2029,2026-04-18,False,WDF01
+CUST00265,smart-app-00265,Omar Brandt,Lunch Crowd,BRONZE,1271,2025-03-21,False,MUC01
+CUST00266,smart-app-00266,Noah Becker,Fitness Focused,PLATINUM,1749,2025-03-16,False,WDF01
+CUST00267,smart-app-00267,Pablo Kern,Lunch Crowd,SILVER,3472,2026-03-14,False,BLN01
+CUST00268,smart-app-00268,Ravi Sommer,Campus Regular,BRONZE,135,2025-09-26,True,WDF02
+CUST00269,smart-app-00269,Sven Roth,Late Shift,BRONZE,2386,2026-04-08,True,WDF01
+CUST00270,smart-app-00270,Sofia Iyer,Campus Regular,PLATINUM,2217,2026-01-10,True,WDF02
+CUST00271,smart-app-00271,Ingrid Weber,Campus Regular,BRONZE,3659,2025-10-31,True,MUC01
+CUST00272,smart-app-00272,Emilia Lindqvist,Lunch Crowd,BRONZE,3362,2025-06-05,True,STR01
+CUST00273,smart-app-00273,Daniel Lindqvist,Occasional,BRONZE,3086,2025-05-07,True,BLN01
+CUST00274,smart-app-00274,Lena Haddad,Lunch Crowd,BRONZE,470,2026-05-27,True,WDF02
+CUST00275,smart-app-00275,Ravi Krause,Occasional,SILVER,2595,2026-03-10,True,HAM01
+CUST00276,smart-app-00276,Elias Sommer,Late Shift,SILVER,4756,2025-05-10,True,STR01
+CUST00277,smart-app-00277,Jan Lehmann,Early Commuter,BRONZE,2425,2025-03-31,False,HAM01
+CUST00278,smart-app-00278,Sven Schulz,Lunch Crowd,SILVER,1065,2026-01-18,True,HAM01
+CUST00279,smart-app-00279,Lukas Lindqvist,Campus Regular,BRONZE,4596,2025-06-10,True,WDF02
+CUST00280,smart-app-00280,Hanna Roth,Late Shift,SILVER,4427,2025-03-14,True,HAM01
+CUST00281,smart-app-00281,Felix Lehmann,Early Commuter,SILVER,2656,2025-09-16,False,BLN01
+CUST00282,smart-app-00282,Nora Weber,Late Shift,BRONZE,1130,2025-12-31,True,STR01
+CUST00283,smart-app-00283,Sofia Bauer,Lunch Crowd,GOLD,3223,2026-05-20,False,MUC01
+CUST00284,smart-app-00284,Yuki Fischer,Campus Regular,PLATINUM,3832,2025-10-21,True,STR01
+CUST00285,smart-app-00285,Omar Krause,Occasional,BRONZE,4142,2025-01-27,True,HAM01
+CUST00286,smart-app-00286,Lukas Moreau,Late Shift,BRONZE,1649,2026-05-06,True,WDF02
+CUST00287,smart-app-00287,Emilia Bauer,Late Shift,BRONZE,3667,2026-01-29,True,STR01
+CUST00288,smart-app-00288,Elias Brandt,Early Commuter,BRONZE,2296,2025-01-02,False,MUC01
+CUST00289,smart-app-00289,Emilia Schulz,Late Shift,BRONZE,98,2026-03-17,True,STR01
+CUST00290,smart-app-00290,Nora Lindqvist,Early Commuter,PLATINUM,1841,2026-01-25,False,STR01
+CUST00291,smart-app-00291,Anja Becker,Lunch Crowd,GOLD,2332,2025-05-23,True,BLN01
+CUST00292,smart-app-00292,Fatima Iyer,Campus Regular,SILVER,4040,2025-04-06,False,WDF01
+CUST00293,smart-app-00293,Marta Schneider,Fitness Focused,BRONZE,1132,2025-10-13,True,HAM01
+CUST00294,smart-app-00294,Chen Haddad,Fitness Focused,BRONZE,1678,2025-06-26,False,HAM01
+CUST00295,smart-app-00295,Lukas Meyer,Fitness Focused,BRONZE,4399,2026-01-19,True,MUC01
+CUST00296,smart-app-00296,Ida Moreau,Campus Regular,BRONZE,3707,2025-08-09,True,HAM01
+CUST00297,smart-app-00297,Daniel Meyer,Lunch Crowd,SILVER,1556,2025-02-07,False,WDF01
+CUST00298,smart-app-00298,Ravi Roth,Fitness Focused,GOLD,2768,2026-06-10,True,WDF02
+CUST00299,smart-app-00299,Chen Meyer,Fitness Focused,GOLD,603,2025-09-01,False,MUC01
+CUST00300,smart-app-00300,Felix Schulz,Late Shift,BRONZE,664,2025-04-03,False,WDF01
+CUST00301,smart-app-00301,Lena Kern,Early Commuter,GOLD,4582,2025-03-06,False,HAM01
+CUST00302,smart-app-00302,Hanna Nakamura,Fitness Focused,BRONZE,2574,2025-12-31,True,STR01
+CUST00303,smart-app-00303,Sven Weber,Fitness Focused,SILVER,3855,2026-03-10,False,HAM01
+CUST00304,smart-app-00304,Yuki Schulz,Early Commuter,GOLD,382,2025-03-05,True,STR01
+CUST00305,smart-app-00305,Felix Schneider,Early Commuter,PLATINUM,922,2026-02-20,False,MUC01
+CUST00306,smart-app-00306,Aaron Sommer,Campus Regular,BRONZE,3057,2026-01-17,False,MUC01
+CUST00307,smart-app-00307,Lena Lindqvist,Campus Regular,GOLD,4623,2026-02-04,False,STR01
+CUST00308,smart-app-00308,Ravi Kern,Late Shift,SILVER,1406,2025-01-07,True,HAM01
+CUST00309,smart-app-00309,Nora Lindqvist,Campus Regular,GOLD,4635,2025-02-07,True,MUC01
+CUST00310,smart-app-00310,Emilia Kern,Lunch Crowd,GOLD,3553,2025-07-18,False,WDF02
+CUST00311,smart-app-00311,Pablo Vogel,Occasional,PLATINUM,3229,2026-04-01,True,MUC01
+CUST00312,smart-app-00312,Noah Krause,Occasional,BRONZE,2225,2025-10-12,True,MUC01
+CUST00313,smart-app-00313,Tobias Meyer,Occasional,SILVER,2020,2025-12-14,True,WDF02
+CUST00314,smart-app-00314,Sven Lehmann,Late Shift,GOLD,3013,2025-01-10,True,BLN01
+CUST00315,smart-app-00315,Pablo Bauer,Early Commuter,BRONZE,3187,2026-05-05,True,WDF01
+CUST00316,smart-app-00316,Felix Wagner,Early Commuter,BRONZE,491,2025-04-16,True,MUC01
+CUST00317,smart-app-00317,Yuki Lindqvist,Early Commuter,BRONZE,16,2025-01-14,True,WDF01
+CUST00318,smart-app-00318,Lukas Hoffmann,Campus Regular,SILVER,1514,2025-04-25,False,WDF02
+CUST00319,smart-app-00319,Pablo Iyer,Campus Regular,PLATINUM,483,2025-11-11,True,WDF02
+CUST00320,smart-app-00320,Daniel Schulz,Campus Regular,BRONZE,4335,2025-01-09,True,HAM01
+CUST00321,smart-app-00321,Sven Brandt,Early Commuter,BRONZE,3543,2025-06-07,True,BLN01
+CUST00322,smart-app-00322,Hanna Hoffmann,Fitness Focused,GOLD,1679,2026-05-29,True,BLN01
+CUST00323,smart-app-00323,Nora Meyer,Late Shift,GOLD,1096,2025-05-22,False,WDF01
+CUST00324,smart-app-00324,Jonas Wagner,Early Commuter,BRONZE,1150,2025-03-21,True,BLN01
+CUST00325,smart-app-00325,Jonas Meyer,Lunch Crowd,BRONZE,1035,2025-05-02,False,MUC01
+CUST00326,smart-app-00326,Sofia Iyer,Campus Regular,BRONZE,4677,2025-04-01,False,WDF02
+CUST00327,smart-app-00327,Lena Schulz,Campus Regular,GOLD,335,2025-11-01,True,STR01
+CUST00328,smart-app-00328,Yara Sommer,Early Commuter,BRONZE,3210,2025-02-26,True,HAM01
+CUST00329,smart-app-00329,Emilia Nakamura,Campus Regular,SILVER,3871,2025-06-13,False,WDF01
+CUST00330,smart-app-00330,Marta Bauer,Early Commuter,BRONZE,4381,2026-01-06,False,WDF02
+CUST00331,smart-app-00331,Nora Lindqvist,Lunch Crowd,BRONZE,2018,2026-06-11,True,WDF02
+CUST00332,smart-app-00332,Clara Vogel,Campus Regular,GOLD,1896,2025-01-27,False,HAM01
+CUST00333,smart-app-00333,Aaron Becker,Lunch Crowd,SILVER,4698,2025-02-22,True,WDF01
+CUST00334,smart-app-00334,Marta Nakamura,Occasional,BRONZE,2718,2025-06-15,False,HAM01
+CUST00335,smart-app-00335,Nora Bauer,Late Shift,BRONZE,3695,2025-01-16,True,STR01
+CUST00336,smart-app-00336,Hanna Meyer,Lunch Crowd,BRONZE,906,2025-01-27,True,MUC01
+CUST00337,smart-app-00337,Noah Kern,Occasional,BRONZE,2542,2025-10-11,True,HAM01
+CUST00338,smart-app-00338,Felix Schulz,Fitness Focused,BRONZE,3125,2025-12-28,True,HAM01
+CUST00339,smart-app-00339,Yuki Becker,Early Commuter,SILVER,4599,2025-02-08,False,HAM01
+CUST00340,smart-app-00340,Elias Sommer,Fitness Focused,SILVER,808,2025-11-09,True,MUC01
+CUST00341,smart-app-00341,Chen Lehmann,Lunch Crowd,SILVER,3572,2025-04-11,True,WDF01
+CUST00342,smart-app-00342,Aaron Iyer,Lunch Crowd,BRONZE,899,2025-11-02,False,HAM01
+CUST00343,smart-app-00343,Daniel Iyer,Occasional,GOLD,271,2025-06-19,True,HAM01
+CUST00344,smart-app-00344,Nora Schulz,Late Shift,BRONZE,3532,2025-03-17,True,WDF01
+CUST00345,smart-app-00345,Tobias Schneider,Lunch Crowd,SILVER,4675,2025-01-11,False,WDF01
+CUST00346,smart-app-00346,Ida Brandt,Late Shift,BRONZE,4648,2025-02-13,True,STR01
+CUST00347,smart-app-00347,Elias Brandt,Early Commuter,BRONZE,1242,2026-06-03,False,BLN01
+CUST00348,smart-app-00348,Fatima Meyer,Early Commuter,BRONZE,933,2025-02-22,True,BLN01
+CUST00349,smart-app-00349,Mira Nakamura,Lunch Crowd,SILVER,110,2025-11-14,True,BLN01
+CUST00350,smart-app-00350,Nora Moreau,Late Shift,BRONZE,770,2025-02-23,False,MUC01
+CUST00351,smart-app-00351,Priya Haddad,Occasional,BRONZE,2679,2025-08-06,True,WDF02
+CUST00352,smart-app-00352,Milan Weber,Late Shift,GOLD,3975,2025-04-03,True,WDF01
+CUST00353,smart-app-00353,Emilia Hoffmann,Campus Regular,GOLD,4552,2025-01-15,True,MUC01
+CUST00354,smart-app-00354,Noah Moreau,Early Commuter,BRONZE,639,2025-10-05,True,STR01
+CUST00355,smart-app-00355,Anja Kern,Occasional,BRONZE,4460,2025-07-02,True,BLN01
+CUST00356,smart-app-00356,Lena Kern,Occasional,BRONZE,1699,2025-02-20,False,BLN01
+CUST00357,smart-app-00357,Yara Weber,Early Commuter,SILVER,1408,2025-12-19,False,HAM01
+CUST00358,smart-app-00358,Priya Becker,Early Commuter,BRONZE,4122,2026-03-23,False,STR01
+CUST00359,smart-app-00359,Yuki Lehmann,Fitness Focused,SILVER,1975,2025-02-19,True,STR01
+CUST00360,smart-app-00360,Ravi Moreau,Late Shift,GOLD,72,2025-01-16,False,WDF01
+CUST00361,smart-app-00361,Felix Iyer,Fitness Focused,BRONZE,761,2025-09-17,True,WDF01
+CUST00362,smart-app-00362,Emilia Bauer,Lunch Crowd,PLATINUM,176,2025-05-16,True,MUC01
+CUST00363,smart-app-00363,Pablo Lindqvist,Campus Regular,SILVER,3715,2025-07-18,True,BLN01
+CUST00364,smart-app-00364,Pablo Moreau,Late Shift,SILVER,3961,2025-04-17,True,WDF01
+CUST00365,smart-app-00365,Ravi Sommer,Lunch Crowd,SILVER,2268,2025-12-21,False,BLN01
+CUST00366,smart-app-00366,Sofia Moreau,Fitness Focused,BRONZE,1609,2025-03-02,True,HAM01
+CUST00367,smart-app-00367,Emilia Lindqvist,Early Commuter,PLATINUM,4052,2025-08-29,True,WDF01
+CUST00368,smart-app-00368,Daniel Becker,Late Shift,BRONZE,3926,2025-02-21,True,HAM01
+CUST00369,smart-app-00369,Milan Vogel,Early Commuter,BRONZE,355,2026-03-04,False,STR01
+CUST00370,smart-app-00370,Ingrid Hoffmann,Lunch Crowd,SILVER,3339,2025-01-15,False,WDF01
+CUST00371,smart-app-00371,Noah Novak,Lunch Crowd,PLATINUM,1514,2026-05-10,True,HAM01
+CUST00372,smart-app-00372,Ida Iyer,Lunch Crowd,BRONZE,1736,2025-05-13,False,MUC01
+CUST00373,smart-app-00373,Lukas Haddad,Campus Regular,SILVER,862,2025-11-03,True,MUC01
+CUST00374,smart-app-00374,Yuki Wagner,Lunch Crowd,BRONZE,242,2026-06-03,True,WDF02
+CUST00375,smart-app-00375,Noah Lehmann,Lunch Crowd,SILVER,1432,2025-01-28,True,WDF02
+CUST00376,smart-app-00376,Anja Iyer,Lunch Crowd,BRONZE,2611,2025-04-16,True,MUC01
+CUST00377,smart-app-00377,Sofia Nakamura,Lunch Crowd,SILVER,2412,2025-05-16,True,HAM01
+CUST00378,smart-app-00378,Daniel Bauer,Occasional,GOLD,2170,2026-04-29,False,STR01
+CUST00379,smart-app-00379,Felix Becker,Lunch Crowd,BRONZE,3,2025-06-24,True,WDF01
+CUST00380,smart-app-00380,Pablo Lindqvist,Early Commuter,BRONZE,1166,2025-12-10,False,HAM01
+CUST00381,smart-app-00381,Clara Nakamura,Campus Regular,SILVER,867,2025-07-18,True,HAM01
+CUST00382,smart-app-00382,Noah Meyer,Lunch Crowd,PLATINUM,153,2025-09-05,False,WDF01
+CUST00383,smart-app-00383,Daniel Roth,Early Commuter,BRONZE,4234,2026-05-25,True,STR01
+CUST00384,smart-app-00384,Sofia Wagner,Late Shift,BRONZE,4368,2025-07-06,True,WDF01
+CUST00385,smart-app-00385,Sven Fischer,Occasional,BRONZE,921,2026-06-21,True,MUC01
+CUST00386,smart-app-00386,Tobias Krause,Campus Regular,BRONZE,4063,2025-09-22,True,STR01
+CUST00387,smart-app-00387,Fatima Lindqvist,Early Commuter,BRONZE,1566,2026-02-23,True,WDF01
+CUST00388,smart-app-00388,Priya Schneider,Occasional,BRONZE,1047,2025-03-24,True,BLN01
+CUST00389,smart-app-00389,Sven Lehmann,Occasional,PLATINUM,817,2025-10-26,True,MUC01
+CUST00390,smart-app-00390,Jonas Iyer,Fitness Focused,SILVER,2112,2025-07-05,True,WDF01
+CUST00391,smart-app-00391,Omar Schulz,Late Shift,SILVER,2601,2025-03-30,True,HAM01
+CUST00392,smart-app-00392,Mira Novak,Late Shift,BRONZE,4712,2025-08-19,True,MUC01
+CUST00393,smart-app-00393,Priya Schulz,Occasional,BRONZE,1662,2025-11-24,False,WDF02
+CUST00394,smart-app-00394,Pablo Becker,Fitness Focused,BRONZE,619,2025-08-25,True,MUC01
+CUST00395,smart-app-00395,Omar Bauer,Occasional,GOLD,334,2026-03-19,False,HAM01
+CUST00396,smart-app-00396,Noah Bauer,Late Shift,BRONZE,3312,2025-05-15,True,HAM01
+CUST00397,smart-app-00397,Lena Schneider,Occasional,GOLD,2119,2025-08-16,False,STR01
+CUST00398,smart-app-00398,Jonas Weber,Late Shift,BRONZE,2374,2025-04-02,False,WDF02
+CUST00399,smart-app-00399,Hanna Becker,Campus Regular,GOLD,1351,2026-04-27,True,STR01
+CUST00400,smart-app-00400,Milan Wagner,Occasional,SILVER,2892,2026-05-09,True,WDF01
+CUST00401,smart-app-00401,Sven Lindqvist,Lunch Crowd,BRONZE,3761,2025-01-28,True,MUC01
+CUST00402,smart-app-00402,Yuki Nakamura,Lunch Crowd,BRONZE,3261,2025-12-30,True,STR01
+CUST00403,smart-app-00403,Ida Lindqvist,Early Commuter,GOLD,453,2025-12-24,False,BLN01
+CUST00404,smart-app-00404,Emilia Hoffmann,Lunch Crowd,GOLD,1199,2026-04-16,False,MUC01
+CUST00405,smart-app-00405,Chen Vogel,Occasional,SILVER,3008,2025-07-12,True,BLN01
+CUST00406,smart-app-00406,Hanna Iyer,Early Commuter,BRONZE,1495,2025-04-27,False,WDF02
+CUST00407,smart-app-00407,Priya Haddad,Early Commuter,BRONZE,2236,2025-04-24,True,WDF01
+CUST00408,smart-app-00408,Lena Krause,Late Shift,SILVER,1883,2026-03-11,True,MUC01
+CUST00409,smart-app-00409,Milan Vogel,Lunch Crowd,BRONZE,3904,2025-10-01,True,STR01
+CUST00410,smart-app-00410,Noah Vogel,Occasional,SILVER,3606,2025-09-10,True,BLN01
+CUST00411,smart-app-00411,Hanna Weber,Campus Regular,BRONZE,2487,2026-06-04,True,WDF02
+CUST00412,smart-app-00412,Emilia Lehmann,Late Shift,SILVER,472,2025-05-20,False,BLN01
+CUST00413,smart-app-00413,Yuki Hoffmann,Late Shift,BRONZE,4106,2025-07-05,True,WDF02
+CUST00414,smart-app-00414,Sven Iyer,Early Commuter,BRONZE,4728,2025-12-07,True,STR01
+CUST00415,smart-app-00415,Felix Krause,Fitness Focused,SILVER,1860,2025-12-29,True,STR01
+CUST00416,smart-app-00416,Nora Brandt,Occasional,BRONZE,845,2026-04-21,True,MUC01
+CUST00417,smart-app-00417,Noah Iyer,Occasional,BRONZE,1315,2026-03-28,False,WDF02
+CUST00418,smart-app-00418,Mira Iyer,Fitness Focused,SILVER,1543,2025-01-14,False,BLN01
+CUST00419,smart-app-00419,Noah Iyer,Late Shift,BRONZE,3874,2026-05-01,True,BLN01
+CUST00420,smart-app-00420,Elias Lehmann,Campus Regular,BRONZE,1500,2025-07-02,True,HAM01
+CUST00421,smart-app-00421,Hanna Iyer,Campus Regular,PLATINUM,2985,2025-11-16,True,HAM01
+CUST00422,smart-app-00422,Priya Haddad,Lunch Crowd,SILVER,1975,2025-11-18,True,WDF01
+CUST00423,smart-app-00423,Anja Lehmann,Lunch Crowd,BRONZE,2992,2025-11-23,True,WDF02
+CUST00424,smart-app-00424,Ida Haddad,Lunch Crowd,SILVER,3284,2026-05-31,False,BLN01
+CUST00425,smart-app-00425,Daniel Nakamura,Occasional,SILVER,2602,2026-01-06,True,STR01
+CUST00426,smart-app-00426,Fatima Fischer,Late Shift,SILVER,1971,2026-06-12,False,WDF01
+CUST00427,smart-app-00427,Anja Haddad,Campus Regular,GOLD,2156,2025-06-28,True,WDF01
+CUST00428,smart-app-00428,Yara Brandt,Fitness Focused,GOLD,1388,2025-01-26,True,WDF01
+CUST00429,smart-app-00429,Elias Schneider,Campus Regular,BRONZE,3523,2025-03-11,False,WDF02
+CUST00430,smart-app-00430,Fatima Hoffmann,Late Shift,SILVER,2170,2025-05-28,False,BLN01
+CUST00431,smart-app-00431,Ingrid Krause,Fitness Focused,BRONZE,3521,2026-04-25,False,STR01
+CUST00432,smart-app-00432,Ida Haddad,Campus Regular,GOLD,1270,2025-08-20,False,WDF02
+CUST00433,smart-app-00433,Jan Lindqvist,Occasional,PLATINUM,3517,2026-03-08,True,WDF02
+CUST00434,smart-app-00434,Chen Schulz,Lunch Crowd,BRONZE,1650,2025-09-18,True,STR01
+CUST00435,smart-app-00435,Omar Haddad,Early Commuter,BRONZE,551,2026-02-25,True,WDF02
+CUST00436,smart-app-00436,Daniel Sommer,Occasional,BRONZE,3585,2025-08-12,False,WDF01
+CUST00437,smart-app-00437,Yuki Wagner,Lunch Crowd,GOLD,1309,2025-10-20,True,WDF01
+CUST00438,smart-app-00438,Marta Bauer,Fitness Focused,BRONZE,169,2026-01-06,True,STR01
+CUST00439,smart-app-00439,Hanna Lehmann,Lunch Crowd,BRONZE,1787,2025-06-12,True,BLN01
+CUST00440,smart-app-00440,Ravi Roth,Fitness Focused,BRONZE,3200,2025-05-09,True,WDF01
+CUST00441,smart-app-00441,Marta Hoffmann,Late Shift,SILVER,780,2025-11-21,False,WDF01
+CUST00442,smart-app-00442,Omar Kern,Early Commuter,SILVER,2670,2026-02-17,True,MUC01
+CUST00443,smart-app-00443,Ingrid Krause,Lunch Crowd,BRONZE,330,2025-09-21,False,BLN01
+CUST00444,smart-app-00444,Emilia Nakamura,Campus Regular,BRONZE,3462,2025-01-15,True,BLN01
+CUST00445,smart-app-00445,Chen Lehmann,Campus Regular,SILVER,1950,2025-04-24,True,WDF02
+CUST00446,smart-app-00446,Nora Roth,Lunch Crowd,GOLD,2291,2025-09-28,True,HAM01
+CUST00447,smart-app-00447,Milan Lehmann,Late Shift,BRONZE,1870,2026-03-11,True,HAM01
+CUST00448,smart-app-00448,Aaron Novak,Late Shift,SILVER,1080,2026-01-13,False,BLN01
+CUST00449,smart-app-00449,Priya Sommer,Lunch Crowd,BRONZE,3714,2025-09-16,True,STR01
+CUST00450,smart-app-00450,Clara Hoffmann,Campus Regular,BRONZE,914,2025-09-29,False,BLN01
+CUST00451,smart-app-00451,Milan Nakamura,Late Shift,BRONZE,363,2025-03-12,False,BLN01
+CUST00452,smart-app-00452,Ingrid Roth,Early Commuter,BRONZE,4739,2025-10-08,True,STR01
+CUST00453,smart-app-00453,Mira Hoffmann,Lunch Crowd,GOLD,4043,2026-04-04,True,MUC01
+CUST00454,smart-app-00454,Emilia Meyer,Campus Regular,BRONZE,3922,2025-11-25,False,WDF02
+CUST00455,smart-app-00455,Noah Schulz,Occasional,BRONZE,1362,2025-02-12,True,WDF01
+CUST00456,smart-app-00456,Ravi Weber,Late Shift,BRONZE,56,2026-01-17,True,WDF01
+CUST00457,smart-app-00457,Elias Meyer,Early Commuter,BRONZE,4049,2025-01-05,True,WDF01
+CUST00458,smart-app-00458,Chen Schneider,Occasional,SILVER,3492,2026-03-07,True,STR01
+CUST00459,smart-app-00459,Anja Krause,Lunch Crowd,BRONZE,2032,2026-01-13,False,STR01
+CUST00460,smart-app-00460,Priya Fischer,Lunch Crowd,BRONZE,3848,2025-06-04,True,BLN01
+CUST00461,smart-app-00461,Chen Iyer,Late Shift,BRONZE,3632,2025-03-27,True,WDF02
+CUST00462,smart-app-00462,Clara Novak,Late Shift,GOLD,4306,2025-11-16,False,WDF01
+CUST00463,smart-app-00463,Omar Haddad,Fitness Focused,BRONZE,3697,2025-03-02,False,WDF01
+CUST00464,smart-app-00464,Anja Schneider,Fitness Focused,GOLD,2448,2025-01-18,False,MUC01
+CUST00465,smart-app-00465,Ida Nakamura,Occasional,BRONZE,2763,2025-02-28,True,BLN01
+CUST00466,smart-app-00466,Felix Fischer,Early Commuter,GOLD,345,2025-09-20,False,WDF01
+CUST00467,smart-app-00467,Fatima Lindqvist,Fitness Focused,BRONZE,642,2025-11-10,False,WDF02
+CUST00468,smart-app-00468,Emilia Wagner,Fitness Focused,BRONZE,1872,2025-08-05,True,WDF01
+CUST00469,smart-app-00469,Elias Brandt,Early Commuter,BRONZE,4077,2025-05-29,False,MUC01
+CUST00470,smart-app-00470,Pablo Schulz,Early Commuter,SILVER,1524,2025-09-05,True,HAM01
+CUST00471,smart-app-00471,Chen Lindqvist,Campus Regular,SILVER,3654,2025-08-01,False,MUC01
+CUST00472,smart-app-00472,Clara Novak,Early Commuter,GOLD,1460,2025-07-01,True,HAM01
+CUST00473,smart-app-00473,Tobias Bauer,Occasional,BRONZE,562,2025-05-02,True,STR01
+CUST00474,smart-app-00474,Sofia Bauer,Lunch Crowd,GOLD,2920,2026-01-24,False,MUC01
+CUST00475,smart-app-00475,Sven Kern,Late Shift,SILVER,4355,2025-11-21,True,MUC01
+CUST00476,smart-app-00476,Milan Lindqvist,Fitness Focused,SILVER,2431,2026-02-18,True,STR01
+CUST00477,smart-app-00477,Chen Wagner,Lunch Crowd,SILVER,4188,2025-01-26,True,MUC01
+CUST00478,smart-app-00478,Omar Wagner,Late Shift,SILVER,2280,2025-09-24,True,BLN01
+CUST00479,smart-app-00479,Omar Moreau,Early Commuter,GOLD,495,2026-01-05,False,WDF02
+CUST00480,smart-app-00480,Jan Weber,Campus Regular,GOLD,2350,2025-04-22,False,STR01
