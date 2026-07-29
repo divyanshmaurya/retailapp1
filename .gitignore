@@ -4,6 +4,8 @@ dist/
 
 # Local SQLite database - rebuilt with `npm run deploy:local`
 *.db
+*.db-shm
+*.db-wal
 *.db-journal
 *.sqlite
 
