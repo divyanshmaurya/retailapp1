@@ -15,6 +15,7 @@
     "@cap-js/hana": "^2.8.0",
     "@cap-js/sqlite": "^2.4.0",
     "@sap/cds": "^9.9.3",
+    "@sap/xssec": "^4.13.3",
     "express": "^4.22.2"
   },
   "devDependencies": {

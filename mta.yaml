@@ -7,7 +7,6 @@ description: >
 
 parameters:
   enable-parallel-deployments: true
-  deploy_mode: html5-repo
 
 build-parameters:
   before-all:
@@ -49,15 +48,24 @@ modules:
       - name: smartstore-db
 
   # ---------------------------------------------------------------------------
-  # Static UI - the launchpad, the command centre and the Fiori elements apps
+  # Application Router - the public entry point.
+  #
+  # Serves the static interface (launchpad, command centre, workbench, API
+  # explorer and the eight Fiori elements applications) and proxies /ai and
+  # /analytics to the CAP service, applying XSUAA authentication to both. This
+  # module is the one that gets the public URL; the service itself is not
+  # routed to directly.
   # ---------------------------------------------------------------------------
-  - name: smartstore-app
-    type: nodejs
+  - name: smartstore-approuter
+    type: approuter.nodejs
     path: app
     parameters:
-      buildpack: nodejs_buildpack
       memory: 256M
       disk-quota: 512M
+    build-parameters:
+      builder: npm
+      ignore:
+        - node_modules/
     requires:
       - name: srv-api
         group: destinations

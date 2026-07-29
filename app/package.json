@@ -1,0 +1,15 @@
+{
+  "name": "smartstore-approuter",
+  "version": "1.0.0",
+  "description": "SAP Application Router for S.Mart Retail AI: serves the static interface and fronts both OData services with XSUAA authentication.",
+  "private": true,
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@sap/approuter": "^20.4.0"
+  },
+  "scripts": {
+    "start": "node node_modules/@sap/approuter/approuter.js"
+  }
+}

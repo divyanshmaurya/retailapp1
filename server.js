@@ -17,7 +17,20 @@ const cds = require('@sap/cds');
 
 const NO_CACHE_TYPES = /\.(html|json|js|properties|css|xml)$/i;
 
+/**
+ * The Application Router's own configuration, which lives in `app/` alongside
+ * the pages it serves. In production the router refuses these itself; here CAP
+ * serves `app/` statically and would hand them out, so they are refused to keep
+ * both environments behaving the same way.
+ */
+const NOT_WEB_CONTENT = /^\/(xs-app\.json|package(-lock)?\.json)$/;
+
 cds.on('bootstrap', (app) => {
+  app.use((request, response, next) => {
+    if (NOT_WEB_CONTENT.test(request.path)) return response.sendStatus(404);
+    return next();
+  });
+
   if (process.env.NODE_ENV === 'production') return;
 
   app.use((request, response, next) => {

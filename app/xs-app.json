@@ -1,0 +1,31 @@
+{
+  "welcomeFile": "/index.html",
+  "authenticationMethod": "route",
+  "routes": [
+    {
+      "//": "The approuter's own configuration is not web content. Without these the catch-all below would happily serve them.",
+      "source": "^/(xs-app\\.json|package(-lock)?\\.json)$",
+      "target": "/",
+      "service": "not-found"
+    },
+    {
+      "//": "OData services. csrfProtection is off because the scenario actions are POSTs issued by fetch() from our own pages, which carry no CSRF token.",
+      "source": "^/ai/(.*)$",
+      "destination": "srv-api",
+      "authenticationType": "xsuaa",
+      "csrfProtection": false
+    },
+    {
+      "source": "^/analytics/(.*)$",
+      "destination": "srv-api",
+      "authenticationType": "xsuaa",
+      "csrfProtection": false
+    },
+    {
+      "//": "Everything else is the static interface, served from this module and behind the same login.",
+      "source": "^(.*)$",
+      "localDir": ".",
+      "authenticationType": "xsuaa"
+    }
+  ]
+}
