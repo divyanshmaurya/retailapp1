@@ -4,7 +4,7 @@
   "description": "SAP Application Router for S.Mart Retail AI: serves the static interface and fronts both OData services with XSUAA authentication.",
   "private": true,
   "engines": {
-    "node": ">=20"
+    "node": "^20 || ^22"
   },
   "dependencies": {
     "@sap/approuter": "^20.4.0"

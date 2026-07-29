@@ -93,5 +93,10 @@ resources:
       service-plan: application
       path: ./xs-security.json
       config:
-        xsappname: smartstore-retail-ai-${org}-${space}
+        # Only the space, not the org. XSUAA restricts xsappname to letters,
+        # digits, underscore, hyphen and slash, and organisation names routinely
+        # contain spaces - "MSITEK LLC" produced an invalid name and failed the
+        # deploy. The space alone is enough to keep the name unique, because
+        # xsappname only has to be unique within a subaccount.
+        xsappname: smartstore-retail-ai-${space}
         tenant-mode: dedicated
