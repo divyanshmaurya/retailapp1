@@ -3,199 +3,199 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>S.Mart Retail AI — Launchpad</title>
+<title>S.Mart Retail AI</title>
+<link rel="stylesheet" href="/assets/theme.css">
 <style>
-/* Dependency-free launchpad so the entry point works with or without a UI5
-   runtime. Each tile links to its SAP Fiori elements app; the command centre
-   is self-contained and needs no CDN. */
-:root {
-  color-scheme: light;
-  --surface: #fcfcfb;
-  --page: #f9f9f7;
-  --ink: #0b0b0b;
-  --ink-2: #52514e;
-  --muted: #898781;
-  --border: rgba(11,11,11,.10);
-  --grid: #e1e0d9;
-  --accent: #2a78d6;
-  --good: #0ca30c;
-  --warning: #fab219;
-  --font: system-ui, -apple-system, "Segoe UI", sans-serif;
+/* Overview-only styling. Everything structural comes from the shared theme. */
+.hero {
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+  padding: 34px 22px 30px;
 }
-@media (prefers-color-scheme: dark) {
-  :root:where(:not([data-theme="light"])) {
-    color-scheme: dark;
-    --surface: #1a1a19; --page: #0d0d0d; --ink: #fff; --ink-2: #c3c2b7;
-    --border: rgba(255,255,255,.10); --grid: #2c2c2a; --accent: #3987e5;
-  }
-}
-* { box-sizing: border-box; }
-body { margin: 0; background: var(--page); color: var(--ink); font-family: var(--font); }
-header {
-  background: var(--surface); border-bottom: 1px solid var(--border);
-  padding: 18px 28px;
-}
-header h1 { margin: 0 0 4px; font-size: 19px; font-weight: 600; letter-spacing: -.01em; }
-header p { margin: 0; color: var(--ink-2); font-size: 13.5px; max-width: 80ch; }
-main { padding: 24px 28px 56px; max-width: 1400px; margin: 0 auto; }
-h2.section { font-size: 13px; text-transform: uppercase; letter-spacing: .05em; color: var(--ink-2); margin: 28px 0 12px; }
-h2.section:first-of-type { margin-top: 8px; }
-.tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(268px, 1fr)); gap: 14px; }
+.hero-inner { max-width: 1560px; margin: 0 auto; }
+.hero h1 { font-size: 27px; font-weight: 680; letter-spacing: -.03em; margin-bottom: 8px; }
+.hero p { font-size: 14.5px; color: var(--ink-2); max-width: 82ch; line-height: 1.6; }
+.hero-stats { display: flex; gap: 30px; flex-wrap: wrap; margin-top: 22px; }
+.hero-stat .v { font-size: 21px; font-weight: 660; letter-spacing: -.02em; }
+.hero-stat .l { font-size: 11.5px; color: var(--ink-3); text-transform: uppercase; letter-spacing: .06em; margin-top: 1px; }
+
+.tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(288px, 1fr)); gap: 15px; }
 a.tile {
-  display: block; background: var(--surface); border: 1px solid var(--border);
-  border-radius: 10px; padding: 16px 18px; text-decoration: none; color: inherit;
-  transition: border-color .12s, transform .12s;
+  display: flex; flex-direction: column;
+  background: var(--surface); border: 1px solid var(--line);
+  border-radius: var(--r-lg); box-shadow: var(--shadow-sm);
+  padding: 18px 19px; text-decoration: none; color: inherit;
+  transition: border-color .14s, box-shadow .14s, transform .14s;
+  position: relative; overflow: hidden;
 }
-a.tile:hover { border-color: var(--accent); transform: translateY(-1px); }
-a.tile .kicker { font-size: 11.5px; text-transform: uppercase; letter-spacing: .05em; color: var(--muted); }
-a.tile h3 { margin: 6px 0 6px; font-size: 15.5px; font-weight: 600; }
-a.tile p { margin: 0; font-size: 13px; color: var(--ink-2); line-height: 1.45; }
-a.tile .badge {
-  display: inline-block; margin-top: 10px; font-size: 11.5px; font-weight: 600;
-  padding: 2px 8px; border-radius: 999px;
-  color: var(--good); background: color-mix(in srgb, var(--good) 12%, transparent);
-  border: 1px solid color-mix(in srgb, var(--good) 35%, transparent);
+a.tile::after {
+  content: ""; position: absolute; inset: 0 0 auto 0; height: 3px;
+  background: var(--accent, var(--brand-bright)); opacity: 0; transition: opacity .14s;
 }
-a.tile .badge.ui5 {
-  color: var(--ink-2); background: color-mix(in srgb, var(--muted) 12%, transparent);
-  border-color: var(--grid);
+a.tile:hover { border-color: var(--line-strong); box-shadow: var(--shadow-md); transform: translateY(-2px); }
+a.tile:hover::after { opacity: 1; }
+a.tile .kicker { font-size: 10.5px; font-weight: 650; text-transform: uppercase; letter-spacing: .07em; color: var(--ink-muted); }
+a.tile h3 { font-size: 15.5px; font-weight: 650; margin: 7px 0 6px; letter-spacing: -.01em; }
+a.tile p { font-size: 13px; color: var(--ink-2); line-height: 1.5; flex: 1; }
+a.tile .foot { margin-top: 13px; display: flex; align-items: center; gap: 8px; }
+
+.section-head { display: flex; align-items: baseline; gap: 12px; margin: 32px 0 13px; }
+.section-head h2 { font-size: 12px; font-weight: 680; text-transform: uppercase; letter-spacing: .08em; color: var(--ink-3); }
+.section-head .note { font-size: 12.5px; color: var(--ink-muted); }
+.section-blurb { font-size: 13px; color: var(--ink-2); max-width: 96ch; margin: -4px 0 14px; line-height: 1.55; }
+
+.callout {
+  background: var(--surface); border: 1px solid var(--line); border-left: 3px solid var(--warn);
+  border-radius: var(--r-md); padding: 15px 18px; margin-top: 26px; font-size: 13px; color: var(--ink-2);
 }
-.note {
-  background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--warning);
-  border-radius: 8px; padding: 14px 16px; margin: 26px 0 0; font-size: 13px; color: var(--ink-2);
-}
-.note strong { color: var(--ink); }
-code { font-size: 12.5px; background: color-mix(in srgb, var(--muted) 14%, transparent); padding: 1px 5px; border-radius: 4px; }
-footer { color: var(--muted); font-size: 12.5px; border-top: 1px solid var(--grid); margin-top: 32px; padding-top: 14px; }
+.callout strong { color: var(--ink); font-weight: 650; }
+.callout code { font-family: var(--mono); font-size: 12px; background: var(--surface-sunk); padding: 1px 6px; border-radius: 4px; }
 </style>
 </head>
 <body>
-<header>
-  <h1>S.Mart Retail AI</h1>
-  <p>
-    Six AI scenarios over the SAP Customer Checkout data from the S.Mart Walldorf autonomous store,
-    amalgamated with a synthesized six-store network. Built on SAP CAP with OData V4 services,
-    deployable to SAP HANA Cloud.
-  </p>
-</header>
 
-<main>
-  <h2 class="section">Command centre</h2>
+<header id="appHeader"></header>
+
+<div class="hero">
+  <div class="hero-inner">
+    <h1>Autonomous retail, instrumented</h1>
+    <p>
+      Six AI scenarios over real SAP Customer Checkout data from the S.Mart Walldorf store &mdash; a 24/7 shop
+      with no staff, where RFID and the payfree gate replace the till &mdash; enriched into a six-store network.
+      Built on SAP CAP with OData V4 services, deployable to SAP HANA Cloud.
+    </p>
+    <div class="hero-stats" id="heroStats">
+      <div class="hero-stat"><div class="v skeleton" style="width:66px;height:22px"></div><div class="l">Loading</div></div>
+    </div>
+  </div>
+</div>
+
+<main class="app-main">
+
+  <div class="section-head"><h2>Start here</h2></div>
   <div class="tiles">
-    <a class="tile" href="/command-center/index.html">
-      <div class="kicker">All scenarios</div>
+    <a class="tile" href="/command-center/index.html" style="--accent:var(--series-1)">
+      <span class="kicker">All scenarios</span>
       <h3>AI Command Centre</h3>
-      <p>KPI tiles, trading patterns, checkout-integrity breakdown and the ranked insight feed, with a
-         one-click re-run of every scenario engine.</p>
-      <span class="badge">No CDN required</span>
+      <p>Network overview: value at stake, trading patterns, checkout-integrity breakdown and the ranked
+         insight feed, with a one-click re-run of every engine.</p>
+      <span class="foot"><span class="tag good">Works offline</span></span>
     </a>
-  </div>
-
-  <h2 class="section">Scenario apps</h2>
-  <div class="tiles">
-    <a class="tile" href="/scenarios/index.html?view=checkout-integrity">
-      <div class="kicker">Loss prevention</div>
-      <h3>Checkout Integrity Radar</h3>
-      <p>RFID misreads, absent tags, stock variance and price errors on the unstaffed gates, each with
-         the evidence behind the call.</p>
-      <span class="badge">No CDN required</span>
+    <a class="tile" href="/scenarios/index.html" style="--accent:var(--series-3)">
+      <span class="kicker">Working queues</span>
+      <h3>Scenario Workbench</h3>
+      <p>All eight scenarios as tabs. Sort, filter and search, open any record to see the evidence behind
+         it, and act on it without leaving the page.</p>
+      <span class="foot"><span class="tag good">Works offline</span></span>
     </a>
-    <a class="tile" href="/scenarios/index.html?view=replenishment">
-      <div class="kicker">Autonomous ordering</div>
-      <h3>Replenishment Cockpit</h3>
-      <p>Reorder proposals sized from forecast demand over the supplier lead time plus safety stock,
-         ranked by lost-sales exposure.</p>
-      <span class="badge">No CDN required</span>
-    </a>
-    <a class="tile" href="/scenarios/index.html?view=fresh-waste">
-      <div class="kicker">Fresh food</div>
-      <h3>Fresh Waste Guard</h3>
-      <p>Markdown depth chosen by sweeping candidate discounts and keeping the one that recovers the
-         most margin before expiry.</p>
-      <span class="badge">No CDN required</span>
-    </a>
-    <a class="tile" href="/scenarios/index.html?view=demand-forecast">
-      <div class="kicker">Hourly demand</div>
-      <h3>Demand Forecast</h3>
-      <p>Per store, article and hour, with prediction intervals and the backtested accuracy of the
-         model behind each row.</p>
-      <span class="badge">No CDN required</span>
-    </a>
-    <a class="tile" href="/scenarios/index.html?view=basket-affinity">
-      <div class="kicker">Merchandising</div>
-      <h3>Basket Affinity &amp; Planogram</h3>
-      <p>Association rules mined from real baskets, flagging pairs that sell together but sit in
-         different temperature zones today.</p>
-      <span class="badge">No CDN required</span>
-    </a>
-    <a class="tile" href="/scenarios/index.html?view=personal-offers">
-      <div class="kicker">Personalisation</div>
-      <h3>Personalised Offers</h3>
-      <p>Next best offer per S.Mart app customer, from purchase cadence and basket affinity &mdash;
-         consenting customers only.</p>
-      <span class="badge">No CDN required</span>
-    </a>
-    <a class="tile" href="/scenarios/index.html?view=cold-chain">
-      <div class="kicker">Store operations</div>
-      <h3>Cold Chain Monitor</h3>
-      <p>Sustained chiller and freezer excursions, scored by how far out, for how long, and how much
-         stock is exposed.</p>
-      <span class="badge">No CDN required</span>
-    </a>
-    <a class="tile" href="/scenarios/index.html?view=insight-feed">
-      <div class="kicker">All scenarios</div>
-      <h3>AI Insight Feed</h3>
-      <p>One queue across every engine, ranked by euros at stake weighted by the model's confidence
-         in its own recommendation.</p>
-      <span class="badge">No CDN required</span>
-    </a>
-  </div>
-
-  <h2 class="section">Services</h2>
-  <div class="tiles">
-    <a class="tile" href="/api/index.html">
-      <div class="kicker">OData V4</div>
+    <a class="tile" href="/api/index.html" style="--accent:var(--series-6)">
+      <span class="kicker">OData V4</span>
       <h3>API Explorer</h3>
-      <p>Both services with their entities and live row counts, a query runner that shows the JSON in
-         place, and links to the raw metadata for when you want the XML.</p>
-      <span class="badge">No CDN required</span>
+      <p>Both services with live row counts, a query runner that shows the JSON in place, and links to the
+         raw metadata when you want it.</p>
+      <span class="foot"><span class="tag good">Works offline</span></span>
     </a>
   </div>
 
+  <div class="section-head"><h2>Scenarios</h2><span class="note">Each opens its tab in the workbench</span></div>
+  <div class="tiles" id="scenarioTiles"></div>
 
-  <h2 class="section">Same scenarios as SAP Fiori elements &mdash; needs a SAPUI5 runtime</h2>
-  <p style="font-size:13px;color:var(--ink-2);margin:-4px 0 12px;max-width:90ch">
-    Annotation-driven List Report and Object Page apps over the same OData services, for deployment to
-    SAP BTP where Fiori elements provides variant management, personalisation and the standard SAP
-    interaction model. They bootstrap SAPUI5 from <code>ui5.sap.com</code> and cannot start where
-    that host is unreachable &mdash; <code>sap.fe.templates</code> ships only in the closed SAPUI5
-    distribution, so it cannot be self-hosted. Use the scenario apps above in that case.
+  <div class="section-head"><h2>SAP Fiori elements</h2><span class="note">Requires a SAPUI5 runtime</span></div>
+  <p class="section-blurb">
+    The same eight scenarios as annotation-driven List Report and Object Page applications, for deployment to
+    SAP BTP where Fiori elements provides variant management, personalisation and the standard SAP interaction
+    model. They bootstrap SAPUI5 from <code>ui5.sap.com</code>; where that is unreachable they explain the
+    failure and link back to the workbench, which shows the same data.
   </p>
-  <div class="tiles">
-    <a class="tile" href="/checkout-integrity/webapp/index.html"><div class="kicker">Loss prevention</div><h3>Checkout Integrity Radar</h3><p>List Report and Object Page over ShrinkAlerts.</p><span class="badge ui5">Requires SAPUI5</span></a>
-    <a class="tile" href="/replenishment-cockpit/webapp/index.html"><div class="kicker">Autonomous ordering</div><h3>Replenishment Cockpit</h3><p>List Report and Object Page over ReplenishmentTasks.</p><span class="badge ui5">Requires SAPUI5</span></a>
-    <a class="tile" href="/fresh-waste-guard/webapp/index.html"><div class="kicker">Fresh food</div><h3>Fresh Waste Guard</h3><p>List Report and Object Page over MarkdownRecommendations.</p><span class="badge ui5">Requires SAPUI5</span></a>
-    <a class="tile" href="/demand-forecast/webapp/index.html"><div class="kicker">Hourly demand</div><h3>Demand Forecast</h3><p>List Report and Object Page over DemandForecasts.</p><span class="badge ui5">Requires SAPUI5</span></a>
-    <a class="tile" href="/basket-affinity/webapp/index.html"><div class="kicker">Merchandising</div><h3>Basket Affinity</h3><p>List Report and Object Page over BasketAffinities.</p><span class="badge ui5">Requires SAPUI5</span></a>
-    <a class="tile" href="/personal-offers/webapp/index.html"><div class="kicker">Personalisation</div><h3>Personalised Offers</h3><p>List Report and Object Page over NextBestOffers.</p><span class="badge ui5">Requires SAPUI5</span></a>
-    <a class="tile" href="/cold-chain/webapp/index.html"><div class="kicker">Store operations</div><h3>Cold Chain Monitor</h3><p>List Report and Object Page over ColdChainAlerts.</p><span class="badge ui5">Requires SAPUI5</span></a>
-    <a class="tile" href="/insight-feed/webapp/index.html"><div class="kicker">All scenarios</div><h3>AI Insight Feed</h3><p>List Report and Object Page over AIInsights.</p><span class="badge ui5">Requires SAPUI5</span></a>
+  <div class="tiles" id="fioriTiles"></div>
+
+  <div class="callout">
+    <strong>Signing in.</strong> The services require an authenticated user. In development CAP uses mocked
+    authentication &mdash; sign in as <code>manager</code> / <code>manager</code>, or as <code>analyst</code>
+    or <code>viewer</code>.
   </div>
 
-  <div class="note">
-    <strong>Signing in.</strong> The services require an authenticated user. In development CAP uses
-    mocked authentication &mdash; sign in as <code>manager</code> / <code>manager</code>
-    (or <code>analyst</code>, <code>viewer</code>).
-    <br><br>
-    <strong>Everything above the Fiori elements section works offline.</strong> The command centre,
-    the scenario apps and the API explorer load no external script, font or stylesheet, so they render
-    in an air-gapped landscape. Only the Fiori elements apps need <code>ui5.sap.com</code>.
-  </div>
-
-  <footer>
-    Walldorf figures originate from the SAP Customer Checkout &ldquo;Complete Sales Report&rdquo; export;
-    the rest of the network is synthesized from the same behavioural profile.
-  </footer>
+  <p class="footnote" id="provenance">
+    Walldorf figures originate from the SAP Customer Checkout &ldquo;Complete Sales Report&rdquo; export; the
+    remaining stores are synthesized from the same measured behaviour.
+  </p>
 </main>
+
+<script src="/assets/shell.js"></script>
+<script>
+'use strict';
+
+Shell.header('home');
+
+const SCENARIOS = [
+  ['checkout-integrity', 'Loss prevention', 'Checkout Integrity', 'RFID misreads, absent tags, stock variance and price errors on the unstaffed gates, each with its evidence.', 'var(--series-1)'],
+  ['replenishment', 'Autonomous ordering', 'Replenishment', 'Reorder proposals sized from forecast demand over the supplier lead time, ranked by lost-sales exposure.', 'var(--series-2)'],
+  ['fresh-waste', 'Fresh food', 'Fresh Waste Guard', 'The markdown depth that recovers the most margin before expiry, chosen by sweeping candidate discounts.', 'var(--series-3)'],
+  ['demand-forecast', 'Hourly demand', 'Demand Forecast', 'Per store, article and hour, with prediction intervals and backtested accuracy on every row.', 'var(--series-4)'],
+  ['basket-affinity', 'Merchandising', 'Basket Affinity', 'Association rules from real baskets, flagging pairs that sell together but sit in different zones.', 'var(--series-5)'],
+  ['personal-offers', 'Personalisation', 'Personalised Offers', 'Next best offer per app customer, from purchase cadence and affinity. Consenting customers only.', 'var(--series-6)'],
+  ['cold-chain', 'Store operations', 'Cold Chain', 'Sustained chiller and freezer excursions, scored by depth, duration and the stock exposed.', 'var(--series-1)'],
+  ['insight-feed', 'Everything', 'AI Insight Feed', 'One queue across all engines, ranked by euros at stake weighted by model confidence.', 'var(--series-3)'],
+];
+
+const FIORI = [
+  ['checkout-integrity', 'Checkout Integrity Radar', 'ShrinkAlerts'],
+  ['replenishment-cockpit', 'Replenishment Cockpit', 'ReplenishmentTasks'],
+  ['fresh-waste-guard', 'Fresh Waste Guard', 'MarkdownRecommendations'],
+  ['demand-forecast', 'Demand Forecast', 'DemandForecasts'],
+  ['basket-affinity', 'Basket Affinity', 'BasketAffinities'],
+  ['personal-offers', 'Personalised Offers', 'NextBestOffers'],
+  ['cold-chain', 'Cold Chain Monitor', 'ColdChainAlerts'],
+  ['insight-feed', 'AI Insight Feed', 'AIInsights'],
+];
+
+document.getElementById('scenarioTiles').innerHTML = SCENARIOS.map(([view, kicker, title, blurb, accent]) => `
+  <a class="tile" href="/scenarios/index.html?view=${view}" style="--accent:${accent}">
+    <span class="kicker">${Shell.esc(kicker)}</span>
+    <h3>${Shell.esc(title)}</h3>
+    <p>${Shell.esc(blurb)}</p>
+    <span class="foot"><span class="tag good">Works offline</span></span>
+  </a>`).join('');
+
+document.getElementById('fioriTiles').innerHTML = FIORI.map(([folder, title, entity]) => `
+  <a class="tile" href="/${folder}/webapp/index.html" style="--accent:var(--ink-muted)">
+    <span class="kicker">Fiori elements</span>
+    <h3>${Shell.esc(title)}</h3>
+    <p>List Report and Object Page over <span class="mono">${Shell.esc(entity)}</span>.</p>
+    <span class="foot"><span class="tag">Requires SAPUI5</span></span>
+  </a>`).join('');
+
+/* Live figures in the hero, so the landing page reflects the actual dataset
+   rather than numbers baked into the markup that quietly go stale. */
+(async function heroStats() {
+  const host = document.getElementById('heroStats');
+  try {
+    const [insights, stores, metrics] = await Promise.all([
+      Shell.fetchJson('/ai/AIInsights?$top=500&$select=impactValue,severity,state'),
+      Shell.fetchJson('/analytics/Stores?$top=20&$select=ID,isReferenceStore'),
+      Shell.fetchJson('/ai/ModelMetrics?$top=60'),
+    ]);
+    const open = insights.filter((r) => r.state === 'OPEN');
+    const atStake = open.reduce((s, r) => s + Number(r.impactValue || 0), 0);
+    const critical = open.filter((r) => r.severity === 'CRITICAL' || r.severity === 'HIGH').length;
+    const wape = metrics.find((m) => m.metricName === 'WAPE (store-day)');
+
+    const stats = [
+      [Shell.euro0(atStake), 'Value at stake'],
+      [Shell.num(open.length), 'Open insights'],
+      [Shell.num(critical), 'Need attention'],
+      [Shell.num(stores.length), 'Stores'],
+      [wape ? `${Shell.num(100 - Number(wape.metricValue), 1)}%` : '—', 'Forecast accuracy'],
+    ];
+    host.innerHTML = stats.map(([v, l]) =>
+      `<div class="hero-stat"><div class="v">${Shell.esc(v)}</div><div class="l">${Shell.esc(l)}</div></div>`).join('');
+  } catch (error) {
+    // The tiles are the point of this page; a stats failure should not block it.
+    host.innerHTML = '<div class="hero-stat"><div class="v muted" style="font-size:13.5px;font-weight:500">'
+      + (error.status === 401 ? 'Sign in to see live figures' : 'Live figures unavailable')
+      + '</div></div>';
+  }
+})();
+</script>
 </body>
 </html>

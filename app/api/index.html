@@ -3,169 +3,107 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>S.Mart API Explorer</title>
+<title>API Explorer — S.Mart Retail AI</title>
+<link rel="stylesheet" href="/assets/theme.css">
 <style>
-/* A readable front door to the OData services. Linking straight at $metadata
-   drops raw XML on the reader, which is correct but unhelpful; this lists the
-   entities, shows live row counts, and lets you run a query and read the JSON
-   here. No external dependency, same as the other pages. */
-:root {
-  color-scheme: light;
-  --surface-1: #fcfcfb; --page: #f9f9f7; --text-primary: #0b0b0b;
-  --text-secondary: #52514e; --text-muted: #898781; --grid: #e1e0d9;
-  --axis: #c3c2b7; --border: rgba(11,11,11,.10); --series-1: #2a78d6;
-  --code-bg: #f2f5f8; --font: system-ui, -apple-system, "Segoe UI", sans-serif;
-  --mono: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+/* Explorer specifics; the rest comes from the shared theme. */
+.svc-head { display: flex; align-items: baseline; gap: 11px; flex-wrap: wrap; margin-bottom: 4px; }
+.svc-head h2 { font-size: 15.5px; font-weight: 650; letter-spacing: -.01em; }
+.path-chip {
+  font-family: var(--mono); font-size: 12px; background: var(--surface-sunk);
+  padding: 2px 9px; border-radius: var(--r-sm); color: var(--ink-2); border: 1px solid var(--line);
 }
-@media (prefers-color-scheme: dark) {
-  :root:where(:not([data-theme="light"])) {
-    color-scheme: dark;
-    --surface-1: #1a1a19; --page: #0d0d0d; --text-primary: #fff;
-    --text-secondary: #c3c2b7; --grid: #2c2c2a; --axis: #383835;
-    --border: rgba(255,255,255,.10); --series-1: #3987e5; --code-bg: #232322;
-  }
-}
-:root[data-theme="dark"] {
-  color-scheme: dark;
-  --surface-1: #1a1a19; --page: #0d0d0d; --text-primary: #fff;
-  --text-secondary: #c3c2b7; --grid: #2c2c2a; --axis: #383835;
-  --border: rgba(255,255,255,.10); --series-1: #3987e5; --code-bg: #232322;
-}
-* { box-sizing: border-box; }
-body { margin: 0; background: var(--page); color: var(--text-primary); font-family: var(--font); font-size: 14px; }
-header.shell {
-  background: var(--surface-1); border-bottom: 1px solid var(--border);
-  padding: 14px 22px; display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap;
-}
-header h1 { margin: 0; font-size: 17px; font-weight: 600; }
-header a { color: var(--series-1); text-decoration: none; font-size: 13px; }
-header a:hover { text-decoration: underline; }
-header .spacer { margin-left: auto; }
-button {
-  font: inherit; font-size: 13px; color: var(--text-primary); background: var(--surface-1);
-  border: 1px solid var(--axis); border-radius: 6px; padding: 6px 10px; cursor: pointer;
-}
-button:hover { border-color: var(--series-1); }
-button.primary { background: var(--series-1); border-color: var(--series-1); color: #fff; }
-main { padding: 20px 22px 60px; max-width: 1280px; margin: 0 auto; }
-h2 { font-size: 15px; margin: 26px 0 4px; font-weight: 600; }
-h2:first-of-type { margin-top: 4px; }
-p.lead { color: var(--text-secondary); margin: 0 0 14px; font-size: 13.5px; max-width: 90ch; line-height: 1.55; }
-.card {
-  background: var(--surface-1); border: 1px solid var(--border);
-  border-radius: 10px; padding: 14px 18px; margin-bottom: 16px;
-}
-.svc-head { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin-bottom: 4px; }
-.svc-head h3 { margin: 0; font-size: 15px; font-weight: 600; }
-code, .path { font-family: var(--mono); font-size: 12.5px; }
-.path { background: var(--code-bg); padding: 2px 7px; border-radius: 4px; }
-table { border-collapse: collapse; width: 100%; font-size: 13px; margin-top: 10px; }
-th, td { text-align: left; padding: 7px 10px; border-bottom: 1px solid var(--grid); }
-th { color: var(--text-secondary); font-size: 11.5px; text-transform: uppercase; letter-spacing: .03em; font-weight: 600; }
-td.num { text-align: right; font-variant-numeric: tabular-nums; }
-td a { color: var(--series-1); text-decoration: none; }
-td a:hover { text-decoration: underline; }
-.try { display: flex; gap: 8px; margin: 12px 0 0; flex-wrap: wrap; }
+.entity-link { color: var(--brand); text-decoration: none; font-weight: 550; }
+.entity-link:hover { text-decoration: underline; }
+.try { display: flex; gap: 9px; flex-wrap: wrap; margin-bottom: 12px; }
 .try input {
-  flex: 1; min-width: 320px; font-family: var(--mono); font-size: 12.5px;
-  padding: 8px 10px; border: 1px solid var(--axis); border-radius: 6px;
-  background: var(--surface-1); color: var(--text-primary);
+  flex: 1; min-width: 340px; font-family: var(--mono); font-size: 12.5px; padding: 9px 12px;
 }
-pre {
-  background: var(--code-bg); border: 1px solid var(--border); border-radius: 8px;
-  padding: 12px 14px; overflow: auto; max-height: 380px; font-family: var(--mono);
-  font-size: 12.5px; line-height: 1.5; margin: 10px 0 0;
+.examples { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+.examples button {
+  font-size: 12px; padding: 5px 11px; border-radius: var(--r-pill);
+  background: var(--surface-sunk); border-color: var(--line);
 }
-.muted { color: var(--text-muted); font-size: 12.5px; }
-ul.examples { list-style: none; padding: 0; margin: 8px 0 0; }
-ul.examples li { padding: 5px 0; border-bottom: 1px solid var(--grid); }
-ul.examples li:last-child { border-bottom: none; }
-ul.examples button { margin-right: 8px; padding: 2px 8px; font-size: 12px; }
-.note {
-  border-left: 3px solid var(--series-1); background: var(--surface-1);
-  border-radius: 8px; padding: 12px 16px; font-size: 13px; color: var(--text-secondary);
-  border-top: 1px solid var(--border); border-right: 1px solid var(--border); border-bottom: 1px solid var(--border);
+.examples button:hover { background: var(--brand-soft); border-color: var(--brand); color: var(--brand); }
+pre.out {
+  background: var(--surface-sunk); border: 1px solid var(--line); border-radius: var(--r-md);
+  padding: 14px 16px; overflow: auto; max-height: 400px; font-family: var(--mono);
+  font-size: 12.5px; line-height: 1.55; margin: 0; color: var(--ink-2);
 }
+.meta-links { font-size: 12.5px; color: var(--ink-3); margin-top: 14px; }
+.meta-links a { color: var(--brand); text-decoration: none; font-family: var(--mono); font-size: 12px; }
+.meta-links a:hover { text-decoration: underline; }
 </style>
 </head>
 <body>
 
-<header class="shell">
-  <h1>API Explorer</h1>
-  <a href="/index.html">&larr; Launchpad</a>
-  <a href="/scenarios/index.html">Scenario Workbench</a>
-  <a href="/command-center/index.html">Command Centre</a>
-  <span class="spacer"></span>
-  <button id="themeToggle">Dark</button>
-</header>
+<header id="appHeader"></header>
 
-<main>
-  <p class="lead">
-    Two OData V4 services back everything in this application. This page lists what each one exposes,
-    with live row counts, and lets you run a query and read the response without leaving the browser.
-    The raw <code>$metadata</code> documents are linked at the end of each section &mdash; they are XML,
-    so a browser will show them as markup rather than as a page.
-  </p>
-
-  <div id="services"></div>
-
-  <h2>Try a query</h2>
-  <p class="lead">
-    Edit the path and run it. Anything the services accept works here: <code>$filter</code>,
-    <code>$select</code>, <code>$expand</code>, <code>$orderby</code>, <code>$top</code>, <code>$count</code>.
-  </p>
-  <div class="card">
-    <div class="try">
-      <input id="queryInput" value="/ai/ShrinkAlerts?$top=3&$select=ID,pattern,valueAtRisk&$expand=article($select=name)" spellcheck="false">
-      <button class="primary" id="runQuery">Run</button>
-    </div>
-    <ul class="examples" id="examples"></ul>
-    <pre id="queryOut">Run a query to see the response.</pre>
+<main class="app-main">
+  <div class="page-head">
+    <h1>API Explorer</h1>
+    <p>Two OData V4 services back everything in this application. Browse what each exposes with live row
+       counts, run a query and read the response here. The raw <span class="mono">$metadata</span> documents
+       are linked too &mdash; they are XML, so a browser shows them as markup rather than as a page.</p>
   </div>
 
-  <h2>Actions</h2>
-  <p class="lead">
-    The AI service exposes actions as well as entities. These change data, so they are listed rather than
-    wired to a button here &mdash; the Scenario Workbench calls the queue actions, and the Command Centre
-    calls <code>recalculate</code>.
-  </p>
+  <div class="grid" id="services"></div>
+
+  <div class="eyebrow" style="margin-top:30px">Query runner</div>
   <div class="card">
-    <table>
-      <thead><tr><th>Action</th><th>Bound to</th><th>Purpose</th></tr></thead>
-      <tbody>
-        <tr><td><code>recalculate</code></td><td class="muted">unbound</td><td>Re-run one scenario or all of them, optionally scoped to a store</td></tr>
-        <tr><td><code>simulateForecast</code></td><td class="muted">unbound</td><td>Forecast one article without persisting anything</td></tr>
-        <tr><td><code>simulateMarkdown</code></td><td class="muted">unbound</td><td>Score a candidate discount depth against doing nothing</td></tr>
-        <tr><td><code>acknowledge</code></td><td>ShrinkAlerts, ColdChainAlerts, AIInsights</td><td>Mark as picked up, recording a note</td></tr>
-        <tr><td><code>resolveAlert</code></td><td>ShrinkAlerts, ColdChainAlerts</td><td>Close with a resolution</td></tr>
-        <tr><td><code>releaseOrder</code></td><td>ReplenishmentTasks</td><td>Confirm the proposal and hand it to ordering</td></tr>
-        <tr><td><code>applyMarkdown</code></td><td>MarkdownRecommendations</td><td>Push the markdown to the shelf labels</td></tr>
-        <tr><td><code>activate</code></td><td>NextBestOffers</td><td>Activate an offer</td></tr>
-        <tr><td><code>dismiss</code></td><td>Five entities</td><td>Close as not actionable</td></tr>
-      </tbody>
-    </table>
-    <pre>curl -u manager:manager -X POST http://localhost:4004/ai/simulateMarkdown \
+    <div class="try">
+      <input class="ctl" id="queryInput" spellcheck="false"
+             value="/ai/ShrinkAlerts?$top=3&$select=ID,pattern,valueAtRisk&$expand=article($select=name)">
+      <button class="btn btn-primary" id="runQuery">Run</button>
+    </div>
+    <div class="examples" id="examples"></div>
+    <pre class="out" id="queryOut">Run a query to see the response.</pre>
+  </div>
+
+  <div class="eyebrow" style="margin-top:30px">Actions</div>
+  <div class="card">
+    <div class="card-head">
+      <p>The AI service exposes actions as well as entities. These change data, so they are listed rather than
+         wired to a button &mdash; the workbench calls the queue actions, the command centre calls
+         <span class="mono">recalculate</span>.</p>
+    </div>
+    <div class="table-wrap">
+      <table class="data">
+        <thead><tr><th>Action</th><th>Bound to</th><th>Purpose</th></tr></thead>
+        <tbody>
+          <tr><td class="mono strong">recalculate</td><td class="muted">unbound</td><td>Re-run one scenario or all of them, optionally scoped to a store</td></tr>
+          <tr><td class="mono strong">simulateForecast</td><td class="muted">unbound</td><td>Forecast one article without persisting anything</td></tr>
+          <tr><td class="mono strong">simulateMarkdown</td><td class="muted">unbound</td><td>Score a candidate discount depth against doing nothing</td></tr>
+          <tr><td class="mono strong">acknowledge</td><td>ShrinkAlerts, ColdChainAlerts, AIInsights</td><td>Mark as picked up, recording a note</td></tr>
+          <tr><td class="mono strong">resolveAlert</td><td>ShrinkAlerts, ColdChainAlerts</td><td>Close with a resolution</td></tr>
+          <tr><td class="mono strong">releaseOrder</td><td>ReplenishmentTasks</td><td>Confirm the proposal and hand it to ordering</td></tr>
+          <tr><td class="mono strong">applyMarkdown</td><td>MarkdownRecommendations</td><td>Push the markdown to the shelf labels</td></tr>
+          <tr><td class="mono strong">activate</td><td>NextBestOffers</td><td>Activate an offer</td></tr>
+          <tr><td class="mono strong">dismiss</td><td>Five entities</td><td>Close as not actionable</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <pre class="out" style="margin-top:14px">curl -u manager:manager -X POST http://localhost:4004/ai/simulateMarkdown \
   -H 'Content-Type: application/json' \
   -d '{"store_ID":"WDF01","article_ID":"AR00245","discountPct":30}'</pre>
   </div>
 
-  <div class="note">
-    <strong>Authentication.</strong> Both services require an authenticated user. In development CAP uses
-    mocked authentication &mdash; sign in as <code>manager</code> / <code>manager</code>, or as
-    <code>analyst</code> or <code>viewer</code>. In production this is XSUAA, with the Viewer, Analyst and
-    StoreManager role collections defined in <code>xs-security.json</code>.
-  </div>
+  <p class="footnote">
+    Both services require an authenticated user. In development CAP uses mocked authentication &mdash; sign in
+    as <span class="mono">manager</span> / <span class="mono">manager</span>. In production this is XSUAA, with
+    the Viewer, Analyst and StoreManager role collections defined in <span class="mono">xs-security.json</span>.
+  </p>
 </main>
 
+<script src="/assets/shell.js"></script>
 <script>
 'use strict';
 
-const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+Shell.header('api');
 
 const SERVICES = [
   {
-    name: 'AIService',
-    path: '/ai',
+    name: 'AIService', path: '/ai', accent: 'var(--series-1)',
     blurb: 'Scenario output, the aggregate views the command centre reads, and the actions that re-run the '
          + 'engines or work the alert queues.',
     entities: [
@@ -183,8 +121,7 @@ const SERVICES = [
     ],
   },
   {
-    name: 'AnalyticsService',
-    path: '/analytics',
+    name: 'AnalyticsService', path: '/analytics', accent: 'var(--series-3)',
     blurb: 'The operational data from SAP Customer Checkout plus the pre-aggregated views. Read-only.',
     entities: [
       ['DailySales', 'Sales per store per trading day'],
@@ -205,73 +142,66 @@ const SERVICES = [
 ];
 
 const EXAMPLES = [
-  ['Top checkout integrity alerts', "/ai/ShrinkAlerts?$top=5&$orderby=anomalyScore desc&$select=pattern,anomalyScore,valueAtRisk&$expand=article($select=name)"],
+  ['Top integrity alerts', "/ai/ShrinkAlerts?$top=5&$orderby=anomalyScore desc&$select=pattern,anomalyScore,valueAtRisk&$expand=article($select=name)"],
   ['Insights for one store', "/ai/AIInsights?$top=5&$filter=store_ID eq 'WDF01'&$select=scenario,severity,title,impactValue"],
   ['Model scorecard', '/ai/ModelMetrics?$select=scenario,metricName,metricValue,unit&$top=20'],
   ['Walldorf trading pattern', "/analytics/SalesByHour?$filter=storeId eq 'WDF01'&$select=hourOfDay,dayOfWeek,quantity&$top=10"],
-  ['Checkout channel mix', '/analytics/ChannelMix?$select=storeName,posKind,receiptCount,avgDwellSeconds&$top=10'],
-  ['Count the hourly facts', '/analytics/HourlySales?$count=true&$top=1'],
+  ['Channel mix', '/analytics/ChannelMix?$select=storeName,posKind,receiptCount,avgDwellSeconds&$top=10'],
+  ['Count hourly facts', '/analytics/HourlySales?$count=true&$top=1'],
 ];
 
 async function countOf(path, entity) {
   try {
-    // No $select here: the aggregate views (InsightSummary, ShrinkByPattern)
-    // have no ID column, so selecting one returns HTTP 400.
+    // No $select: the aggregate views have no ID column, so selecting one is a 400.
     const response = await fetch(`${path}/${entity}?$top=1&$count=true`, {
       headers: { Accept: 'application/json' }, credentials: 'include',
     });
     if (!response.ok) return response.status === 401 ? 'sign in' : `HTTP ${response.status}`;
     const payload = await response.json();
     const count = payload['@odata.count'];
-    return count === undefined ? '—' : new Intl.NumberFormat('en-GB').format(count);
-  } catch {
-    return '—';
-  }
+    return count === undefined ? '—' : Shell.num(count);
+  } catch { return '—'; }
 }
 
-function renderServices() {
-  document.getElementById('services').innerHTML = SERVICES.map((svc) => `
-    <div class="card">
-      <div class="svc-head">
-        <h3>${esc(svc.name)}</h3>
-        <span class="path">${esc(svc.path)}</span>
-      </div>
-      <p class="lead">${esc(svc.blurb)}</p>
-      <table>
+document.getElementById('services').innerHTML = SERVICES.map((svc) => `
+  <div class="card span-all" style="--accent:${svc.accent}">
+    <div class="svc-head">
+      <h2>${Shell.esc(svc.name)}</h2>
+      <span class="path-chip">${Shell.esc(svc.path)}</span>
+    </div>
+    <p style="font-size:13px;color:var(--ink-2);margin-bottom:6px">${Shell.esc(svc.blurb)}</p>
+    <div class="table-wrap">
+      <table class="data">
         <thead><tr><th>Entity</th><th>What it holds</th><th class="num">Rows</th></tr></thead>
         <tbody>
           ${svc.entities.map(([entity, desc]) => `
             <tr>
-              <td><a href="${esc(svc.path)}/${esc(entity)}?$top=20" target="_blank" rel="noopener">${esc(entity)}</a></td>
-              <td class="muted">${esc(desc)}</td>
-              <td class="num" data-count="${esc(svc.path)}|${esc(entity)}">…</td>
+              <td><a class="entity-link" href="${Shell.esc(svc.path)}/${Shell.esc(entity)}?$top=20" target="_blank" rel="noopener">${Shell.esc(entity)}</a></td>
+              <td class="muted">${Shell.esc(desc)}</td>
+              <td class="num" data-count="${Shell.esc(svc.path)}|${Shell.esc(entity)}"><span class="skeleton" style="display:inline-block;width:42px;height:12px"></span></td>
             </tr>`).join('')}
         </tbody>
       </table>
-      <p class="lead" style="margin-top:12px">
-        Raw metadata (XML):
-        <a href="${esc(svc.path)}/$metadata" target="_blank" rel="noopener"><code>${esc(svc.path)}/$metadata</code></a>
-        &nbsp;·&nbsp; Service document (JSON):
-        <a href="${esc(svc.path)}/" target="_blank" rel="noopener"><code>${esc(svc.path)}/</code></a>
-      </p>
-    </div>`).join('');
+    </div>
+    <div class="meta-links">
+      Raw metadata (XML): <a href="${Shell.esc(svc.path)}/$metadata" target="_blank" rel="noopener">${Shell.esc(svc.path)}/$metadata</a>
+      &nbsp;·&nbsp; Service document (JSON): <a href="${Shell.esc(svc.path)}/" target="_blank" rel="noopener">${Shell.esc(svc.path)}/</a>
+    </div>
+  </div>`).join('');
 
-  document.querySelectorAll('[data-count]').forEach(async (cell) => {
-    const [path, entity] = cell.dataset.count.split('|');
-    cell.textContent = await countOf(path, entity);
-  });
-}
+document.querySelectorAll('[data-count]').forEach(async (cell) => {
+  const [path, entity] = cell.dataset.count.split('|');
+  cell.textContent = await countOf(path, entity);
+});
 
-function renderExamples() {
-  document.getElementById('examples').innerHTML = EXAMPLES.map(([label, query], index) =>
-    `<li><button data-example="${index}">Use</button><code>${esc(label)}</code></li>`).join('');
-  document.querySelectorAll('[data-example]').forEach((button) => {
-    button.addEventListener('click', () => {
-      document.getElementById('queryInput').value = EXAMPLES[Number(button.dataset.example)][1];
-      runQuery();
-    });
+document.getElementById('examples').innerHTML = EXAMPLES.map(([label], index) =>
+  `<button data-example="${index}">${Shell.esc(label)}</button>`).join('');
+document.querySelectorAll('[data-example]').forEach((button) => {
+  button.addEventListener('click', () => {
+    document.getElementById('queryInput').value = EXAMPLES[Number(button.dataset.example)][1];
+    runQuery();
   });
-}
+});
 
 async function runQuery() {
   const input = document.getElementById('queryInput').value.trim();
@@ -291,14 +221,6 @@ async function runQuery() {
 
 document.getElementById('runQuery').addEventListener('click', runQuery);
 document.getElementById('queryInput').addEventListener('keydown', (e) => { if (e.key === 'Enter') runQuery(); });
-document.getElementById('themeToggle').addEventListener('click', (e) => {
-  const dark = document.documentElement.getAttribute('data-theme') === 'dark';
-  document.documentElement.setAttribute('data-theme', dark ? 'light' : 'dark');
-  e.target.textContent = dark ? 'Dark' : 'Light';
-});
-
-renderServices();
-renderExamples();
 </script>
 </body>
 </html>

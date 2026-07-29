@@ -3,277 +3,107 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>S.Mart Scenario Workbench</title>
+<title>Scenario Workbench — S.Mart Retail AI</title>
+<link rel="stylesheet" href="/assets/theme.css">
 <style>
-/* ---------------------------------------------------------------------------
-   One workbench serving all eight scenarios, driven by the VIEWS config below.
-   Self-contained on purpose: no external script, font or stylesheet, so it
-   renders where the SAPUI5 CDN is unreachable. The SAP Fiori elements apps in
-   the sibling folders cover the same entities with standard SAP tooling when a
-   UI5 runtime is available.
---------------------------------------------------------------------------- */
-:root {
-  color-scheme: light;
-  --surface-1: #fcfcfb;
-  --page: #f9f9f7;
-  --text-primary: #0b0b0b;
-  --text-secondary: #52514e;
-  --text-muted: #898781;
-  --grid: #e1e0d9;
-  --axis: #c3c2b7;
-  --border: rgba(11, 11, 11, 0.10);
-  --series-1: #2a78d6;
-  --status-good: #0ca30c;
-  --status-warning: #fab219;
-  --status-serious: #ec835a;
-  --status-critical: #d03b3b;
-  --radius: 10px;
-  --font: system-ui, -apple-system, "Segoe UI", sans-serif;
+/* Workbench specifics; everything else comes from the shared theme. */
+.tabs {
+  background: var(--surface); border-bottom: 1px solid var(--line);
+  padding: 0 22px; display: flex; gap: 4px; overflow-x: auto;
+  position: sticky; top: var(--header-h); z-index: 35;
 }
-@media (prefers-color-scheme: dark) {
-  :root:where(:not([data-theme="light"])) {
-    color-scheme: dark;
-    --surface-1: #1a1a19; --page: #0d0d0d; --text-primary: #fff;
-    --text-secondary: #c3c2b7; --grid: #2c2c2a; --axis: #383835;
-    --border: rgba(255,255,255,.10); --series-1: #3987e5;
-  }
+.tabs a {
+  padding: 11px 14px; font-size: 13px; font-weight: 500; color: var(--ink-2);
+  text-decoration: none; white-space: nowrap; border-bottom: 2px solid transparent;
+  transition: color .12s, border-color .12s;
 }
-:root[data-theme="dark"] {
-  color-scheme: dark;
-  --surface-1: #1a1a19; --page: #0d0d0d; --text-primary: #fff;
-  --text-secondary: #c3c2b7; --grid: #2c2c2a; --axis: #383835;
-  --border: rgba(255,255,255,.10); --series-1: #3987e5;
+.tabs a:hover { color: var(--ink); }
+.tabs a.active { color: var(--brand); border-bottom-color: var(--brand); font-weight: 620; }
+.tabs a .count {
+  display: inline-block; margin-left: 6px; font-size: 11px; font-weight: 600;
+  padding: 1px 6px; border-radius: var(--r-pill); background: var(--surface-sunk); color: var(--ink-3);
 }
-* { box-sizing: border-box; }
-body { margin: 0; background: var(--page); color: var(--text-primary); font-family: var(--font); font-size: 14px; }
+.tabs a.active .count { background: var(--brand-soft); color: var(--brand); }
 
-header.shell {
-  background: var(--surface-1); border-bottom: 1px solid var(--border);
-  padding: 12px 22px; display: flex; align-items: center; gap: 14px;
-  flex-wrap: wrap; position: sticky; top: 0; z-index: 30;
-}
-.brand { margin-right: auto; display: flex; align-items: baseline; gap: 10px; }
-.brand a { color: var(--series-1); text-decoration: none; font-size: 13px; }
-.brand a:hover { text-decoration: underline; }
-.brand h1 { font-size: 16px; margin: 0; font-weight: 600; }
-select, button, input {
-  font: inherit; font-size: 13px; color: var(--text-primary); background: var(--surface-1);
-  border: 1px solid var(--axis); border-radius: 6px; padding: 6px 10px; cursor: pointer;
-}
-input { cursor: text; min-width: 190px; }
-button:hover, select:hover { border-color: var(--series-1); }
-button.primary { background: var(--series-1); border-color: var(--series-1); color: #fff; }
-
-nav.views {
-  background: var(--surface-1); border-bottom: 1px solid var(--border);
-  padding: 0 22px; display: flex; gap: 2px; overflow-x: auto; position: sticky; top: 53px; z-index: 25;
-}
-nav.views a {
-  padding: 10px 14px; font-size: 13px; color: var(--text-secondary); text-decoration: none;
-  border-bottom: 2px solid transparent; white-space: nowrap;
-}
-nav.views a:hover { color: var(--text-primary); }
-nav.views a.active { color: var(--series-1); border-bottom-color: var(--series-1); font-weight: 600; }
-
-main { padding: 18px 22px 60px; max-width: 1600px; margin: 0 auto; }
-.title-row { margin-bottom: 14px; }
-.title-row h2 { margin: 0 0 4px; font-size: 19px; font-weight: 600; }
-.title-row p { margin: 0; color: var(--text-secondary); font-size: 13.5px; max-width: 95ch; }
-
-.kpis { display: flex; gap: 12px; flex-wrap: wrap; margin: 14px 0 16px; }
-.kpi {
-  background: var(--surface-1); border: 1px solid var(--border); border-radius: var(--radius);
-  padding: 10px 16px; min-width: 150px;
-}
-.kpi .k-label { font-size: 11.5px; text-transform: uppercase; letter-spacing: .04em; color: var(--text-secondary); }
-.kpi .k-value { font-size: 22px; font-weight: 600; margin-top: 2px; }
-
-.toolbar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-bottom: 12px; }
-.toolbar .spacer { margin-left: auto; color: var(--text-muted); font-size: 12.5px; }
-
-.panel {
-  background: var(--surface-1); border: 1px solid var(--border);
-  border-radius: var(--radius); overflow: hidden;
-}
-.table-wrap { overflow-x: auto; max-height: 66vh; overflow-y: auto; }
-table { border-collapse: collapse; width: 100%; font-size: 13px; }
-th, td { text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--grid); white-space: nowrap; }
-th {
-  color: var(--text-secondary); font-weight: 600; font-size: 11.5px; text-transform: uppercase;
-  letter-spacing: .03em; position: sticky; top: 0; background: var(--surface-1); z-index: 2; cursor: pointer;
-  user-select: none;
-}
-th:hover { color: var(--series-1); }
-th .arrow { opacity: .5; font-size: 10px; }
-td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
-td.wrap { white-space: normal; min-width: 260px; }
-tbody tr { cursor: pointer; }
-tbody tr:hover { background: color-mix(in srgb, var(--series-1) 7%, transparent); }
-tbody tr.sel { background: color-mix(in srgb, var(--series-1) 12%, transparent); }
-
-.pill {
-  display: inline-flex; align-items: center; gap: 5px; font-size: 11.5px; font-weight: 600;
-  padding: 2px 8px; border-radius: 999px; border: 1px solid transparent; white-space: nowrap;
-}
-.pill::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
-.pill.CRITICAL { color: var(--status-critical); border-color: color-mix(in srgb, var(--status-critical) 40%, transparent); background: color-mix(in srgb, var(--status-critical) 10%, transparent); }
-.pill.HIGH { color: var(--status-serious); border-color: color-mix(in srgb, var(--status-serious) 40%, transparent); background: color-mix(in srgb, var(--status-serious) 10%, transparent); }
-.pill.MEDIUM { color: var(--status-warning); border-color: color-mix(in srgb, var(--status-warning) 45%, transparent); background: color-mix(in srgb, var(--status-warning) 12%, transparent); }
-.pill.LOW { color: var(--status-good); border-color: color-mix(in srgb, var(--status-good) 40%, transparent); background: color-mix(in srgb, var(--status-good) 10%, transparent); }
-.pill.OPEN { color: var(--series-1); border-color: color-mix(in srgb, var(--series-1) 40%, transparent); background: color-mix(in srgb, var(--series-1) 10%, transparent); }
-.pill.ACKNOWLEDGED { color: var(--status-warning); border-color: color-mix(in srgb, var(--status-warning) 45%, transparent); background: color-mix(in srgb, var(--status-warning) 12%, transparent); }
-.pill.RESOLVED { color: var(--status-good); border-color: color-mix(in srgb, var(--status-good) 40%, transparent); background: color-mix(in srgb, var(--status-good) 10%, transparent); }
-.pill.DISMISSED { color: var(--text-muted); border-color: var(--grid); background: color-mix(in srgb, var(--text-muted) 10%, transparent); }
-
-/* Detail drawer */
-.drawer {
-  position: fixed; top: 0; right: 0; width: min(520px, 100%); height: 100%;
-  background: var(--surface-1); border-left: 1px solid var(--border);
-  box-shadow: -8px 0 26px rgba(0,0,0,.14); transform: translateX(100%);
-  transition: transform .18s ease; z-index: 60; display: flex; flex-direction: column;
-}
-.drawer.open { transform: translateX(0); }
-.drawer header {
-  padding: 14px 18px; border-bottom: 1px solid var(--border);
-  display: flex; align-items: flex-start; gap: 12px;
-}
-.drawer header h3 { margin: 0; font-size: 15.5px; font-weight: 600; flex: 1; }
-.drawer .close { border: none; background: none; font-size: 20px; line-height: 1; padding: 0 4px; color: var(--text-secondary); }
-.drawer .body { padding: 16px 18px; overflow-y: auto; flex: 1; }
-.drawer .actions { padding: 12px 18px; border-top: 1px solid var(--border); display: flex; gap: 8px; flex-wrap: wrap; }
-.field { margin-bottom: 12px; }
-.field .f-label { font-size: 11.5px; text-transform: uppercase; letter-spacing: .04em; color: var(--text-secondary); margin-bottom: 3px; }
-.field .f-value { font-size: 13.5px; word-break: break-word; }
-.field.prose .f-value { line-height: 1.55; }
-
-.empty, .err, .loading { padding: 26px; text-align: center; color: var(--text-secondary); font-size: 13.5px; }
-.err { color: var(--text-primary); background: color-mix(in srgb, var(--status-critical) 8%, transparent); }
-.toast {
-  position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%);
-  background: var(--surface-1); border: 1px solid var(--axis); border-radius: 8px;
-  padding: 10px 16px; font-size: 13px; box-shadow: 0 6px 20px rgba(0,0,0,.16);
-  opacity: 0; pointer-events: none; transition: opacity .18s; z-index: 80;
-}
-.toast.on { opacity: 1; }
-.visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+.toolbar { display: flex; gap: 9px; flex-wrap: wrap; align-items: center; margin-bottom: 14px; }
+.toolbar .spacer { margin-left: auto; font-size: 12.5px; color: var(--ink-3); }
+.grid-stats { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); margin-bottom: 18px; }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-lg); box-shadow: var(--shadow-sm); overflow: hidden; }
+.panel .table-wrap { max-height: 66vh; overflow-y: auto; border-radius: 0; }
+@media (max-width: 720px) { .tabs { top: auto; position: static; } }
 </style>
 </head>
 <body>
 
-<header class="shell">
-  <div class="brand">
-    <h1>Scenario Workbench</h1>
-    <a href="/index.html">&larr; Launchpad</a>
-    <a href="/command-center/index.html">Command Centre</a>
-  </div>
-  <label class="visually-hidden" for="storeFilter">Store</label>
-  <select id="storeFilter"><option value="">All stores</option></select>
-  <label class="visually-hidden" for="stateFilter">Status</label>
-  <select id="stateFilter">
-    <option value="OPEN">Open only</option>
-    <option value="">Any status</option>
-    <option value="ACKNOWLEDGED">Acknowledged</option>
-    <option value="RESOLVED">Resolved</option>
-    <option value="DISMISSED">Dismissed</option>
-  </select>
-  <label class="visually-hidden" for="search">Search</label>
-  <input id="search" type="search" placeholder="Filter rows…" autocomplete="off">
-  <button id="themeToggle" title="Switch light and dark">Dark</button>
-  <button id="reload" class="primary">Reload</button>
-</header>
+<header id="appHeader"></header>
+<nav class="tabs" id="tabs" aria-label="Scenarios"></nav>
 
-<nav class="views" id="viewNav"></nav>
-
-<main>
-  <div class="title-row">
-    <h2 id="viewTitle">…</h2>
+<main class="app-main">
+  <div class="page-head">
+    <h1 id="viewTitle">…</h1>
     <p id="viewDesc"></p>
   </div>
-  <div class="kpis" id="kpis"></div>
+
+  <div class="grid-stats" id="kpis"></div>
+
   <div class="toolbar">
+    <label class="visually-hidden" for="storeFilter">Store</label>
+    <select class="ctl" id="storeFilter"><option value="">All stores</option></select>
+    <label class="visually-hidden" for="stateFilter">Status</label>
+    <select class="ctl" id="stateFilter">
+      <option value="OPEN">Open only</option>
+      <option value="">Any status</option>
+      <option value="ACKNOWLEDGED">Acknowledged</option>
+      <option value="RESOLVED">Resolved</option>
+      <option value="DISMISSED">Dismissed</option>
+    </select>
+    <label class="visually-hidden" for="search">Search</label>
+    <input class="ctl" id="search" type="search" placeholder="Filter rows…" autocomplete="off">
+    <button class="btn" id="reload">Reload</button>
     <span class="spacer" id="rowCount"></span>
   </div>
-  <div class="panel">
-    <div class="table-wrap"><div id="tableHost"><div class="loading">Loading…</div></div></div>
-  </div>
+
+  <div class="panel"><div id="tableHost"></div></div>
 </main>
 
-<aside class="drawer" id="drawer" aria-hidden="true">
-  <header>
+<div class="drawer-scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" aria-hidden="true" aria-label="Record detail">
+  <div class="drawer-head">
     <h3 id="drawerTitle">Detail</h3>
-    <button class="close" id="drawerClose" aria-label="Close">&times;</button>
-  </header>
-  <div class="body" id="drawerBody"></div>
-  <div class="actions" id="drawerActions"></div>
+    <button class="drawer-close" id="drawerClose" aria-label="Close">&times;</button>
+  </div>
+  <div class="drawer-body" id="drawerBody"></div>
+  <div class="drawer-actions" id="drawerActions"></div>
 </aside>
 
-<div class="toast" id="toast" role="status" aria-live="polite"></div>
-
+<script src="/assets/shell.js"></script>
 <script>
 'use strict';
 
 const AI = '/ai';
 
 /* ---------------------------------------------------------------------------
-   Formatting
---------------------------------------------------------------------------- */
-const euro = (v) => new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'EUR', minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(Number(v) || 0);
-const euro0 = (v) => new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'EUR', maximumFractionDigits: 0 }).format(Number(v) || 0);
-const num = (v, d = 0) => new Intl.NumberFormat('en-GB', { minimumFractionDigits: d, maximumFractionDigits: d }).format(Number(v) || 0);
-const pct = (v) => `${num(Number(v) * 100, 1)}%`;
-const pctRaw = (v) => `${num(v, 1)}%`;
-const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-const titleCase = (s) => String(s || '').toLowerCase().replace(/_/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
-const dt = (v) => (v ? String(v).replace('T', ' ').replace(/Z$/, '').slice(0, 16) : '—');
-const dateOnly = (v) => (v ? String(v).slice(0, 10) : '—');
-
-const FORMATTERS = {
-  text: (v) => esc(v ?? '—'),
-  wrap: (v) => esc(v ?? '—'),
-  euro: (v) => euro(v),
-  euro0: (v) => euro0(v),
-  int: (v) => num(v),
-  dec1: (v) => num(v, 1),
-  dec2: (v) => num(v, 2),
-  dec3: (v) => num(v, 3),
-  ratio: (v) => pct(v),
-  percent: (v) => pctRaw(v),
-  date: (v) => dateOnly(v),
-  datetime: (v) => dt(v),
-  pattern: (v) => esc(titleCase(v)),
-  pill: (v) => (v ? `<span class="pill ${esc(v)}">${esc(v)}</span>` : '—'),
-  bool: (v) => (v === true || v === 'true' ? 'Yes' : 'No'),
-};
-
-const NUMERIC = new Set(['euro', 'euro0', 'int', 'dec1', 'dec2', 'dec3', 'ratio', 'percent']);
-
-/* ---------------------------------------------------------------------------
-   View configuration — one entry per scenario.
-
-   `expand` pulls the display names off the associations so the table shows
-   "Red Bull 0,25" rather than "AR90013". `state` marks views that carry the
-   OPEN/ACKNOWLEDGED/RESOLVED/DISMISSED lifecycle, which drives the status
-   filter and the action buttons.
+   One entry per scenario. `expand` pulls display names off the associations so
+   the table shows "Red Bull 0,25" rather than "AR90013"; `state` marks the
+   views carrying the OPEN/ACKNOWLEDGED/RESOLVED/DISMISSED lifecycle, which
+   drives the status filter and the action buttons.
 --------------------------------------------------------------------------- */
 const VIEWS = {
   'checkout-integrity': {
-    label: 'Checkout Integrity',
-    entity: 'ShrinkAlerts',
-    title: 'Checkout Integrity Radar',
-    desc: 'RFID misreads, absent tags, stock variance and price errors on the autonomous terminals. '
-        + 'Each alert carries the evidence behind it and the article\'s own baseline it was compared against.',
+    label: 'Checkout Integrity', entity: 'ShrinkAlerts', title: 'Checkout Integrity Radar',
+    desc: 'RFID misreads, absent tags, stock variance and price errors on the autonomous terminals. Each alert '
+        + 'carries the evidence behind it and the article’s own baseline it was compared against.',
     expand: 'store($select=name),article($select=name),posSystem($select=name,kind)',
-    sort: 'anomalyScore desc',
-    state: true,
+    sort: 'anomalyScore desc', state: true,
     kpis: [
-      { label: 'Alerts', calc: (r) => num(r.length) },
-      { label: 'Value at risk', calc: (r) => euro(r.reduce((s, x) => s + Number(x.valueAtRisk || 0), 0)) },
-      { label: 'Critical or high', calc: (r) => num(r.filter((x) => x.severity === 'CRITICAL' || x.severity === 'HIGH').length) },
+      { label: 'Alerts', accent: 'var(--series-1)', calc: (r) => Shell.num(r.length) },
+      { label: 'Value at risk', accent: 'var(--critical)', calc: (r) => Shell.euro(r.reduce((s, x) => s + Number(x.valueAtRisk || 0), 0)) },
+      { label: 'Critical or high', accent: 'var(--serious)', calc: (r) => Shell.num(r.filter((x) => x.severity === 'CRITICAL' || x.severity === 'HIGH').length) },
     ],
     columns: [
       { key: 'severity', label: 'Severity', fmt: 'pill' },
-      { key: 'pattern', label: 'Pattern', fmt: 'pattern' },
-      { key: 'article.name', label: 'Article', fmt: 'text' },
+      { key: 'pattern', label: 'Pattern', fmt: 'title' },
+      { key: 'article.name', label: 'Article', fmt: 'text', strong: true },
       { key: 'store.name', label: 'Store', fmt: 'text' },
       { key: 'posSystem.name', label: 'Terminal', fmt: 'text' },
       { key: 'anomalyScore', label: 'Score', fmt: 'dec1' },
@@ -287,29 +117,26 @@ const VIEWS = {
       'store.name', 'posSystem.name', 'posSystem.kind', 'article.name', 'detectedOn', 'state'],
     prose: ['evidence', 'recommendedAction'],
     actions: [
-      { id: 'acknowledge', label: 'Acknowledge', arg: 'note', value: 'Reviewed in the scenario workbench' },
-      { id: 'resolveAlert', label: 'Resolve', arg: 'resolution', value: 'Resolved in the scenario workbench' },
+      { id: 'acknowledge', label: 'Acknowledge', arg: 'note', value: 'Reviewed in the workbench' },
+      { id: 'resolveAlert', label: 'Resolve', arg: 'resolution', value: 'Resolved in the workbench' },
       { id: 'dismiss', label: 'Dismiss', arg: 'reason', value: 'Not actionable' },
     ],
   },
 
-  'replenishment': {
-    label: 'Replenishment',
-    entity: 'ReplenishmentTasks',
-    title: 'Replenishment Cockpit',
+  replenishment: {
+    label: 'Replenishment', entity: 'ReplenishmentTasks', title: 'Replenishment Cockpit',
     desc: 'Reorder proposals sized from forecast demand over the supplier lead time plus safety stock. '
         + 'Urgency follows coverage in trading hours, not order size.',
     expand: 'store($select=name),article($select=name),supplier($select=name,leadTimeDays,reliability)',
-    sort: 'lostSalesValue desc',
-    state: true,
+    sort: 'lostSalesValue desc', state: true,
     kpis: [
-      { label: 'Open tasks', calc: (r) => num(r.length) },
-      { label: 'Lost sales exposure', calc: (r) => euro(r.reduce((s, x) => s + Number(x.lostSalesValue || 0), 0)) },
-      { label: 'Units to order', calc: (r) => num(r.reduce((s, x) => s + Number(x.recommendedQty || 0), 0)) },
+      { label: 'Open tasks', accent: 'var(--series-2)', calc: (r) => Shell.num(r.length) },
+      { label: 'Lost sales exposure', accent: 'var(--critical)', calc: (r) => Shell.euro(r.reduce((s, x) => s + Number(x.lostSalesValue || 0), 0)) },
+      { label: 'Units to order', accent: 'var(--series-3)', calc: (r) => Shell.num(r.reduce((s, x) => s + Number(x.recommendedQty || 0), 0)) },
     ],
     columns: [
       { key: 'urgency', label: 'Urgency', fmt: 'pill' },
-      { key: 'article.name', label: 'Article', fmt: 'text' },
+      { key: 'article.name', label: 'Article', fmt: 'text', strong: true },
       { key: 'store.name', label: 'Store', fmt: 'text' },
       { key: 'onHand', label: 'On hand', fmt: 'dec1' },
       { key: 'coverageHours', label: 'Cover (h)', fmt: 'dec1' },
@@ -330,26 +157,23 @@ const VIEWS = {
   },
 
   'fresh-waste': {
-    label: 'Fresh Waste',
-    entity: 'MarkdownRecommendations',
-    title: 'Fresh Waste Guard',
+    label: 'Fresh Waste', entity: 'MarkdownRecommendations', title: 'Fresh Waste Guard',
     desc: 'Markdown depth chosen by sweeping candidate discounts and keeping the one that recovers the most '
         + 'margin before expiry. A proposal only appears when it beats doing nothing.',
     expand: 'store($select=name),article($select=name)',
-    sort: 'marginImpact desc',
-    state: true,
+    sort: 'marginImpact desc', state: true,
     kpis: [
-      { label: 'Recommendations', calc: (r) => num(r.length) },
-      { label: 'Margin protected', calc: (r) => euro(r.reduce((s, x) => s + Number(x.marginImpact || 0), 0)) },
-      { label: 'Units at risk', calc: (r) => num(r.reduce((s, x) => s + Number(x.projectedWaste || 0), 0), 1) },
+      { label: 'Recommendations', accent: 'var(--series-3)', calc: (r) => Shell.num(r.length) },
+      { label: 'Margin protected', accent: 'var(--ok)', calc: (r) => Shell.euro(r.reduce((s, x) => s + Number(x.marginImpact || 0), 0)) },
+      { label: 'Units at risk', accent: 'var(--warn)', calc: (r) => Shell.num(r.reduce((s, x) => s + Number(x.projectedWaste || 0), 0), 1) },
     ],
     columns: [
-      { key: 'article.name', label: 'Article', fmt: 'text' },
+      { key: 'article.name', label: 'Article', fmt: 'text', strong: true },
       { key: 'store.name', label: 'Store', fmt: 'text' },
       { key: 'onHand', label: 'On hand', fmt: 'dec1' },
       { key: 'forecastSellThrough', label: 'Will sell', fmt: 'dec1' },
       { key: 'projectedWaste', label: 'At risk', fmt: 'dec1' },
-      { key: 'recommendedDiscountPct', label: 'Markdown', fmt: 'percent' },
+      { key: 'recommendedDiscountPct', label: 'Markdown', fmt: 'pctRaw' },
       { key: 'expectedRecovery', label: 'Recovery', fmt: 'euro' },
       { key: 'marginImpact', label: 'Margin impact', fmt: 'euro' },
       { key: 'hoursToExpiry', label: 'Hours left', fmt: 'dec1' },
@@ -366,52 +190,45 @@ const VIEWS = {
   },
 
   'demand-forecast': {
-    label: 'Demand Forecast',
-    entity: 'DemandForecasts',
-    title: 'Demand Forecast',
-    desc: 'Hourly forecast per store and article with an 80% prediction interval. Accuracy is reported as '
-        + 'WAPE because hourly demand is intermittent and MAPE divides by actuals of one or two units.',
+    label: 'Demand Forecast', entity: 'DemandForecasts', title: 'Demand Forecast',
+    desc: 'Hourly forecast per store and article with an 80% prediction interval. Accuracy is reported as WAPE '
+        + 'because hourly demand is intermittent and MAPE divides by actuals of one or two units.',
     expand: 'store($select=name),article($select=name)',
-    sort: 'forecastFor asc',
-    state: false,
+    sort: 'forecastFor asc', state: false,
     kpis: [
-      { label: 'Forecast rows', calc: (r) => num(r.length) },
-      { label: 'Predicted units', calc: (r) => num(r.reduce((s, x) => s + Number(x.predictedQty || 0), 0), 1) },
-      { label: 'Articles covered', calc: (r) => num(new Set(r.map((x) => x.article_ID)).size) },
+      { label: 'Forecast rows', accent: 'var(--series-4)', calc: (r) => Shell.num(r.length) },
+      { label: 'Predicted units', accent: 'var(--series-1)', calc: (r) => Shell.num(r.reduce((s, x) => s + Number(x.predictedQty || 0), 0), 1) },
+      { label: 'Articles covered', accent: 'var(--series-3)', calc: (r) => Shell.num(new Set(r.map((x) => x.article_ID)).size) },
     ],
     columns: [
       { key: 'forecastFor', label: 'Hour', fmt: 'datetime' },
-      { key: 'article.name', label: 'Article', fmt: 'text' },
+      { key: 'article.name', label: 'Article', fmt: 'text', strong: true },
       { key: 'store.name', label: 'Store', fmt: 'text' },
       { key: 'predictedQty', label: 'Forecast', fmt: 'dec3' },
       { key: 'lowerBound', label: 'Low', fmt: 'dec3' },
       { key: 'upperBound', label: 'High', fmt: 'dec3' },
-      { key: 'wape', label: 'WAPE', fmt: 'percent' },
+      { key: 'wape', label: 'WAPE', fmt: 'pctRaw' },
       { key: 'model', label: 'Model', fmt: 'text' },
     ],
     detail: ['store.name', 'article.name', 'forecastFor', 'businessDate', 'hourOfDay',
       'predictedQty', 'lowerBound', 'upperBound', 'wape', 'mape', 'model', 'generatedAt'],
-    prose: [],
-    actions: [],
+    prose: [], actions: [],
   },
 
   'basket-affinity': {
-    label: 'Basket Affinity',
-    entity: 'BasketAffinities',
-    title: 'Basket Affinity & Planogram',
+    label: 'Basket Affinity', entity: 'BasketAffinities', title: 'Basket Affinity & Planogram',
     desc: 'Association rules mined from receipt baskets. Lift above 1 means the pair sells together more often '
         + 'than chance. Cross-zone pairs are the placement opportunities.',
     expand: 'store($select=name),antecedent($select=name),consequent($select=name)',
-    sort: 'lift desc',
-    state: false,
+    sort: 'lift desc', state: false,
     kpis: [
-      { label: 'Rules', calc: (r) => num(r.length) },
-      { label: 'Cross-zone', calc: (r) => num(r.filter((x) => x.isCrossZone === true).length) },
-      { label: 'Best lift', calc: (r) => num(Math.max(0, ...r.map((x) => Number(x.lift || 0))), 2) },
+      { label: 'Rules', accent: 'var(--series-5)', calc: (r) => Shell.num(r.length) },
+      { label: 'Cross-zone', accent: 'var(--series-2)', calc: (r) => Shell.num(r.filter((x) => x.isCrossZone === true).length) },
+      { label: 'Best lift', accent: 'var(--series-1)', calc: (r) => Shell.num(Math.max(0, ...r.map((x) => Number(x.lift || 0))), 2) },
     ],
     columns: [
-      { key: 'antecedent.name', label: 'If basket has', fmt: 'text' },
-      { key: 'consequent.name', label: 'Also buys', fmt: 'text' },
+      { key: 'antecedent.name', label: 'If basket has', fmt: 'text', strong: true },
+      { key: 'consequent.name', label: 'Also buys', fmt: 'text', strong: true },
       { key: 'store.name', label: 'Store', fmt: 'text' },
       { key: 'lift', label: 'Lift', fmt: 'dec2' },
       { key: 'confidence', label: 'Confidence', fmt: 'ratio' },
@@ -422,33 +239,29 @@ const VIEWS = {
     ],
     detail: ['store.name', 'antecedent.name', 'consequent.name', 'lift', 'confidence', 'support',
       'basketCount', 'upliftPerBasket', 'isCrossZone'],
-    prose: ['recommendedPlacement'],
-    actions: [],
+    prose: ['recommendedPlacement'], actions: [],
   },
 
   'personal-offers': {
-    label: 'Personal Offers',
-    entity: 'NextBestOffers',
-    title: 'Personalised Offers',
-    desc: 'Next best offer per S.Mart app customer, from purchase cadence and basket affinity. '
-        + 'Only customers who granted marketing consent are ever included.',
+    label: 'Personal Offers', entity: 'NextBestOffers', title: 'Personalised Offers',
+    desc: 'Next best offer per S.Mart app customer, from purchase cadence and basket affinity. Only customers '
+        + 'who granted marketing consent are ever included.',
     expand: 'store($select=name),article($select=name),customer($select=displayName,loyaltyTier,segment)',
-    sort: 'propensity desc',
-    state: true,
+    sort: 'propensity desc', state: true,
     kpis: [
-      { label: 'Offers', calc: (r) => num(r.length) },
-      { label: 'Expected revenue', calc: (r) => euro(r.reduce((s, x) => s + Number(x.expectedRevenue || 0), 0)) },
-      { label: 'Customers', calc: (r) => num(new Set(r.map((x) => x.customer_ID)).size) },
+      { label: 'Offers', accent: 'var(--series-6)', calc: (r) => Shell.num(r.length) },
+      { label: 'Expected revenue', accent: 'var(--ok)', calc: (r) => Shell.euro(r.reduce((s, x) => s + Number(x.expectedRevenue || 0), 0)) },
+      { label: 'Customers', accent: 'var(--series-1)', calc: (r) => Shell.num(new Set(r.map((x) => x.customer_ID)).size) },
     ],
     columns: [
-      { key: 'customer.displayName', label: 'Customer', fmt: 'text' },
-      { key: 'customer.loyaltyTier', label: 'Tier', fmt: 'text' },
+      { key: 'customer.displayName', label: 'Customer', fmt: 'text', strong: true },
+      { key: 'customer.loyaltyTier', label: 'Tier', fmt: 'title' },
       { key: 'article.name', label: 'Offer', fmt: 'text' },
       { key: 'store.name', label: 'Store', fmt: 'text' },
       { key: 'propensity', label: 'Propensity', fmt: 'ratio' },
-      { key: 'offerDiscountPct', label: 'Discount', fmt: 'percent' },
+      { key: 'offerDiscountPct', label: 'Discount', fmt: 'pctRaw' },
       { key: 'expectedRevenue', label: 'Expected', fmt: 'euro' },
-      { key: 'channel', label: 'Channel', fmt: 'pattern' },
+      { key: 'channel', label: 'Channel', fmt: 'title' },
       { key: 'state', label: 'Status', fmt: 'pill' },
     ],
     detail: ['customer.displayName', 'customer.loyaltyTier', 'customer.segment', 'store.name',
@@ -462,22 +275,18 @@ const VIEWS = {
   },
 
   'cold-chain': {
-    label: 'Cold Chain',
-    entity: 'ColdChainAlerts',
-    title: 'Cold Chain Monitor',
+    label: 'Cold Chain', entity: 'ColdChainAlerts', title: 'Cold Chain Monitor',
     desc: 'Sustained chiller and freezer excursions. A single out-of-band reading is noise, so an alert only '
         + 'fires on a run of them, scored by depth, duration and the stock exposed.',
-    expand: 'store($select=name)',
-    sort: 'stockAtRisk desc',
-    state: true,
+    expand: 'store($select=name)', sort: 'stockAtRisk desc', state: true,
     kpis: [
-      { label: 'Alerts', calc: (r) => num(r.length) },
-      { label: 'Stock exposed', calc: (r) => euro(r.reduce((s, x) => s + Number(x.stockAtRisk || 0), 0)) },
-      { label: 'Assets affected', calc: (r) => num(new Set(r.map((x) => x.assetId)).size) },
+      { label: 'Alerts', accent: 'var(--series-1)', calc: (r) => Shell.num(r.length) },
+      { label: 'Stock exposed', accent: 'var(--critical)', calc: (r) => Shell.euro(r.reduce((s, x) => s + Number(x.stockAtRisk || 0), 0)) },
+      { label: 'Assets affected', accent: 'var(--warn)', calc: (r) => Shell.num(new Set(r.map((x) => x.assetId)).size) },
     ],
     columns: [
       { key: 'severity', label: 'Severity', fmt: 'pill' },
-      { key: 'assetName', label: 'Asset', fmt: 'text' },
+      { key: 'assetName', label: 'Asset', fmt: 'text', strong: true },
       { key: 'store.name', label: 'Store', fmt: 'text' },
       { key: 'measuredTemp', label: 'Measured °C', fmt: 'dec1' },
       { key: 'targetTemp', label: 'Target °C', fmt: 'dec1' },
@@ -496,23 +305,19 @@ const VIEWS = {
   },
 
   'insight-feed': {
-    label: 'Insight Feed',
-    entity: 'AIInsights',
-    title: 'AI Insight Feed',
-    desc: 'Every scenario in one queue, ranked by euros at stake weighted by the model\'s confidence in its '
+    label: 'Insight Feed', entity: 'AIInsights', title: 'AI Insight Feed',
+    desc: 'Every scenario in one queue, ranked by euros at stake weighted by the model’s confidence in its '
         + 'own recommendation. Confidence is shown rather than implied.',
-    expand: 'store($select=name)',
-    sort: 'impactValue desc',
-    state: true,
+    expand: 'store($select=name)', sort: 'impactValue desc', state: true,
     kpis: [
-      { label: 'Insights', calc: (r) => num(r.length) },
-      { label: 'Value at stake', calc: (r) => euro(r.reduce((s, x) => s + Number(x.impactValue || 0), 0)) },
-      { label: 'Scenarios', calc: (r) => num(new Set(r.map((x) => x.scenario)).size) },
+      { label: 'Insights', accent: 'var(--series-1)', calc: (r) => Shell.num(r.length) },
+      { label: 'Value at stake', accent: 'var(--critical)', calc: (r) => Shell.euro(r.reduce((s, x) => s + Number(x.impactValue || 0), 0)) },
+      { label: 'Scenarios', accent: 'var(--series-3)', calc: (r) => Shell.num(new Set(r.map((x) => x.scenario)).size) },
     ],
     columns: [
       { key: 'severity', label: 'Severity', fmt: 'pill' },
-      { key: 'scenario', label: 'Scenario', fmt: 'pattern' },
-      { key: 'title', label: 'Insight', fmt: 'wrap' },
+      { key: 'scenario', label: 'Scenario', fmt: 'title' },
+      { key: 'title', label: 'Insight', fmt: 'wrap', strong: true },
       { key: 'store.name', label: 'Store', fmt: 'text' },
       { key: 'impactValue', label: 'Impact', fmt: 'euro' },
       { key: 'confidence', label: 'Confidence', fmt: 'ratio' },
@@ -528,55 +333,40 @@ const VIEWS = {
   },
 };
 
-/* ---------------------------------------------------------------------------
-   State
---------------------------------------------------------------------------- */
 const state = {
   view: null, rows: [], stores: [], store: '', status: 'OPEN',
-  search: '', sortKey: null, sortDir: 'asc', selected: null,
+  search: '', sortKey: null, sortDir: 'asc', counts: {},
 };
 
-/** Read a possibly nested key such as "article.name" off a row. */
 const pick = (row, key) => key.split('.').reduce((o, k) => (o == null ? undefined : o[k]), row);
+const dt = (v) => (v ? String(v).replace('T', ' ').replace(/Z$/, '').slice(0, 16) : '—');
+const dateOnly = (v) => (v ? String(v).slice(0, 10) : '—');
 
-const toast = (message) => {
-  const el = document.getElementById('toast');
-  el.textContent = message;
-  el.classList.add('on');
-  clearTimeout(el._t);
-  el._t = setTimeout(() => el.classList.remove('on'), 2600);
+const FMT = {
+  text: (v) => Shell.esc(v ?? '—'),
+  wrap: (v) => Shell.esc(v ?? '—'),
+  title: (v) => Shell.esc(Shell.titleCase(v)),
+  euro: (v) => Shell.euro(v),
+  int: (v) => Shell.num(v),
+  dec1: (v) => Shell.num(v, 1),
+  dec2: (v) => Shell.num(v, 2),
+  dec3: (v) => Shell.num(v, 3),
+  ratio: (v) => Shell.pct(v),
+  pctRaw: (v) => `${Shell.num(v, 1)}%`,
+  date: (v) => dateOnly(v),
+  datetime: (v) => dt(v),
+  pill: (v) => (v ? `<span class="pill ${Shell.esc(v)}">${Shell.esc(v)}</span>` : '—'),
+  bool: (v) => (v === true || v === 'true' ? 'Yes' : 'No'),
 };
+const NUMERIC = new Set(['euro', 'int', 'dec1', 'dec2', 'dec3', 'ratio', 'pctRaw']);
 
-/* ---------------------------------------------------------------------------
-   Data
---------------------------------------------------------------------------- */
-async function odata(path, options = {}) {
-  const response = await fetch(path, {
-    credentials: 'include',
-    headers: { Accept: 'application/json', ...(options.headers || {}) },
-    method: options.method || 'GET',
-    body: options.body,
-  });
-  if (!response.ok) {
-    let detail = `${response.status} ${response.statusText}`;
-    try {
-      const payload = await response.json();
-      if (payload?.error?.message) detail = payload.error.message;
-    } catch { /* response was not JSON */ }
-    const error = new Error(detail);
-    error.status = response.status;
-    throw error;
-  }
-  if (response.status === 204) return null;
-  const payload = await response.json();
-  return payload.value !== undefined ? payload.value : payload;
-}
+Shell.header('scenarios');
 
-const escapeOData = (v) => String(v).replace(/'/g, "''");
+// --- data ------------------------------------------------------------------
 
 async function loadStores() {
   if (state.stores.length) return;
-  state.stores = await odata(`${AI}/Stores?$top=50&$select=ID,name,isReferenceStore&$orderby=name`);
+  state.stores = await Shell.fetchJson(`${AI}/Stores?$top=50&$select=ID,name,isReferenceStore&$orderby=name`);
   const select = document.getElementById('storeFilter');
   for (const store of state.stores) {
     const option = document.createElement('option');
@@ -590,40 +380,39 @@ async function loadStores() {
 async function loadRows() {
   const view = VIEWS[state.view];
   const host = document.getElementById('tableHost');
-  host.innerHTML = '<div class="loading">Loading…</div>';
+  host.innerHTML = `<div style="padding:16px">${Array.from({ length: 8 }, () =>
+    '<div class="skeleton skeleton-row"></div>').join('')}</div>`;
 
   const filters = [];
-  if (state.store) filters.push(`store_ID eq '${escapeOData(state.store)}'`);
-  if (view.state && state.status) filters.push(`state eq '${escapeOData(state.status)}'`);
+  if (state.store) filters.push(`store_ID eq '${Shell.odata(state.store)}'`);
+  if (view.state && state.status) filters.push(`state eq '${Shell.odata(state.status)}'`);
 
-  const query = [
-    '$top=500',
-    `$expand=${view.expand}`,
-    `$orderby=${view.sort}`,
-    filters.length ? `$filter=${filters.join(' and ')}` : null,
-  ].filter(Boolean).join('&');
+  const query = ['$top=500', `$expand=${view.expand}`, `$orderby=${view.sort}`,
+    filters.length ? `$filter=${filters.join(' and ')}` : null].filter(Boolean).join('&');
 
   try {
-    state.rows = await odata(`${AI}/${view.entity}?${query}`);
+    state.rows = await Shell.fetchJson(`${AI}/${view.entity}?${query}`);
+    state.counts[state.view] = state.rows.length;
+    renderTabs();
     renderKpis();
     renderTable();
   } catch (error) {
-    host.innerHTML = `<div class="err"><strong>Could not load ${esc(view.entity)}.</strong><br>${esc(error.message)}`
-      + `${error.status === 401 ? '<br>Sign in as manager / manager and reload.' : ''}</div>`;
     document.getElementById('kpis').innerHTML = '';
     document.getElementById('rowCount').textContent = '';
+    host.innerHTML = `<div class="state-error" style="margin:16px"><strong>Could not load ${Shell.esc(view.entity)}.</strong>`
+      + `<code>${Shell.esc(error.message)}</code>`
+      + (error.status === 401 ? '<div style="margin-top:6px">Sign in as manager / manager and reload.</div>' : '')
+      + '</div>';
   }
 }
 
-/* ---------------------------------------------------------------------------
-   Rendering
---------------------------------------------------------------------------- */
+// --- render ----------------------------------------------------------------
+
 function visibleRows() {
   const term = state.search.trim().toLowerCase();
   let rows = state.rows;
   if (term) {
-    const view = VIEWS[state.view];
-    const keys = view.columns.map((c) => c.key);
+    const keys = VIEWS[state.view].columns.map((c) => c.key);
     rows = rows.filter((row) => keys.some((k) => String(pick(row, k) ?? '').toLowerCase().includes(term)));
   }
   if (state.sortKey) {
@@ -640,46 +429,53 @@ function visibleRows() {
   return rows;
 }
 
+function renderTabs() {
+  document.getElementById('tabs').innerHTML = Object.entries(VIEWS).map(([key, view]) => {
+    const count = state.counts[key];
+    return `<a href="?view=${key}" data-view="${key}"${key === state.view ? ' class="active"' : ''}>`
+      + `${Shell.esc(view.label)}${count !== undefined ? `<span class="count">${Shell.num(count)}</span>` : ''}</a>`;
+  }).join('');
+  document.querySelectorAll('.tabs a').forEach((a) => {
+    a.addEventListener('click', (e) => { e.preventDefault(); switchView(a.dataset.view); });
+  });
+}
+
 function renderKpis() {
-  const view = VIEWS[state.view];
-  document.getElementById('kpis').innerHTML = view.kpis.map((k) => `
-    <div class="kpi"><div class="k-label">${esc(k.label)}</div><div class="k-value">${k.calc(state.rows)}</div></div>
-  `).join('');
+  document.getElementById('kpis').innerHTML = VIEWS[state.view].kpis.map((k) => `
+    <div class="stat" style="--accent:${k.accent}">
+      <div class="stat-label">${Shell.esc(k.label)}</div>
+      <div class="stat-value">${k.calc(state.rows)}</div>
+    </div>`).join('');
 }
 
 function renderTable() {
   const view = VIEWS[state.view];
   const rows = visibleRows();
   const host = document.getElementById('tableHost');
-
   document.getElementById('rowCount').textContent =
-    `${rows.length} of ${state.rows.length} row${state.rows.length === 1 ? '' : 's'}`;
+    `${Shell.num(rows.length)} of ${Shell.num(state.rows.length)} row${state.rows.length === 1 ? '' : 's'}`;
 
   if (!rows.length) {
-    host.innerHTML = `<div class="empty">Nothing matches the current filters.${
-      state.status ? ' Try setting status to “Any status”.' : ''}</div>`;
+    host.innerHTML = `<div class="state"><strong>Nothing matches the current filters.</strong>`
+      + `${state.status ? 'Try setting status to “Any status”.' : 'Try clearing the search box.'}</div>`;
     return;
   }
 
   const head = view.columns.map((c) => {
     const active = state.sortKey === c.key;
     const arrow = active ? `<span class="arrow">${state.sortDir === 'asc' ? '▲' : '▼'}</span>` : '';
-    return `<th data-key="${esc(c.key)}" class="${NUMERIC.has(c.fmt) ? 'num' : ''}">${esc(c.label)} ${arrow}</th>`;
+    return `<th data-key="${Shell.esc(c.key)}" class="sortable ${NUMERIC.has(c.fmt) ? 'num' : ''}">${Shell.esc(c.label)}${arrow}</th>`;
   }).join('');
 
-  const body = rows.map((row, index) => {
-    const cells = view.columns.map((c) => {
-      const raw = pick(row, c.key);
-      const formatted = (FORMATTERS[c.fmt] || FORMATTERS.text)(raw);
-      const cls = [NUMERIC.has(c.fmt) ? 'num' : '', c.fmt === 'wrap' ? 'wrap' : ''].filter(Boolean).join(' ');
-      return `<td class="${cls}">${formatted}</td>`;
-    }).join('');
-    return `<tr data-index="${index}">${cells}</tr>`;
-  }).join('');
+  const body = rows.map((row, index) => `<tr data-index="${index}">${view.columns.map((c) => {
+    const cls = [NUMERIC.has(c.fmt) ? 'num' : '', c.fmt === 'wrap' ? 'wrap' : '', c.strong ? 'strong' : ''].filter(Boolean).join(' ');
+    return `<td class="${cls}">${(FMT[c.fmt] || FMT.text)(pick(row, c.key))}</td>`;
+  }).join('')}</tr>`).join('');
 
-  host.innerHTML = `<table><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table>`;
+  host.innerHTML = `<div class="table-wrap"><table class="data rows-clickable">`
+    + `<thead><tr>${head}</tr></thead><tbody>${body}</tbody></table></div>`;
 
-  host.querySelectorAll('th').forEach((th) => {
+  host.querySelectorAll('th.sortable').forEach((th) => {
     th.addEventListener('click', () => {
       const key = th.dataset.key;
       if (state.sortKey === key) state.sortDir = state.sortDir === 'asc' ? 'desc' : 'asc';
@@ -697,116 +493,91 @@ const LABELS = {
   'posSystem.kind': 'Terminal type', 'supplier.name': 'Supplier',
   'supplier.leadTimeDays': 'Lead time (days)', 'supplier.reliability': 'Supplier reliability',
   'antecedent.name': 'If basket has', 'consequent.name': 'Also buys',
-  'customer.displayName': 'Customer', 'customer.loyaltyTier': 'Loyalty tier',
-  'customer.segment': 'Segment',
+  'customer.displayName': 'Customer', 'customer.loyaltyTier': 'Loyalty tier', 'customer.segment': 'Segment',
 };
-
 const labelFor = (key) => LABELS[key]
   || key.replace(/([A-Z])/g, ' $1').replace(/^./, (c) => c.toUpperCase()).replace(/Pct$/, ' %').trim();
 
 function formatDetail(view, key, value) {
   const column = view.columns.find((c) => c.key === key);
-  if (column) return (FORMATTERS[column.fmt] || FORMATTERS.text)(value);
-  if (typeof value === 'boolean') return FORMATTERS.bool(value);
+  if (column) return (FMT[column.fmt] || FMT.text)(value);
+  if (typeof value === 'boolean') return FMT.bool(value);
   if (/At$|On$|From$|To$/.test(key) && typeof value === 'string' && value.includes('-')) {
     return value.includes('T') ? dt(value) : dateOnly(value);
   }
-  if (typeof value === 'number') return num(value, Number.isInteger(value) ? 0 : 3);
-  return esc(value ?? '—');
+  if (typeof value === 'number') return Shell.num(value, Number.isInteger(value) ? 0 : 3);
+  return Shell.esc(value ?? '—');
 }
 
 function openDrawer(row, tr) {
   const view = VIEWS[state.view];
-  state.selected = row;
+  document.querySelectorAll('tbody tr.selected').forEach((el) => el.classList.remove('selected'));
+  if (tr) tr.classList.add('selected');
 
-  document.querySelectorAll('tbody tr.sel').forEach((el) => el.classList.remove('sel'));
-  if (tr) tr.classList.add('sel');
+  document.getElementById('drawerTitle').textContent = pick(row, 'article.name') || row.assetName
+    || row.title || pick(row, 'antecedent.name') || pick(row, 'customer.displayName') || row.ID;
 
-  const heading = pick(row, 'article.name') || pick(row, 'assetName') || row.title
-    || pick(row, 'antecedent.name') || pick(row, 'customer.displayName') || row.ID;
-  document.getElementById('drawerTitle').textContent = heading;
-
-  const fields = view.detail.map((key) => `
-    <div class="field">
-      <div class="f-label">${esc(labelFor(key))}</div>
-      <div class="f-value">${formatDetail(view, key, pick(row, key))}</div>
-    </div>`).join('');
-
-  const prose = view.prose.filter((key) => row[key]).map((key) => `
+  // Evidence first: it is what you need to judge whether to act.
+  const prose = view.prose.filter((k) => row[k]).map((k) => `
     <div class="field prose">
-      <div class="f-label">${esc(labelFor(key))}</div>
-      <div class="f-value">${esc(row[key])}</div>
+      <div class="field-label">${Shell.esc(labelFor(k))}</div>
+      <div class="field-value">${Shell.esc(row[k])}</div>
+    </div>`).join('');
+  const fields = view.detail.map((k) => `
+    <div class="field">
+      <div class="field-label">${Shell.esc(labelFor(k))}</div>
+      <div class="field-value">${formatDetail(view, k, pick(row, k))}</div>
     </div>`).join('');
 
   document.getElementById('drawerBody').innerHTML = prose + fields
-    + `<div class="field"><div class="f-label">Record</div><div class="f-value">${esc(row.ID)}</div></div>`;
+    + `<div class="field"><div class="field-label">Record</div><div class="field-value mono">${Shell.esc(row.ID)}</div></div>`;
 
-  // Actions only make sense while the record is still open.
   const canAct = !view.state || row.state === 'OPEN';
   document.getElementById('drawerActions').innerHTML = canAct
-    ? view.actions.map((a) => `<button data-action="${esc(a.id)}">${esc(a.label)}</button>`).join('')
-    : (view.actions.length ? `<span class="f-label">Already ${esc(String(row.state).toLowerCase())}</span>` : '');
+    ? view.actions.map((a, i) => `<button class="btn${i === 0 ? ' btn-primary' : ''}" data-action="${Shell.esc(a.id)}">${Shell.esc(a.label)}</button>`).join('')
+    : (view.actions.length ? `<span class="field-label" style="margin:0">Already ${Shell.esc(String(row.state).toLowerCase())}</span>` : '');
 
-  document.getElementById('drawerActions').querySelectorAll('button').forEach((button) => {
-    button.addEventListener('click', () => runAction(button.dataset.action, row, button));
+  document.getElementById('drawerActions').querySelectorAll('button').forEach((b) => {
+    b.addEventListener('click', () => runAction(b.dataset.action, row, b));
   });
 
-  const drawer = document.getElementById('drawer');
-  drawer.classList.add('open');
-  drawer.setAttribute('aria-hidden', 'false');
+  document.getElementById('drawer').classList.add('open');
+  document.getElementById('drawer').setAttribute('aria-hidden', 'false');
+  document.getElementById('scrim').classList.add('on');
 }
 
 function closeDrawer() {
-  const drawer = document.getElementById('drawer');
-  drawer.classList.remove('open');
-  drawer.setAttribute('aria-hidden', 'true');
-  document.querySelectorAll('tbody tr.sel').forEach((el) => el.classList.remove('sel'));
+  document.getElementById('drawer').classList.remove('open');
+  document.getElementById('drawer').setAttribute('aria-hidden', 'true');
+  document.getElementById('scrim').classList.remove('on');
+  document.querySelectorAll('tbody tr.selected').forEach((el) => el.classList.remove('selected'));
 }
 
 async function runAction(actionId, row, button) {
   const view = VIEWS[state.view];
   const action = view.actions.find((a) => a.id === actionId);
   if (!action) return;
-
   const payload = {};
-  if (action.arg) {
-    payload[action.arg] = action.fromField ? Number(row[action.fromField]) : action.value;
-  }
+  if (action.arg) payload[action.arg] = action.fromField ? Number(row[action.fromField]) : action.value;
 
   button.disabled = true;
   const original = button.textContent;
   button.textContent = 'Working…';
   try {
-    await odata(`${AI}/${view.entity}('${encodeURIComponent(row.ID)}')/AIService.${actionId}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
+    await Shell.fetchJson(`${AI}/${view.entity}('${encodeURIComponent(row.ID)}')/AIService.${actionId}`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload),
     });
-    toast(`${action.label} applied to ${row.ID}.`);
+    Shell.toast(`${action.label} applied to ${row.ID}`);
     closeDrawer();
     await loadRows();
   } catch (error) {
-    toast(`Failed: ${error.message}`);
+    Shell.toast(`Failed: ${error.message}`);
     button.disabled = false;
     button.textContent = original;
   }
 }
 
-/* ---------------------------------------------------------------------------
-   Navigation and controls
---------------------------------------------------------------------------- */
-function renderNav() {
-  document.getElementById('viewNav').innerHTML = Object.entries(VIEWS).map(([key, view]) =>
-    `<a href="?view=${key}" data-view="${key}" class="${key === state.view ? 'active' : ''}">${esc(view.label)}</a>`
-  ).join('');
-
-  document.getElementById('viewNav').querySelectorAll('a').forEach((a) => {
-    a.addEventListener('click', (event) => {
-      event.preventDefault();
-      switchView(a.dataset.view);
-    });
-  });
-}
+// --- navigation ------------------------------------------------------------
 
 function switchView(key) {
   state.view = VIEWS[key] ? key : Object.keys(VIEWS)[0];
@@ -816,14 +587,13 @@ function switchView(key) {
   closeDrawer();
 
   const view = VIEWS[state.view];
-  document.title = `${view.title} — S.Mart`;
+  document.title = `${view.title} — S.Mart Retail AI`;
   document.getElementById('viewTitle').textContent = view.title;
   document.getElementById('viewDesc').textContent = view.desc;
-  // The status filter is meaningless on views without a lifecycle.
   document.getElementById('stateFilter').disabled = !view.state;
 
   history.replaceState(null, '', `?view=${state.view}`);
-  renderNav();
+  renderTabs();
   loadRows();
 }
 
@@ -832,23 +602,14 @@ document.getElementById('stateFilter').addEventListener('change', (e) => { state
 document.getElementById('search').addEventListener('input', (e) => { state.search = e.target.value; renderTable(); });
 document.getElementById('reload').addEventListener('click', () => loadRows());
 document.getElementById('drawerClose').addEventListener('click', closeDrawer);
+document.getElementById('scrim').addEventListener('click', closeDrawer);
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeDrawer(); });
-
-document.getElementById('themeToggle').addEventListener('click', (e) => {
-  const dark = document.documentElement.getAttribute('data-theme') === 'dark';
-  document.documentElement.setAttribute('data-theme', dark ? 'light' : 'dark');
-  e.target.textContent = dark ? 'Dark' : 'Light';
-});
 
 (async function start() {
   const requested = new URLSearchParams(location.search).get('view');
   state.view = VIEWS[requested] ? requested : Object.keys(VIEWS)[0];
-  renderNav();
-  try {
-    await loadStores();
-  } catch (error) {
-    // A failure here is almost always authentication; loadRows reports it.
-  }
+  renderTabs();
+  try { await loadStores(); } catch { /* loadRows reports authentication failures */ }
   switchView(state.view);
 })();
 </script>
