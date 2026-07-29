@@ -91,80 +91,95 @@ footer { color: var(--muted); font-size: 12.5px; border-top: 1px solid var(--gri
     </a>
   </div>
 
-  <h2 class="section">Scenario apps &mdash; SAP Fiori elements</h2>
+  <h2 class="section">Scenario apps</h2>
   <div class="tiles">
-    <a class="tile" href="/checkout-integrity/webapp/index.html">
+    <a class="tile" href="/scenarios/index.html?view=checkout-integrity">
       <div class="kicker">Loss prevention</div>
       <h3>Checkout Integrity Radar</h3>
       <p>RFID misreads, absent tags, stock variance and price errors on the unstaffed gates, each with
          the evidence behind the call.</p>
-      <span class="badge ui5">List Report &amp; Object Page</span>
+      <span class="badge">No CDN required</span>
     </a>
-    <a class="tile" href="/replenishment-cockpit/webapp/index.html">
+    <a class="tile" href="/scenarios/index.html?view=replenishment">
       <div class="kicker">Autonomous ordering</div>
       <h3>Replenishment Cockpit</h3>
       <p>Reorder proposals sized from forecast demand over the supplier lead time plus safety stock,
          ranked by lost-sales exposure.</p>
-      <span class="badge ui5">List Report &amp; Object Page</span>
+      <span class="badge">No CDN required</span>
     </a>
-    <a class="tile" href="/fresh-waste-guard/webapp/index.html">
+    <a class="tile" href="/scenarios/index.html?view=fresh-waste">
       <div class="kicker">Fresh food</div>
       <h3>Fresh Waste Guard</h3>
       <p>Markdown depth chosen by sweeping candidate discounts and keeping the one that recovers the
          most margin before expiry.</p>
-      <span class="badge ui5">List Report &amp; Object Page</span>
+      <span class="badge">No CDN required</span>
     </a>
-    <a class="tile" href="/demand-forecast/webapp/index.html">
+    <a class="tile" href="/scenarios/index.html?view=demand-forecast">
       <div class="kicker">Hourly demand</div>
       <h3>Demand Forecast</h3>
       <p>Per store, article and hour, with prediction intervals and the backtested accuracy of the
          model behind each row.</p>
-      <span class="badge ui5">List Report &amp; Object Page</span>
+      <span class="badge">No CDN required</span>
     </a>
-    <a class="tile" href="/basket-affinity/webapp/index.html">
+    <a class="tile" href="/scenarios/index.html?view=basket-affinity">
       <div class="kicker">Merchandising</div>
       <h3>Basket Affinity &amp; Planogram</h3>
       <p>Association rules mined from real baskets, flagging pairs that sell together but sit in
          different temperature zones today.</p>
-      <span class="badge ui5">List Report &amp; Object Page</span>
+      <span class="badge">No CDN required</span>
     </a>
-    <a class="tile" href="/personal-offers/webapp/index.html">
+    <a class="tile" href="/scenarios/index.html?view=personal-offers">
       <div class="kicker">Personalisation</div>
       <h3>Personalised Offers</h3>
       <p>Next best offer per S.Mart app customer, from purchase cadence and basket affinity &mdash;
          consenting customers only.</p>
-      <span class="badge ui5">List Report &amp; Object Page</span>
+      <span class="badge">No CDN required</span>
     </a>
-    <a class="tile" href="/cold-chain/webapp/index.html">
+    <a class="tile" href="/scenarios/index.html?view=cold-chain">
       <div class="kicker">Store operations</div>
       <h3>Cold Chain Monitor</h3>
       <p>Sustained chiller and freezer excursions, scored by how far out, for how long, and how much
          stock is exposed.</p>
-      <span class="badge ui5">List Report &amp; Object Page</span>
+      <span class="badge">No CDN required</span>
     </a>
-    <a class="tile" href="/insight-feed/webapp/index.html">
+    <a class="tile" href="/scenarios/index.html?view=insight-feed">
       <div class="kicker">All scenarios</div>
       <h3>AI Insight Feed</h3>
       <p>One queue across every engine, ranked by euros at stake weighted by the model's confidence
          in its own recommendation.</p>
-      <span class="badge ui5">List Report &amp; Object Page</span>
+      <span class="badge">No CDN required</span>
     </a>
   </div>
 
-  <h2 class="section">Service endpoints</h2>
+  <h2 class="section">Services</h2>
   <div class="tiles">
-    <a class="tile" href="/ai/$metadata">
+    <a class="tile" href="/api/index.html">
       <div class="kicker">OData V4</div>
-      <h3>AIService</h3>
-      <p>Scenario outputs, queue actions and the <code>recalculate</code>, <code>simulateForecast</code>
-         and <code>simulateMarkdown</code> actions.</p>
+      <h3>API Explorer</h3>
+      <p>Both services with their entities and live row counts, a query runner that shows the JSON in
+         place, and links to the raw metadata for when you want the XML.</p>
+      <span class="badge">No CDN required</span>
     </a>
-    <a class="tile" href="/analytics/$metadata">
-      <div class="kicker">OData V4</div>
-      <h3>AnalyticsService</h3>
-      <p>Sales, receipts, inventory, footfall and the pre-aggregated daily, hourly, article and
-         channel views.</p>
-    </a>
+  </div>
+
+
+  <h2 class="section">Same scenarios as SAP Fiori elements &mdash; needs a SAPUI5 runtime</h2>
+  <p style="font-size:13px;color:var(--ink-2);margin:-4px 0 12px;max-width:90ch">
+    Annotation-driven List Report and Object Page apps over the same OData services, for deployment to
+    SAP BTP where Fiori elements provides variant management, personalisation and the standard SAP
+    interaction model. They bootstrap SAPUI5 from <code>ui5.sap.com</code> and render a blank page where
+    that host is unreachable &mdash; <code>sap.fe.templates</code> ships only in the closed SAPUI5
+    distribution, so it cannot be self-hosted. Use the scenario apps above in that case.
+  </p>
+  <div class="tiles">
+    <a class="tile" href="/checkout-integrity/webapp/index.html"><div class="kicker">Loss prevention</div><h3>Checkout Integrity Radar</h3><p>List Report and Object Page over ShrinkAlerts.</p><span class="badge ui5">Requires SAPUI5</span></a>
+    <a class="tile" href="/replenishment-cockpit/webapp/index.html"><div class="kicker">Autonomous ordering</div><h3>Replenishment Cockpit</h3><p>List Report and Object Page over ReplenishmentTasks.</p><span class="badge ui5">Requires SAPUI5</span></a>
+    <a class="tile" href="/fresh-waste-guard/webapp/index.html"><div class="kicker">Fresh food</div><h3>Fresh Waste Guard</h3><p>List Report and Object Page over MarkdownRecommendations.</p><span class="badge ui5">Requires SAPUI5</span></a>
+    <a class="tile" href="/demand-forecast/webapp/index.html"><div class="kicker">Hourly demand</div><h3>Demand Forecast</h3><p>List Report and Object Page over DemandForecasts.</p><span class="badge ui5">Requires SAPUI5</span></a>
+    <a class="tile" href="/basket-affinity/webapp/index.html"><div class="kicker">Merchandising</div><h3>Basket Affinity</h3><p>List Report and Object Page over BasketAffinities.</p><span class="badge ui5">Requires SAPUI5</span></a>
+    <a class="tile" href="/personal-offers/webapp/index.html"><div class="kicker">Personalisation</div><h3>Personalised Offers</h3><p>List Report and Object Page over NextBestOffers.</p><span class="badge ui5">Requires SAPUI5</span></a>
+    <a class="tile" href="/cold-chain/webapp/index.html"><div class="kicker">Store operations</div><h3>Cold Chain Monitor</h3><p>List Report and Object Page over ColdChainAlerts.</p><span class="badge ui5">Requires SAPUI5</span></a>
+    <a class="tile" href="/insight-feed/webapp/index.html"><div class="kicker">All scenarios</div><h3>AI Insight Feed</h3><p>List Report and Object Page over AIInsights.</p><span class="badge ui5">Requires SAPUI5</span></a>
   </div>
 
   <div class="note">
@@ -172,10 +187,9 @@ footer { color: var(--muted); font-size: 12.5px; border-top: 1px solid var(--gri
     mocked authentication &mdash; sign in as <code>manager</code> / <code>manager</code>
     (or <code>analyst</code>, <code>viewer</code>).
     <br><br>
-    <strong>SAP Fiori elements apps need a SAPUI5 runtime.</strong> They bootstrap from
-    <code>https://ui5.sap.com</code>, so they render wherever that host is reachable &mdash; SAP Business
-    Application Studio, a local machine, or SAP BTP. In an air-gapped environment use the
-    <strong>AI Command Centre</strong>, which ships its own rendering and needs no external asset.
+    <strong>Everything above the Fiori elements section works offline.</strong> The command centre,
+    the scenario apps and the API explorer load no external script, font or stylesheet, so they render
+    in an air-gapped landscape. Only the Fiori elements apps need <code>ui5.sap.com</code>.
   </div>
 
   <footer>

@@ -12,8 +12,14 @@ using { smart.retail as base } from '../db/schema';
 @path: '/ai'
 service AIService @(requires: 'authenticated-user') {
 
-  @readonly entity Stores   as projection on base.Stores;
-  @readonly entity Articles as projection on base.Articles;
+  // Master data the scenario entities point at. These have to be exposed
+  // explicitly or their associations have no navigation target in this service
+  // and `$expand=supplier(...)` / `$expand=customer(...)` fail with HTTP 400.
+  // (PosSystems arrives on its own, auto-exposed as a composition of Stores.)
+  @readonly entity Stores    as projection on base.Stores;
+  @readonly entity Articles  as projection on base.Articles;
+  @readonly entity Suppliers as projection on base.Suppliers;
+  @readonly entity Customers as projection on base.Customers;
 
   entity DemandForecasts as projection on db.DemandForecasts;
   entity BasketAffinities as projection on db.BasketAffinities;
