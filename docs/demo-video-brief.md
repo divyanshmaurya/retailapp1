@@ -33,7 +33,7 @@ Screenshots supplied. `10.png`, `12.png` and `13.png` are duplicates of `3.png`,
 | File | Screen |
 |---|---|
 | `1.png` | Overview — hero KPI strip and Start Here cards |
-| `2.png` | Overview — six scenario cards and the Fiori Elements applications |
+| `2.png` | Overview — seven scenario cards and the Fiori Elements applications |
 | `3.png` / `10.png` | Command Centre — network KPIs, value at stake by scenario, integrity by pattern |
 | `4.png` | Command Centre — trading by hour, channel mix, model scorecard |
 | `5.png` | Command Centre — ranked insight feed |
@@ -63,11 +63,11 @@ Total 180 s. Timings are cuts, not suggestions — the voiceover is written to t
 | 4 | 0:23–0:32 | **B3** chiller aisle, cold blue | Individually invisible. Together, material. | slow rise |
 | 5 | 0:32–0:44 | `1.png` | — | push in 100→108 %, centred on KPI strip |
 | 6 | 0:44–0:52 | `1.png` | callout ring on **Value at stake** and **Forecast accuracy** | hold, callouts fade in 0:45 / 0:48 |
-| 7 | 0:52–1:06 | `2.png` | SIX AI SCENARIOS | pan down, 108→100 % |
+| 7 | 0:52–1:06 | `2.png` | SEVEN AI SCENARIOS | pan down, 108→100 % |
 | 8 | 1:06–1:18 | `3.png` | — | push in on the two charts |
 | 9 | 1:18–1:30 | `4.png` | MODEL SCORECARD | pan right across scorecard |
 | 10 | 1:30–1:37 | `5.png` | — | push in on top three rows |
-| 11 | 1:37–1:44 | `15.png` | 107 INSIGHTS · SIX ENGINES · ONE QUEUE | slow pull back |
+| 11 | 1:37–1:44 | `15.png` | 107 INSIGHTS · ONE QUEUE | slow pull back |
 | 12 | 1:44–1:53 | `11.png` | — | hold, then push toward the KPI row |
 | 13 | 1:53–2:06 | `6.png` | S.MART MUNICH WERKSVIERTEL | cross-dissolve from 11, settle on 129 / €3,107.53 |
 | 14 | 2:06–2:20 | `14.png` | FORECAST → ORDER | pan across urgency, units, supplier |
@@ -106,16 +106,16 @@ demo.
 > insights. What needs attention first. // Every figure on this page is computed live from SAP HANA
 > Cloud. Nothing here is typed in.
 >
-> **[0:52]** Behind it, six AI scenarios — checkout integrity, replenishment, fresh waste, demand
-> forecasting, basket affinity and cold chain. Each one also delivered as a standard SAP Fiori
-> Elements application.
+> **[0:52]** Behind it, seven AI scenarios — checkout integrity, replenishment, fresh waste, demand
+> forecasting, basket affinity, personalised offers and cold chain. Each also delivered as a standard
+> SAP Fiori Elements application.
 >
 > **[1:06]** The Command Centre is where an operations lead starts the day. Value at stake by
 > scenario. Checkout integrity broken down by failure pattern. The trading curve hour by hour, the
 > channel mix — // and a model scorecard, because a forecast you cannot audit is not a forecast.
 >
-> **[1:30]** A hundred and seven insights, across all six engines, in one queue. Ranked by euros at
-> stake, weighted by how much the model trusts its own call.
+> **[1:30]** A hundred and seven insights, in a single queue. Ranked by euros at stake, weighted by
+> how much the model trusts its own call.
 >
 > **[1:44]** Every insight opens onto its evidence. Checkout Integrity Radar across the network —
 > // then filtered to a single store. Munich Werksviertel: a hundred and twenty-nine alerts, three
@@ -245,7 +245,7 @@ changes:
 | Need attention (critical + high) | 58 | same file, severity in {CRITICAL, HIGH} |
 | Value at stake | €1,733 | sum of `impactValue` over open insights, as `app/index.html` computes it |
 | Forecast accuracy | 71.2 % | 100 − WAPE (store-day) 28.83, `smart.retail-ModelMetrics.csv` |
-| AI scenarios | 6 | checkout integrity, replenishment, waste/markdown, demand forecast, merchandising, personalisation |
+| AI scenarios | 7 | checkout integrity, replenishment, fresh waste, demand forecast, basket affinity, personalised offers, cold chain — one engine each under `srv/lib/engines/` |
 | Fiori Elements applications | 8 | `app/` — one per scenario plus the insight feed |
 | OData V4 services | 2 | `AIService` (`/ai`), `AnalyticsService` (`/analytics`) |
 | Munich alerts / at risk | 129 / €3,107.53 | on screen in `6.png` |
