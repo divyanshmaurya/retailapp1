@@ -295,3 +295,114 @@ Deliver 1920x1080 H.264 at 25 fps.
 
 If the brief is not in the working directory of that session, paste the shot list, voiceover script
 and generation prompts inline instead — everything the prompt refers to is in this file.
+
+---
+
+# The short cut - six screens, three minutes
+
+The 21-shot grid above is the full version. It needs all seventeen screenshots and an editor
+with frame-level control, and in tools that generate the whole video from one prompt it
+consistently overruns - a NotebookLM pass off the eleven-section structure came back at 7:30.
+
+This section is the short cut: six screens, one argument, three minutes, buildable in a single
+pass. Prefer it whenever the tool generates rather than assembles.
+
+## Why these six
+
+| # | Screen | What it carries |
+|---|---|---|
+| 1 | Overview KPI strip | Opens with the money and the scale |
+| 3 | Command Centre | The flagship dashboard, and the only screen with charts |
+| 15 | AI Insight Feed | 107 insights in one ranked queue - the core idea |
+| 6 | Munich drill-down | Evidence behind a single number |
+| 14 | Replenishment Cockpit | Proves the system produces actions, not just findings |
+| 16 | Fiori list report | Proves it is standard SAP, which this audience cares about |
+
+Problem, network view, ranked queue, evidence, action, SAP-native. Dropping 2, 4, 5, 7, 8, 9,
+11 and 17 loses breadth - breadth is what caused the overrun.
+
+## What actually controls the length
+
+Two things, and neither is asking for three minutes:
+
+1. **Cap the section count.** Six sections, named, with no room to add more.
+2. **Forbid elaboration explicitly.** No introduction, no recap, no summary, no explaining
+   concepts outside the script, no host framing. Generators pad by default, and every added
+   sentence costs roughly half a second.
+
+The narration for this cut is 240 words - 80 wpm across the full 180 s. That is deliberately
+sparse: six animated beats need room to resolve, and narration talking over a counter still
+counting is the thing that makes an infographic feel rushed. Measured per section it runs
+between 72 and 98 wpm, so no section is crammed and every one has silent animation time.
+
+## Narration, in six blocks
+
+One block per section, so each maps to exactly one page. Section 2 carries what were two
+paragraphs in the long version, which is why it runs 30 seconds.
+
+1. Six stores. A hundred and twenty thousand rows of checkout data. And nobody with the hours
+   to read it. In autonomous retail, losses don't arrive as one big event. They arrive as a
+   mispriced shelf label. A tag the gate never read. A chiller drifting two degrees overnight.
+   Individually invisible. Together, material.
+2. S.Mart Retail AI reads that data and puts a number on it. Value at stake. Open insights.
+   What needs attention first, computed live from SAP HANA Cloud. The Command Centre is where
+   an operations lead starts the day - value at stake by scenario, checkout integrity by
+   failure pattern, and a model scorecard, because a forecast you cannot audit is not a
+   forecast.
+3. A hundred and seven insights, in a single queue. Ranked by euros at stake, weighted by how
+   much the model trusts its own call.
+4. Every insight opens onto its evidence. Filtered to a single store, Munich Werksviertel shows
+   a hundred and twenty-nine alerts and three thousand one hundred euros at risk, each with its
+   failure pattern, its anomaly score, and the action to take.
+5. The Replenishment Cockpit turns that forecast into orders. Units to order, stockout risk,
+   supplier and lead time, released from the same screen.
+6. And for teams already working in SAP, the same data arrives as standard Fiori list reports.
+   Acknowledge, resolve, apply a markdown, without leaving the pattern they already know.
+   S.Mart Retail AI, built on SAP CAP and SAP HANA Cloud.
+
+## Animation, one beat per section
+
+Each beat resolves and settles - nothing loops or pulses, nothing bounces or spins.
+
+| Section | Beat |
+|---|---|
+| 1 | Counters rise into place: 107 insights, 58 needing attention, 6 stores, 71.2% accuracy. A thin cyan ring fades in around "Value at stake". |
+| 2 | A horizontal bar chart draws itself left to right, longest bar top. |
+| 3 | Rows slide in and sort into a ranked stack, 107 counting up as they land. |
+| 4 | A funnel narrows from 500 alerts across the network to 129 in one store. |
+| 5 | Three nodes draw left to right: FORECAST, REORDER POINT, ORDER RELEASED. |
+| 6 | The action buttons highlight in sequence: Acknowledge, Resolve, Dismiss. |
+
+Animation must never cover the data in the screenshot or delay the narration.
+
+## Section timings for an assembly tool
+
+    1  0:00-0:32   screenshot 1     52 words   98 wpm
+    2  0:32-1:12   screenshot 3     63 words   95 wpm
+    3  1:12-1:32   screenshot 15    24 words   72 wpm
+    4  1:32-2:00   screenshot 6     40 words   86 wpm
+    5  2:00-2:22   screenshot 14    22 words   60 wpm
+    6  2:22-3:00   screenshot 16    39 words   78 wpm  (last 8 s are the end card)
+
+These are balanced against the word count of each block, not split evenly. Section 2 carries two
+paragraphs and needs 40 s; section 5 is a single short sentence and needs 22.
+
+Text overlays, faded in over half a second and placed in empty areas: none on 1, then VALUE AT
+STAKE BY SCENARIO, 107 INSIGHTS - ONE QUEUE, S.MART MUNICH WERKSVIERTEL, FORECAST INTO ORDERS,
+STANDARD SAP FIORI.
+
+## Two limits worth knowing before choosing a tool
+
+**Generated-video tools will not honour the animation direction.** NotebookLM and similar run a
+fixed presentation template, not a motion-graphics engine. They pick up the general energy and
+the transition style; they will not draw a funnel or a three-node flow. Include the direction
+anyway - it costs nothing - but do not plan around it.
+
+**A platform watermark is applied at export, not by the model,** so no prompt removes or
+softens it. If it matters for an executive audience, the fix is downstream: crop a few pixels
+off that edge, or lay a shape over the corner.
+
+Both limits point the same way. If the animation and the watermark matter, let the generator
+produce narration and structure, then rebuild these six sections in a tool that assembles -
+Canva does counters, growing bars and drawn connectors natively, and six sections is roughly an
+hour's work.
