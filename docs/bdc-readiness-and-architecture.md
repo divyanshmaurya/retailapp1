@@ -6,100 +6,112 @@ look like.
 
 ---
 
-## 1. Purpose and framing
+## 1. Purpose, method and scoring
 
-The readiness framework in the BDC starter kit is written for a customer estate: an existing BW
-landscape, real data owners, a live extraction pipeline. Ours is a demo built on BTP with no
-legacy behind it, so several criteria do not apply in the form they are asked.
+This is an assessment of **the S.Mart Retail AI demo we built** — the CAP application, its data
+pipeline, the HANA Cloud deployment and the BTP landscape around it — not of a customer estate.
+It is a worked example: the framework turned on ourselves before we propose using it on anyone
+else.
 
-This assessment works through all five dimensions anyway, on the closest honest equivalent, and
-says so wherever a criterion has been substituted or cannot be answered at all. It is written as
-findings rather than scores: a number out of five invites an argument about the number, and the
-useful output here is what is actually missing.
+The framework is **slide 6 of the BDC starter kit**, "BDC Readiness Assessment Framework". All
+five dimensions and all twenty sub-criteria are taken from that slide unchanged. The rule that a
+dimension scoring below 3 becomes a Phase 1 workstream is from the slide's speaker notes.
 
-The result is more useful than a flattering one. Applied honestly, the framework identifies a
-single weak dimension, and it is exactly the one BDC is sold to fix.
+### How the scores were derived
+
+Slide 6 asks for a score out of 5 per dimension but does not define what each point means, so
+this assessment states its own scale. It is written down here so that a reader can disagree with
+a specific score rather than with the exercise:
+
+| Score | Meaning |
+|---|---|
+| 1 | Absent. The thing does not exist. |
+| 2 | Done, but with no process behind it. Reproducible by the person who did it, not by anyone else. |
+| 3 | A real control exists, but it is narrow — one check, one source, or one skill. |
+| 4 | Systematic, with known gaps. |
+| 5 | Established, monitored, and would survive the author leaving. |
+
+Each dimension score is the arithmetic mean of its scored criteria, rounded to one decimal.
+
+Several of slide 6's criteria assume a legacy estate we do not have — BW complexity, custom
+ABAP, an ECC/S4 extraction landscape — and one assumes an organisation rather than a project
+team. Those are marked **N/A** and excluded from the mean rather than counted as full marks.
+Scoring ourselves 5 out of 5 for having no BW complexity would flatter the exercise and teach
+nobody anything.
 
 ---
 
 ## 2. Readiness assessment
 
-### Dimension 1 — Data architecture readiness
+### Dimension 1 — Data architecture readiness: **3.5 / 5**
 
-**Strong, but for a reason that would not transfer to a customer.** There is no BW estate to
-untangle and no custom ABAP, so two of the four criteria do not apply. Volumes and ingestion are
-in good shape: 25 tables and 120,324 rows deployed to HANA Cloud, with incremental ingestion
-supported and exercised — the pipeline picks its primary source by row count rather than
-filename, and a single-day export drives the delta path.
+| Slide 6 criterion | What we have | Score |
+|---|---|---|
+| Current BW complexity | No BW estate at all. Nothing to untangle, nothing to migrate off. | N/A |
+| Data volumes and ingestion patterns | 25 tables, 120,324 rows deployed to HANA Cloud. Incremental ingestion works and is exercised — the pipeline picks its primary source by row count rather than filename, and a single-day export drives the delta path. Systematic with gaps: it handles the sources we have, not sources we do not. | 4 |
+| ECC/S4 extraction landscape health | No extraction landscape. A file-based Customer Checkout export, whose figures reconciled exactly against SAP's own printed totals when checked by hand. A real control, but a narrow one — one check, one source, and not automated. | 3 |
+| Custom ABAP / BAdI usage | None. The stack is CAP, CDS and Node.js throughout. | N/A |
 
-There is no ECC or S/4 extraction landscape. The source is a file-based SAP Customer Checkout
-export whose figures reconciled exactly against the totals SAP prints in its own report when
-checked by hand, with those totals captured in `data/canonical/manifest.json` on every run. The
-comparison itself is not automated, which is a dimension 2 problem.
+Strong, but for a reason that would not transfer to a customer: the architecture is clean
+because it is new, not because it has been rationalised.
 
-The architecture is clean because it is new, not because it has been rationalised.
+### Dimension 2 — Data governance and quality: **1.5 / 5**
 
-### Dimension 2 — Data governance and quality
+| Slide 6 criterion | What we have | Score |
+|---|---|---|
+| Active data ownership structure | Nothing assigns an owner, steward or accountable party to any entity. No `CODEOWNERS` file, no ownership annotation anywhere in the model. Absent. | 1 |
+| Master data governance maturity | The article master was enriched by us — unit cost, temperature zone, shelf life, ABC class, RFID flag, reorder point, supplier — under a fixed seed, so the values are reproducible and documented. But there is no source of record, no approval step and no change process. Done, with no process behind it. | 2 |
+| Data quality KPIs and monitoring | `extract_cashing_up()` reads SAP's own totals into the manifest on every run, but nothing compares them to the extracted rows — no assertion, no failure on mismatch. The reconciliation was verified once, by hand. A recorded figure is not a control, so this is a 2 and not a 3. | 2 |
+| Catalogue and lineage tooling | No catalogue, no glossary, no lineage tooling. Lineage exists only as prose in the project report. Absent. | 1 |
 
-**This is the gap, and it is the only one.**
+**This is the gap, and it is the only one.** Under the rule in slide 6's speaker notes — any
+dimension below 3 becomes a Phase 1 workstream — governance is the single workstream this
+assessment produces. It is also precisely what a data product is: a governed, owned, catalogued,
+lineage-tracked unit. The framework applied to us returns the argument for BDC.
 
-*Ownership:* absent. Nothing assigns an owner, steward or accountable party to any entity —
-there is no `CODEOWNERS` file and no ownership annotation anywhere in the model.
+### Dimension 3 — Skills and organisation: **3.3 / 5**
 
-*Master data governance:* the article master was enriched by us — unit cost, temperature zone,
-shelf life, ABC class, RFID flag, reorder point, supplier — under a fixed seed, so the values
-are reproducible and documented. But there is no source of record, no approval step and no
-change process. The values are defensible; the process does not exist.
+| Slide 6 criterion | What we have | Score |
+|---|---|---|
+| SAP BW / HANA technical skills depth | HANA Cloud is proven — 131 artifacts deployed, 0 warnings, the CDS model compiled to HANA unchanged. BW is at zero. A real skill, narrowly held. | 3 |
+| Cloud analytics skills (SAC, Azure) | BTP, CAP, CDS, Fiori Elements, XSUAA and the Application Router all exercised end to end. SAP Analytics Cloud at zero, which is half of what this criterion asks for. | 3 |
+| Data engineering capability | The ETL handles report-shaped exports properly — metadata rows above the header, group keys printed once per block, total rows mixed in with real ones — rather than assuming a tidy table. Systematic, with the automation gap noted above. | 4 |
+| Change management readiness | Not applicable to a project team of this size. | N/A |
 
-*Data quality monitoring:* weaker than it first appears. `extract_cashing_up()` reads SAP's own
-totals into the manifest on every run, but nothing compares them to the extracted rows. There is
-no assertion and no failure on mismatch — the only hard exits in the pipeline are for a missing
-dependency and an empty source directory. The reconciliation was verified once, by hand, and the
-figures are recorded for inspection. A recorded figure is not a control.
+### Dimension 4 — Business use case clarity: **4.2 / 5**
 
-*Catalogue and lineage:* absent. No catalogue, no glossary, no lineage tooling. Lineage exists
-only as prose in the project report.
+| Slide 6 criterion | What we have | Score |
+|---|---|---|
+| Prioritised analytics use case backlog | Seven scenarios built and running, each ranked by euros at stake weighted by model confidence. The prioritisation is not a slide, it is a live query — it would survive any of us leaving. | 5 |
+| Business sponsor engagement level | Active and specific, with direction given on both the demo and the BDC direction. Systematic rather than established only because it rests on one sponsor. | 4 |
+| Value metrics agreed for target state | Value at stake, skill against a seasonal-naive benchmark and signed bias are all measured. No threshold has been agreed that would say the system is performing well enough. We can tell you the number; we have not agreed what a good number is. | 3 |
+| AI/ML use cases identified | Seven identified and implemented, not merely listed. | 5 |
 
-This is the workstream the assessment produces, and it is precisely what a data product is: a
-governed, owned, catalogued, lineage-tracked unit. The framework applied to us returns the
-argument for BDC.
+The strongest dimension, and the reason the BDC conversation is worth having at all: the use
+cases already exist and run. What is missing sits underneath them.
 
-### Dimension 3 — Skills and organisation
+### Dimension 5 — Technical infrastructure: **3.0 / 5**
 
-**Adequate on the platform, absent on the analytics stack.** The HANA Cloud side is proven —
-131 artifacts deployed with 0 warnings, and the CDS model compiled to HANA unchanged. BTP, CAP,
-CDS, Fiori Elements, XSUAA and the Application Router are all exercised end to end.
+| Slide 6 criterion | What we have | Score |
+|---|---|---|
+| BTP account and landscape setup | Complete and in use: Cloud Foundry org and space, HANA Cloud instance, HDI container, MTA deployment, all reproducible from the repository. | 5 |
+| Network and security architecture | XSUAA with three role templates and three role collections, Application Router fronting both services, destinations with token forwarding. Systematic; the gap is that it has never been tested against a real corporate network policy. | 4 |
+| Integration platform (CPI/IS) health | No Cloud Integration or Integration Suite anywhere in the picture. Every integration is file-based or direct. Absent. | 1 |
+| Licence entitlements and contracts | HANA Cloud entitlement in place. No BDC entitlement, which is what blocks the next step. | 2 |
 
-BW and SAP Analytics Cloud are both at zero. Data engineering is the strongest part: the ETL
-handles report-shaped exports properly — metadata rows above the header, group keys printed once
-per block, total rows mixed in with the real ones — rather than assuming a tidy table.
+In place for an application, not for a data platform.
 
-Change management readiness does not apply to a demo team.
+### Summary
 
-### Dimension 4 — Business use case clarity
+| # | Dimension (slide 6) | Score |
+|---|---|---|
+| 1 | Data architecture readiness | 3.5 / 5 |
+| 2 | **Data governance and quality** | **1.5 / 5** |
+| 3 | Skills and organisation | 3.3 / 5 |
+| 4 | Business use case clarity | 4.2 / 5 |
+| 5 | Technical infrastructure | 3.0 / 5 |
 
-**The strongest dimension, and the reason the BDC conversation is worth having.** Seven
-scenarios are built and running, each ranked by euros at stake weighted by model confidence —
-the prioritisation is not a slide, it is a live query. The AI use cases are implemented rather
-than merely identified, and the business sponsor is engaged and specific.
-
-The one soft spot is target-setting. Value at stake, skill against a seasonal-naive benchmark
-and signed bias are all measured, but no threshold has been agreed that would say the system is
-performing well enough. We can tell you the number; we have not agreed what a good number is.
-
-### Dimension 5 — Technical infrastructure
-
-**In place for an application, not for a data platform.** The BTP landscape is complete: Cloud
-Foundry org and space, HANA Cloud instance, HDI container, MTA deployment. Security is properly
-done — XSUAA with three role templates and three role collections, the Application Router
-fronting both services, destinations with token forwarding.
-
-What is missing is everything platform-shaped. No CPI or Integration Suite; every integration is
-file-based or direct. The HANA Cloud entitlement is in place, but there is no BDC entitlement.
-
-### What the assessment produces
-
-Four dimensions are in reasonable shape. One is not, and it is governance.
+One dimension below the threshold, and it is governance.
 
 For a customer that finding would be uncomfortable; for us it is the point. We built seven
 working AI scenarios on data we harmonised by hand, with no ownership, no catalogue and no
