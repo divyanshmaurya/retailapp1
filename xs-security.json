@@ -2,6 +2,14 @@
   "xsappname": "smartstore-retail-ai",
   "tenant-mode": "dedicated",
   "description": "Security profile for the S.Mart retail AI application",
+  "oauth2-configuration": {
+    "redirect-uris": [
+      "https://*.cfapps.us10-001.hana.ondemand.com/**",
+      "https://*.cfapps.eu10.hana.ondemand.com/**",
+      "http://localhost:5000/**",
+      "http://localhost:4004/**"
+    ]
+  },
   "scopes": [
     {
       "name": "$XSAPPNAME.Viewer",
