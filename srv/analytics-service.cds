@@ -8,8 +8,9 @@ using { smart.retail as db } from '../db/schema';
  * production. Fiori Elements reads its shape from this service's metadata; the
  * UI annotations live in `srv/annotations/`.
  */
+// Open, for the same reason as AIService - see the note there.
 @path: '/analytics'
-service AnalyticsService @(requires: 'authenticated-user') {
+service AnalyticsService @(requires: 'any') {
 
   @readonly entity Stores        as projection on db.Stores;
   @readonly entity PosSystems    as projection on db.PosSystems;

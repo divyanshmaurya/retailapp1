@@ -9,8 +9,14 @@ using { smart.retail as base } from '../db/schema';
  * replace the stored rows, so a demo can show the models responding to changed
  * facts rather than serving a fixed extract.
  */
+// `any` rather than `authenticated-user`: the deployed link is meant to be
+// opened by anyone it is sent to, with no sign-in step. The Application Router
+// in front of this service is configured the same way, so no token reaches
+// here to identify a caller. Restoring the sign-in means changing this back
+// and flipping app/xs-app.json to xsuaa in the same commit - the two have to
+// agree or the app returns 401 on every read.
 @path: '/ai'
-service AIService @(requires: 'authenticated-user') {
+service AIService @(requires: 'any') {
 
   // Master data the scenario entities point at. These have to be exposed
   // explicitly or their associations have no navigation target in this service
